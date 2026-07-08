@@ -1,0 +1,16 @@
+{
+  "name": "epoq",
+  "base": "dark-ansi",
+  "overrides": {
+    "claude":          "#2CFF05",
+    "claudeShimmer":   "#1A8F00",
+    "success":         "#2CFF05",
+    "error":           "#D805FF",
+    "warning":         "#6F75D7",
+    "promptBorder":    "#5F5295",
+    "diffAdded":       "#12301A",
+    "diffAddedWord":   "#1F5A2E",
+    "diffRemoved":     "#2A1230",
+    "diffRemovedWord": "#7A2E8A"
+  }
+}

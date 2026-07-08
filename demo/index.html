@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE GLASS STAGE — an epoq terminal theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* on-system only: epoq inks + neutrals on the graphite→paper axis. no red, no foreign hue. */
+    --stage:#0E0E12; --stage-2:#131318; --line:#272727;          /* graphite hairline */
+    --paper:#E8E8ED; --dim:#6E6E78; --grey:#515151; --graph:#272727;  /* grey-51 = the dim token */
+    --live:#2CFF05; --shimmer:#1A8F00; --flag:#D805FF; --flagc:#B657C9;
+    --hum:#6F75D7; --dusk:#5F5295;
+    --mono:"Red Hat Mono","IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --gut:clamp(20px,5vw,64px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--stage);color:var(--paper);font-family:var(--mono);
+    font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:var(--live);text-decoration:none;border-bottom:1px solid #2cff0540}
+  a:hover{border-bottom-color:var(--live)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 var(--gut)}
+  .rule{height:1px;background:var(--line);border:0;margin:0}
+  .cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .live{color:var(--live)} .flag{color:var(--flag)} .flagc{color:var(--flagc)}
+  .hum{color:var(--hum)} .dusk{color:var(--dusk)} .dim{color:var(--dim)}
+
+  /* ── masthead ── */
+  header{padding:clamp(48px,9vw,110px) 0 40px}
+  .kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:26px}
+  h1{font-size:clamp(34px,7vw,72px);font-weight:700;letter-spacing:-.02em;line-height:1.02;margin:0 0 18px}
+  h1 .sig{color:var(--live)}
+  .sub{font-size:clamp(15px,2vw,19px);color:var(--paper);max-width:60ch;font-weight:400}
+  .metaline{margin-top:28px;display:flex;gap:8px 20px;flex-wrap:wrap;font-size:12px;color:var(--dim);letter-spacing:.04em}
+  .metaline b{color:var(--paper);font-weight:500}
+
+  /* ── section frame ── */
+  section{padding:56px 0}
+  .sechead{display:flex;align-items:baseline;gap:16px;margin-bottom:30px;flex-wrap:wrap}
+  .sechead h2{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper);font-weight:600;margin:0}
+  .sechead .n{font-size:12px;color:var(--live)}
+  .sechead .t{font-size:12px;color:var(--dim)}
+
+  /* ── the terminal demo ── */
+  .term{background:var(--stage);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    box-shadow:0 40px 120px -40px #000,0 0 0 1px #ffffff08 inset}
+  .term-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#101015;border-bottom:1px solid var(--line)}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .dot.a{background:#3a3a44} .dot.b{background:#3a3a44} .dot.c{background:#3a3a44}
+  .term-title{margin-left:12px;font-size:11px;color:var(--dim);letter-spacing:.08em}
+  .term-body{padding:26px 24px;font-size:14px;line-height:1.55;white-space:pre;overflow-x:auto}
+  .hub{color:var(--live);line-height:1.05;font-weight:500;text-shadow:0 0 18px #2cff0533}
+  .cur{display:inline-block;width:.62em;height:1.05em;background:var(--live);vertical-align:-.18em;
+    animation:blink 1.05s steps(1) infinite;box-shadow:0 0 10px #2cff0577}
+  @keyframes blink{50%{opacity:0}}
+
+  /* ── palette specimen ── */
+  .spectrum{display:flex;height:44px;border-radius:8px;overflow:hidden;margin-bottom:34px;border:1px solid var(--line)}
+  .spectrum span{flex:1}
+  .swatches{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .sw{display:grid;grid-template-columns:64px 168px 108px 1fr;align-items:center;gap:16px;
+    padding:14px 18px;background:var(--stage)}
+  .sw .chip{width:56px;height:26px;border-radius:4px}
+  .sw .tok{font-weight:600} .sw .hex{color:var(--paper)} .sw .role{color:var(--dim);font-size:13px}
+  .ramp{display:flex;align-items:center;gap:0;margin-top:30px}
+  .ramp b{width:44px;height:26px} .ramp .lbl{margin-left:16px;color:var(--dim);font-size:12px}
+
+  /* ── export blocks ── */
+  .card{border:1px solid var(--line);border-radius:10px;margin-bottom:22px;overflow:hidden;background:var(--stage-2)}
+  .card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .card-h .l{display:flex;flex-direction:column;gap:3px}
+  .card-h .name{font-weight:600;font-size:13px}
+  .card-h .path{font-size:11px;color:var(--live);letter-spacing:.03em}
+  .card-h .what{font-size:12px;color:var(--dim);max-width:46ch;text-align:right}
+  .copy{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--mono);
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:5px;cursor:pointer;white-space:nowrap}
+  .copy:hover{border-color:var(--live);color:var(--live)}
+  .copy.ok{color:var(--live);border-color:var(--live)}
+  pre{margin:0;padding:18px;overflow-x:auto;font-size:12.5px;line-height:1.55;color:#c9c9d0}
+  pre .c{color:var(--dim)} /* comment */
+
+  /* ── plan ── */
+  ol.plan{list-style:none;counter-reset:s;margin:0;padding:0}
+  ol.plan li{counter-increment:s;position:relative;padding:16px 0 16px 52px;border-top:1px solid var(--line)}
+  ol.plan li:first-child{border-top:0}
+  ol.plan li::before{content:counter(s);position:absolute;left:0;top:15px;width:32px;height:32px;
+    border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--live);font-size:13px}
+  ol.plan .dw{color:var(--dim);font-size:13px;margin-top:4px}
+  ol.plan .dw b{color:var(--live);font-weight:500}
+  .est{float:right;color:var(--dim);font-size:12px}
+
+  .prev{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .prev div{background:var(--stage);padding:16px 18px}
+  .prev .st{color:var(--live);font-size:12px;letter-spacing:.06em;margin-bottom:6px;text-transform:uppercase}
+  .prev .bd{font-size:13px;color:var(--paper)}
+  .prev .bd .dim{color:var(--dim)}
+
+  footer{padding:60px 0 90px;color:var(--dim);font-size:12px;letter-spacing:.04em}
+  @media(max-width:640px){
+    .sw{grid-template-columns:44px 1fr;grid-template-areas:"chip tok" "chip hex" "chip role"}
+    .sw .chip{grid-area:chip} .sw .role{font-size:12px}
+    .card-h{flex-wrap:wrap} .card-h .what{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker">HHG · terminal theme · handover + live demo</div>
+    <h1>THE&nbsp;GLASS&nbsp;<span class="sig">STAGE</span></h1>
+    <p class="sub">An epoq-trued terminal skin. The window is a glass stage <span class="dim">#0E0E12</span>; green is the one live signal allowed to glow. No red anywhere — <span class="dim">epoq legislates none</span>. One system across Ghostty, git, and Claude Code.</p>
+    <div class="metaline">
+      <span><b>Ghostty</b> 1.3.1</span><span><b>Claude Code</b> dark-ansi</span>
+      <span><b>git</b> diff · status · decorate</span><span><b>Red Hat Mono</b> the epoq mono</span>
+      <span><b>rev</b> 2026-07-08</span>
+    </div>
+  </header>
+
+  <hr class="rule">
+
+  <!-- ── THE DEMO ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">01</span><h2>The stage, live</h2><span class="t">rendered in Red Hat Mono · exactly the terminal</span></div>
+    <div class="term">
+      <div class="term-bar"><span class="dot a"></span><span class="dot b"></span><span class="dot c"></span>
+        <span class="term-title">op@hub — the glass stage — 132×32</span></div>
+      <div class="term-body"><span class="hub">  █  █  █  █  ███
+  █  █  █  █  █  █
+  ████  █  █  ███
+  █  █  █  █  █  █
+  █  █  ████  ███</span>
+  <span class="dim">op@hub › ready</span>
+
+<span class="live">jacob@hhg</span> <span class="dim">~/hhg_cortex_v1</span> <span class="flag">⎇ main</span>
+<span class="live">$</span> git diff obsessions.md
+<span class="dim">diff --git a/obsessions.md b/obsessions.md</span>
+<span class="hum">@@ -1,4 +1,4 @@</span>
+ <span class="dim">taste is the whole product</span>
+<span class="flagc">- generated at scale</span>
+<span class="live">+ authored, on the system</span>
+ <span class="dim">culture over algorithm</span>
+<span class="live">$</span> <span class="cur"></span></div>
+    </div>
+  </section>
+
+  <!-- ── THE MARK ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">·</span><h2>The mark</h2><span class="t">HUB · authored ASCII · the hub-glyphs 5×7 font, costs nothing to print</span></div>
+    <div class="term" style="border-color:#1c1c22">
+      <div class="term-body" style="text-align:center;padding:44px 20px"><span class="hub" style="font-size:clamp(13px,2.4vw,22px);line-height:1.06">█   █  █   █  ████
+█   █  █   █  █   █
+█   █  █   █  █   █
+█████  █   █  ████
+█   █  █   █  █   █
+█   █  █   █  █   █
+█   █   ███   ████</span>
+<span class="dim" style="letter-spacing:.34em">T H E   H U B</span></div>
+    </div>
+  </section>
+
+  <!-- ── PALETTE ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">02</span><h2>The palette</h2><span class="t">epoq inks · the only hues on the stage</span></div>
+    <div class="spectrum">
+      <span style="background:#2CFF05"></span><span style="background:#6F75D7"></span>
+      <span style="background:#5F5295"></span><span style="background:#B657C9"></span>
+      <span style="background:#D805FF"></span><span style="background:#515151"></span>
+      <span style="background:#272727"></span>
+    </div>
+    <div class="swatches">
+      <div class="sw"><span class="chip" style="background:#2CFF05"></span><span class="tok live">signal-live</span><span class="hex">#2CFF05</span><span class="role">the live readout · cursor · additions · the pulse</span></div>
+      <div class="sw"><span class="chip" style="background:#D805FF"></span><span class="tok flag">signal-flag</span><span class="hex">#D805FF</span><span class="role">the flag · error · removed-word · bright-red slot</span></div>
+      <div class="sw"><span class="chip" style="background:#B657C9"></span><span class="tok flagc">flag-calm</span><span class="hex">#B657C9</span><span class="role">deletions · the calm magenta · red slot (retuned)</span></div>
+      <div class="sw"><span class="chip" style="background:#6F75D7"></span><span class="tok hum">hum</span><span class="hex">#6F75D7</span><span class="role">the locator · hunk headers · warning</span></div>
+      <div class="sw"><span class="chip" style="background:#5F5295"></span><span class="tok dusk">dusk</span><span class="hex">#5F5295</span><span class="role">seen / faded · selection · prompt border</span></div>
+      <div class="sw"><span class="chip" style="background:#515151"></span><span class="tok dim">grey-51</span><span class="hex">#515151</span><span class="role">dim · meta · comments · untracked</span></div>
+    </div>
+    <div class="ramp">
+      <span class="cap" style="margin-right:16px">MOTION</span>
+      <b style="background:#272727"></b><b style="background:#3a3a42"></b><b style="background:#515151"></b>
+      <b style="background:#5F5295"></b><b style="background:#6F75D7"></b><b style="background:#afb6ee"></b>
+      <span class="lbl">L0 → L5 · graphite to hum</span>
+    </div>
+  </section>
+
+  <!-- ── EXPORT ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">03</span><h2>Export — reproduce it anywhere</h2><span class="t">four layers · copy each into place, reload</span></div>
+
+    <div class="card">
+      <div class="card-h"><div class="l"><span class="name">1 · The font</span><span class="path">Red Hat Mono — the epoq mono</span></div>
+        <span class="what">Google Fonts. macOS via Homebrew cask; any OS from fonts.google.com.</span>
+        <button class="copy" data-t="brew install --cask font-red-hat-mono">Copy</button></div>
+      <pre>brew install --cask font-red-hat-mono   <span class="c"># macOS · Google Fonts</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="l"><span class="name">2 · Ghostty skin</span><span class="path">~/.config/ghostty/config</span></div>
+        <span class="what">The stage, cursor, selection, the NO-RED palette, the frame. Reload with ⌘⇧,</span>
+        <button class="copy" data-src="cfg">Copy</button></div>
+      <pre id="cfg"># HHG · THE GLASS STAGE — Ghostty skin (epoq-trued)
+font-family        = "Red Hat Mono"
+font-family        = "IBM Plex Mono"
+font-size          = 13
+font-thicken       = true
+adjust-cell-height = 12%
+adjust-cursor-thickness = 2
+
+# the stage — --glass-stage #0E0E12
+background          = 0E0E12
+foreground          = E8E8ED
+background-opacity  = 0.94
+background-blur     = 26
+
+# the cursor — --signal-live #2CFF05
+cursor-style        = block
+cursor-style-blink  = true
+cursor-color        = 2CFF05
+cursor-text         = 0E0E12
+
+# selection — --dusk
+selection-background = 2E2A45
+selection-foreground = F4F5F7
+
+# palette — epoq inks · NO RED (slots 1,9 retuned to flag magenta)
+palette = 0=#2A2A31
+palette = 1=#B657C9
+palette = 2=#59C24E
+palette = 3=#C9A227
+palette = 4=#6F75D7
+palette = 5=#B657C9
+palette = 6=#5AA69E
+palette = 7=#C9CBD1
+palette = 8=#515151
+palette = 9=#D805FF
+palette = 10=#2CFF05
+palette = 11=#E6C34A
+palette = 12=#9098E0
+palette = 13=#D805FF
+palette = 14=#7FC7BF
+palette = 15=#F4F5F7
+
+# the frame
+window-padding-x       = 16
+window-padding-y       = 14
+window-padding-balance = true
+window-padding-color   = background
+macos-titlebar-style   = transparent
+macos-option-as-alt    = true
+window-theme           = dark
+bold-is-bright         = false
+unfocused-split-opacity = 0.55
+mouse-hide-while-typing = true</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="l"><span class="name">3 · git — no-red diffs</span><span class="path">~/.gitconfig · runs once</span></div>
+        <span class="what">Deletions magenta, additions green, hunks hum-blue, meta dim. Kills red in diff + status + log.</span>
+        <button class="copy" data-src="git">Copy</button></div>
+      <pre id="git">git config --global color.ui auto
+git config --global color.diff.meta       "#515151"
+git config --global color.diff.frag       "#6F75D7 bold"
+git config --global color.diff.func       "#5F5295"
+git config --global color.diff.commit     "#6F75D7"
+git config --global color.diff.old        "#B657C9"   <span class="c"># deletions — NOT red</span>
+git config --global color.diff.new        "#59C24E"   <span class="c"># additions</span>
+git config --global color.diff.whitespace "reverse #D805FF"
+git config --global color.status.added     "#59C24E"
+git config --global color.status.changed   "#6F75D7"
+git config --global color.status.untracked "#515151"
+git config --global color.status.deleted   "#B657C9"
+git config --global color.status.branch    "#2CFF05"
+git config --global color.decorate.branch       "#2CFF05"
+git config --global color.decorate.remoteBranch "#6F75D7"
+git config --global color.decorate.HEAD         "#D805FF"
+git config --global color.decorate.tag          "#5F5295"</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="l"><span class="name">4 · Claude Code</span><span class="path">~/.claude/settings.json + themes/epoq.json</span></div>
+        <span class="what">dark-ansi defers to the terminal palette (standard). The epoq theme pins the pulse green + forces non-red diffs.</span>
+        <button class="copy" data-src="cc">Copy</button></div>
+      <pre id="cc"><span class="c">// ~/.claude/settings.json — the standard: follow the terminal palette</span>
+"theme": "dark-ansi"
+
+<span class="c">// ~/.claude/themes/epoq.json — OPTIONAL: pin exact epoq inks</span>
+<span class="c">//   (then set  "theme": "custom:epoq"  in settings.json)</span>
+{
+  "name": "epoq",
+  "base": "dark-ansi",
+  "overrides": {
+    "claude":          "#2CFF05",   // the thinking pulse
+    "claudeShimmer":   "#1A8F00",
+    "success":         "#2CFF05",
+    "error":           "#D805FF",
+    "warning":         "#6F75D7",
+    "promptBorder":    "#5F5295",
+    "diffAdded":       "#12301A",
+    "diffAddedWord":   "#1F5A2E",
+    "diffRemoved":     "#2A1230",   // no red
+    "diffRemovedWord": "#7A2E8A"
+  }
+}</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="l"><span class="name">5 · The HUB banner</span><span class="path">~/.config/ghostty/hub-banner.sh → sourced from ~/.zshrc</span></div>
+        <span class="what">The printed mark — authored block-lettering, costs nothing to print. Optional.</span>
+        <button class="copy" data-src="zsh">Copy</button></div>
+      <pre id="zsh"><span class="c"># append to ~/.zshrc — print the HUB on new Ghostty shells</span>
+case "$TERM" in
+  xterm-ghostty) [ -r "$HOME/.config/ghostty/hub-banner.sh" ] \
+     &amp;&amp; . "$HOME/.config/ghostty/hub-banner.sh" ;;
+esac
+<span class="c"># hub-banner.sh + palette-specimen.sh ship in playground/jacob/ghostty-skin/</span></pre>
+    </div>
+  </section>
+
+  <!-- ── PLAN ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">04</span><h2>Put the demo on a website</h2><span class="t">executable · DONE-WHEN = a live URL</span></div>
+    <ol class="plan">
+      <li><span class="est">~2 min</span><b>Give it a home.</b> This page is self-contained (one <span class="dim">index.html</span>, only external is the Google font). It already lives at <span class="dim">playground/jacob/ghostty-skin/index.html</span>.
+        <div class="dw">done-when: <b>the file opens standalone in a browser and renders</b> (it does).</div></li>
+      <li><span class="est">~5 min</span><b>Own repo, own deploy.</b> Per the repo-per-project rule: <span class="dim">gh repo create lepetittruffier/glass-stage --private --source=. --push</span>, then a Vercel project pointed at it (root = this folder).
+        <div class="dw">done-when: <b>Vercel build succeeds</b> on push to main.</div></li>
+      <li><span class="est">~2 min</span><b>Ship it.</b> Confirm the deploy, hit the URL, verify the terminal + palette render in Red Hat Mono on a cold load.
+        <div class="dw">done-when: <b>glass-stage.vercel.app is LIVE</b> — the real condition, not "worked on".</div></li>
+      <li><span class="est">optional</span><b>Fold into epoq3 / the hub.</b> If it should live as an epoq3 section (007+), the swatches + terminal become a page-scoped block linking the live weblink instead of the inlined font.
+        <div class="dw">done-when: <b>a section renders on epoq3.vercel.app</b>.</div></li>
+    </ol>
+  </section>
+
+  <!-- ── PREVIOUS WORK ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">05</span><h2>What this session built</h2><span class="t">the arc, so the next session re-orients from here</span></div>
+    <div class="prev">
+      <div><div class="st">the stage</div><div class="bd">Ghostty skin trued to epoq — glass <span class="dim">#0E0E12</span>, green live cursor, dusk selection.</div></div>
+      <div><div class="st">the mark</div><div class="bd">HUB dot-matrix PNG was hallucinated → replaced by the <span class="dim">authored block-letter banner</span>, printed by the shell.</div></div>
+      <div><div class="st">no red</div><div class="bd">git diff/status/log retuned off red (magenta deletions); ANSI red slots 1,9 → flag magenta.</div></div>
+      <div><div class="st">claude code</div><div class="bd">theme → <span class="dim">dark-ansi</span> (follows the palette); brand coral gone; <span class="dim">epoq.json</span> pins the pulse green.</div></div>
+      <div><div class="st">the mono</div><div class="bd">Red Hat Mono installed (the real epoq <span class="dim">--font-mono</span>); IBM Plex retired to fallback.</div></div>
+      <div><div class="st">this file</div><div class="bd">the handover — export + demo + deploy plan, one deployable page.</div></div>
+    </div>
+  </section>
+
+  <hr class="rule">
+  <footer>THE GLASS STAGE · an epoq terminal theme · authored on the stage · HHG 2026-07-08 · <span class="dim">no red — epoq legislates none</span></footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var txt=b.dataset.t;
+      if(!txt){var el=document.getElementById(b.dataset.src);txt=el?el.innerText:'';}
+      navigator.clipboard.writeText(txt).then(function(){
+        var o=b.textContent;b.textContent='Copied ✓';b.classList.add('ok');
+        setTimeout(function(){b.textContent=o;b.classList.remove('ok')},1400);
+      });
+    });
+  });
+</script>
+</body>
+</html>

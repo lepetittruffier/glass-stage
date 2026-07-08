@@ -1,0 +1,76 @@
+# ─────────────────────────────────────────────────────────────
+#  HHG · THE GLASS STAGE  —  Ghostty skin
+#  trued-up to LIVE epoq3 tokens (epoq3.vercel.app/system.css)
+#  the window is a --glass-stage #0E0E12; green is the live signal,
+#  the one hue allowed to glow on the stage (never on paper).
+#  reload: ⌘⇧, (comma)   ·   or open a new window
+# ─────────────────────────────────────────────────────────────
+
+# ── type ──────────────────────────────────────────────────────
+#  epoq3 --font-mono = "Red Hat Mono" — now installed (Google Fonts,
+#  via brew cask font-red-hat-mono, 2026-07-08). The real specimen
+#  mono. IBM Plex Mono kept as a fallback only.
+font-family        = "Red Hat Mono"
+font-family        = "IBM Plex Mono"
+font-size          = 13
+font-thicken       = true
+adjust-cell-height = 12%
+adjust-cursor-thickness = 2
+
+# ── the stage ── --glass-stage #0E0E12, on-dark paper foreground ─
+background          = 0E0E12
+foreground          = E8E8ED
+background-opacity   = 0.94
+background-blur      = 26
+
+# ── the cursor — the live readout · --signal-live #2CFF05 ──────
+cursor-style        = block
+cursor-style-blink  = true
+cursor-color        = 2CFF05
+cursor-text         = 0E0E12
+
+# ── selection — a dusk tint (--dusk #5F5295, on-stage) ────────
+selection-background = 2E2A45
+selection-foreground = F4F5F7
+
+# ── palette — epoq3 inks · chromatics · signals ───────────────
+#  green = --signal-live · magenta = --signal-flag · blue = --hum
+#  dim   = --grey-51      · ink     = --graphite
+#  NO RED — epoq3 legislates none. The ANSI red slots (1,9) are
+#  retuned to the flag magenta (#B657C9 / #D805FF) so "red" reads
+#  on-system everywhere: git diffs, Claude Code diffs, errors.
+#  (originals were 1=#E5484D · 9=#FF5C61 — retired 2026-07-07.)
+palette = 0=#2A2A31
+palette = 1=#B657C9
+palette = 2=#59C24E
+palette = 3=#C9A227
+palette = 4=#6F75D7
+palette = 5=#B657C9
+palette = 6=#5AA69E
+palette = 7=#C9CBD1
+palette = 8=#515151
+palette = 9=#D805FF
+palette = 10=#2CFF05
+palette = 11=#E6C34A
+palette = 12=#9098E0
+palette = 13=#D805FF
+palette = 14=#7FC7BF
+palette = 15=#F4F5F7
+
+# ── the mark — PRINTED, not painted ───────────────────────────
+#  The HUB is authored block-lettering printed by the shell on
+#  start (hub-banner.sh, sourced from ~/.zshrc) — the real CLI
+#  mark, on-palette, costs nothing to print. No background image:
+#  the earlier hub-mark.png was a hallucinated masthead, retired.
+
+# ── the frame ─────────────────────────────────────────────────
+window-padding-x        = 16
+window-padding-y        = 14
+window-padding-balance  = true
+window-padding-color    = background
+macos-titlebar-style    = transparent
+macos-option-as-alt     = true
+window-theme            = dark
+bold-is-bright          = false
+unfocused-split-opacity = 0.55
+mouse-hide-while-typing = true
