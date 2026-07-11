@@ -49,11 +49,11 @@ if ask "4) Install the Claude Code epoq theme?"; then
 fi
 
 # 5 · shell banner ----------------------------------------------
-if ask "5) Print the HUB banner on new Ghostty shells (adds to ~/.zshrc)?"; then
+if ask "5) Print the HHG HUB banner on new Ghostty shells (adds to ~/.zshrc)?"; then
   if ! grep -q 'hub-banner.sh' "$HOME/.zshrc" 2>/dev/null; then
     backup "$HOME/.zshrc"
     {
-      printf '\n# THE GLASS STAGE — HUB banner on Ghostty shells\n'
+      printf '\n# THE GLASS STAGE — HHG HUB banner on Ghostty shells\n'
       printf 'case "$TERM" in\n  xterm-ghostty) [ -r "$HOME/.config/ghostty/hub-banner.sh" ] && . "$HOME/.config/ghostty/hub-banner.sh" ;;\nesac\n'
     } >> "$HOME/.zshrc"
     say "  ✓ banner wired — open a new window to see it"

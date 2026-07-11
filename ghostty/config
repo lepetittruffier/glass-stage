@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────
 #  HHG · THE GLASS STAGE  —  Ghostty skin
 #  trued-up to LIVE epoq3 tokens (epoq3.vercel.app/system.css)
-#  the window is a --glass-stage #0E0E12; green is the live signal,
+#  the window is a --glass-stage #000000 (epoq3 true CLI black); green is the live signal,
 #  the one hue allowed to glow on the stage (never on paper).
 #  reload: ⌘⇧, (comma)   ·   or open a new window
 # ─────────────────────────────────────────────────────────────
@@ -17,8 +17,8 @@ font-thicken       = true
 adjust-cell-height = 12%
 adjust-cursor-thickness = 2
 
-# ── the stage ── --glass-stage #0E0E12, on-dark paper foreground ─
-background          = 0E0E12
+# ── the stage ── --glass-stage #000000 (epoq3 true CLI black), on-dark paper foreground ─
+background          = 000000
 foreground          = E8E8ED
 background-opacity   = 0.94
 background-blur      = 26
@@ -27,7 +27,7 @@ background-blur      = 26
 cursor-style        = block
 cursor-style-blink  = true
 cursor-color        = 2CFF05
-cursor-text         = 0E0E12
+cursor-text         = 000000
 
 # ── selection — a dusk tint (--dusk #5F5295, on-stage) ────────
 selection-background = 2E2A45

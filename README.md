@@ -1,23 +1,21 @@
 ```
-    █   █  █   █  ████
-    █   █  █   █  █   █
-    █   █  █   █  █   █
-    █████  █   █  ████
-    █   █  █   █  █   █
-    █   █  █   █  █   █
-    █   █   ███   ████
+█  █ █  █ ████      █  █ █  █ ███
+█  █ █  █ █         █  █ █  █ █  █
+████ ████ █ ██      ████ █  █ ███
+█  █ █  █ █  █      █  █ █  █ █  █
+█  █ █  █ ████      █  █ ████ ███
 ```
 
 # THE GLASS STAGE
 
 **An epoq terminal theme — one system across Ghostty, git, and Claude Code.**
 
-The window is a glass stage (`#0E0E12`). Green is the one live signal allowed to
-glow. There is **no red anywhere** — deletions, errors, and flags read as magenta,
-so a `git diff` doesn't feel like an alarm. Free. Take it.
+The window is a glass stage (`#000000` — epoq3's true CLI black). Green is the one
+live signal allowed to glow. There is **no red anywhere** — deletions, errors, and
+flags read as magenta, so a `git diff` doesn't feel like an alarm. Free. Take it.
 
 <p>
-<img src="screenshots/01-banner.png" width="49%" alt="The HUB banner on the stage">
+<img src="screenshots/01-banner.png" width="49%" alt="The HHG HUB mark on the stage">
 <img src="screenshots/03-diff.png" width="49%" alt="A no-red diff">
 </p>
 
@@ -33,10 +31,12 @@ so a `git diff` doesn't feel like an alarm. Free. Take it.
 | **hum** | `#6F75D7` | the locator · hunk headers · warning |
 | **dusk** | `#5F5295` | seen / faded · selection · prompt border |
 | **grey-51** | `#515151` | dim · meta · comments |
-| stage | `#0E0E12` | the glass stage (background) |
+| stage | `#000000` | the glass stage (background) |
 | paper | `#E8E8ED` | foreground |
 
 Type is **[Red Hat Mono](https://fonts.google.com/specimen/Red+Hat+Mono)** — the specimen mono.
+The mark is **real CLI art** — epoq3 `.tui-art`: Red Hat Mono block caps, printed on the
+stage, never an image.
 
 ---
 
@@ -75,9 +75,9 @@ inks (green thinking-pulse, non-red diffs), drop [`claude-code/themes/epoq.json`
 into `~/.claude/themes/` and set `"theme": "custom:epoq"`.
 </details>
 
-<details><summary><b>The HUB banner + palette specimen</b></summary>
+<details><summary><b>The HHG HUB banner + palette specimen</b></summary>
 
-`shell/hub-banner.sh` prints the HUB mark on new shells; `shell/palette-specimen.sh`
+`shell/hub-banner.sh` prints the HHG HUB mark on new shells; `shell/palette-specimen.sh`
 shows the full palette in truecolor. Wire the banner in `~/.zshrc`:
 ```sh
 case "$TERM" in
@@ -95,8 +95,9 @@ macOS via Homebrew: `brew install --cask font-red-hat-mono`.
 ## Live demo
 
 The [`demo/`](demo/) folder is a self-contained page that renders the theme in the
-browser — the terminal, the palette, the no-red diff, in Red Hat Mono. Deploy it to
-GitHub Pages (Settings → Pages → `/demo`) or open `demo/index.html` directly.
+browser — the terminal, the HHG HUB mark, the palette, the no-red diff, in Red Hat
+Mono. Deploy it to GitHub Pages (Settings → Pages → `/demo`) or open `demo/index.html`
+directly.
 
 ---
 

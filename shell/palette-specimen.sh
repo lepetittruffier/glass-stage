@@ -1,7 +1,7 @@
 #!/bin/sh
 # ─────────────────────────────────────────────────────────────
 #  THE GLASS STAGE — epoq palette specimen
-#  Shows off the theme inks in truecolor on the stage (#0E0E12).
+#  Shows off the theme inks in truecolor on the stage (#000000).
 #  Run it any time:  sh ~/.config/ghostty/palette-specimen.sh
 # ─────────────────────────────────────────────────────────────
 esc() { printf '\033[%sm' "$1"; }

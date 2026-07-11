@@ -1,19 +1,20 @@
 #!/bin/sh
 # ─────────────────────────────────────────────────────────────
-#  HHG · THE GLASS STAGE — the HUB mark, PRINTED.
-#  Authored block lettering (hand-drawn), on the epoq3 palette:
-#    green = --signal-live #2CFF05   ·   dim = --grey-51 #515151
+#  HHG · THE GLASS STAGE — the HHG HUB mark, PRINTED.
+#  Real CLI art (epoq3 .tui-art): Red Hat Mono block caps, on the
+#  glass stage. Paper-white — epoq3 renders tui-art in paper, never
+#  a hue; green stays reserved for the ONE live signal.
 #  Costs nothing to print. No image, no hallucinated logo — just
 #  characters on the stage. Sourced by ~/.zshrc on Ghostty shells.
 # ─────────────────────────────────────────────────────────────
-G="$(printf '\033[38;2;44;255;5m')"    # --signal-live
-D="$(printf '\033[38;2;81;81;81m')"    # --grey-51
+P="$(printf '\033[38;2;232;232;237m')"   # --paper (on-dark)
+D="$(printf '\033[38;2;110;110;120m')"   # dim
 R="$(printf '\033[0m')"
 
 printf '\n'
-printf '  %s█  █  █  █  ███ %s\n' "$G" "$R"
-printf '  %s█  █  █  █  █  █%s\n' "$G" "$R"
-printf '  %s████  █  █  ███ %s\n' "$G" "$R"
-printf '  %s█  █  █  █  █  █%s\n' "$G" "$R"
-printf '  %s█  █  ████  ███ %s\n' "$G" "$R"
-printf '  %sop@hub › ready%s\n\n' "$D" "$R"
+printf '  %s█  █ █  █ ████      █  █ █  █ ███ %s\n' "$P" "$R"
+printf '  %s█  █ █  █ █         █  █ █  █ █  █%s\n' "$P" "$R"
+printf '  %s████ ████ █ ██      ████ █  █ ███ %s\n' "$P" "$R"
+printf '  %s█  █ █  █ █  █      █  █ █  █ █  █%s\n' "$P" "$R"
+printf '  %s█  █ █  █ ████      █  █ ████ ███ %s\n' "$P" "$R"
+printf '  %sop@hhg › ready%s\n\n' "$D" "$R"
