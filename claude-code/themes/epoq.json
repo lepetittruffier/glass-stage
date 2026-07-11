@@ -3,9 +3,8 @@
   "base": "dark-ansi",
   "overrides": {
     "claude":          "#2CFF05",
-    "claudeShimmer":   "#1A8F00",
     "success":         "#2CFF05",
-    "error":           "#D805FF",
+    "error":           "#8E00FF",
     "warning":         "#6F75D7",
     "promptBorder":    "#5F5295",
     "diffAdded":       "#12301A",

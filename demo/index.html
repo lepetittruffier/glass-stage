@@ -9,12 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Red+Hat+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* on-system only: epoq inks + neutrals on the graphite→paper axis. no red, no foreign hue. */
-    --stage:#000000; --stage-2:#0A0A0A; --line:#272727;          /* graphite hairline — epoq3's true CLI black */
-    --paper:#E8E8ED; --dim:#6E6E78; --grey:#515151; --graph:#272727;  /* grey-51 = the dim token */
-    --live:#2CFF05; --shimmer:#1A8F00; --flag:#D805FF; --flagc:#B657C9;
-    --hum:#6F75D7; --dusk:#5F5295;
-    --mark-a:#8E00FF; --mark-b:#272727; --mark-c:#515151; --mark-d:#898989; --mark-e:#BFBFBF; --mark-f:#E5E5E5;
+    /* epoq3-conformant: every ink is a live EPOQ III token (system.css v3.58.1). no red, no magenta (pruned), no foreign hue. */
+    --stage:#000000; --stage-2:#0A0A0A; --line:#272727;          /* --ink (the stage) · near-ink surface · --graphite hairline */
+    --paper:#FFFFFF; --dim:rgba(255,255,255,.62); --grey:#515151; --graph:#272727;  /* --paper · --paper-62 (on-dark dim) · --grey-51 */
+    --live:#2CFF05; --flag:#8E00FF; --flagc:#8E00FF;             /* --signal-live (green) · --signal-go (purple) = the no-red flag + deletions */
+    --hum:#6F75D7; --dusk:#5F5295;                               /* --hum · --dusk */
 
     /* epoq3's real type system (system.css, verbatim) — serif carries the page, mono is a caption/code law */
     --font-serif:"Scheherazade New",Georgia,serif;
@@ -111,7 +110,7 @@
     font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;padding:6px 12px;border-radius:5px;cursor:pointer;white-space:nowrap}
   .copy:hover{border-color:var(--live);color:var(--live)}
   .copy.ok{color:var(--live);border-color:var(--live)}
-  pre{margin:0;padding:18px;overflow-x:auto;font-family:var(--font-mono);font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli);color:#c9c9d0}
+  pre{margin:0;padding:18px;overflow-x:auto;font-family:var(--font-mono);font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli);color:rgba(255,255,255,.82)}
   pre .c{color:var(--dim)} /* comment */
 
   /* ── plan ── */
@@ -187,7 +186,7 @@
   <!-- ── THE MARK ─────────────────────────────────────── -->
   <section>
     <div class="sechead"><span class="n">·</span><h2>The mark</h2><span class="t">HHG HUB · real CLI art · epoq3 tui-art · Red Hat Mono block caps, printed not drawn</span></div>
-    <div class="term" style="border-color:#1c1c22">
+    <div class="term" style="border-color:var(--line)">
       <div class="term-body markwrap">
         <pre class="tui-art">█  █ █  █ ████      █  █ █  █ ███
 █  █ █  █ █         █  █ █  █ █  █
@@ -203,24 +202,23 @@
   <section>
     <div class="sechead"><span class="n">02</span><h2>The palette</h2><span class="t">epoq inks · the only hues on the stage</span></div>
     <div class="spectrum">
-      <span style="background:#2CFF05"></span><span style="background:#6F75D7"></span>
-      <span style="background:#5F5295"></span><span style="background:#B657C9"></span>
-      <span style="background:#D805FF"></span><span style="background:#515151"></span>
+      <span style="background:#2CFF05"></span><span style="background:#8E00FF"></span>
+      <span style="background:#3600DA"></span><span style="background:#6F75D7"></span>
+      <span style="background:#5F5295"></span><span style="background:#515151"></span>
       <span style="background:#272727"></span>
     </div>
     <div class="swatches">
       <div class="sw"><span class="chip" style="background:#2CFF05"></span><span class="tok live">signal-live</span><span class="hex">#2CFF05</span><span class="role">the live readout · cursor · additions · the pulse</span></div>
-      <div class="sw"><span class="chip" style="background:#D805FF"></span><span class="tok flag">signal-flag</span><span class="hex">#D805FF</span><span class="role">the flag · error · removed-word · bright-red slot</span></div>
-      <div class="sw"><span class="chip" style="background:#B657C9"></span><span class="tok flagc">flag-calm</span><span class="hex">#B657C9</span><span class="role">deletions · the calm magenta · red slot (retuned)</span></div>
+      <div class="sw"><span class="chip" style="background:#8E00FF"></span><span class="tok flag">signal-go</span><span class="hex">#8E00FF</span><span class="role">the no-red flag · error · deletions · removed-word</span></div>
       <div class="sw"><span class="chip" style="background:#6F75D7"></span><span class="tok hum">hum</span><span class="hex">#6F75D7</span><span class="role">the locator · hunk headers · warning</span></div>
       <div class="sw"><span class="chip" style="background:#5F5295"></span><span class="tok dusk">dusk</span><span class="hex">#5F5295</span><span class="role">seen / faded · selection · prompt border</span></div>
       <div class="sw"><span class="chip" style="background:#515151"></span><span class="tok dim">grey-51</span><span class="hex">#515151</span><span class="role">dim · meta · comments · untracked</span></div>
     </div>
     <div class="ramp">
       <span class="cap" style="margin-right:16px">MOTION</span>
-      <b style="background:#272727"></b><b style="background:#3a3a42"></b><b style="background:#515151"></b>
-      <b style="background:#5F5295"></b><b style="background:#6F75D7"></b><b style="background:#afb6ee"></b>
-      <span class="lbl">L0 → L5 · graphite to hum</span>
+      <b style="background:#272727"></b><b style="background:#515151"></b>
+      <b style="background:#5F5295"></b><b style="background:#6F75D7"></b>
+      <span class="lbl">graphite → grey-51 → dusk → hum · epoq tokens only</span>
     </div>
   </section>
 
@@ -263,21 +261,21 @@ cursor-text         = 000000
 selection-background = 2E2A45
 selection-foreground = F4F5F7
 
-# palette — epoq inks · NO RED (slots 1,9 retuned to flag magenta)
+# palette — NO RED · the red+magenta slots retune to epoq purples (--signal-attn / --signal-go)
 palette = 0=#2A2A31
-palette = 1=#B657C9
+palette = 1=#3600DA
 palette = 2=#59C24E
 palette = 3=#C9A227
 palette = 4=#6F75D7
-palette = 5=#B657C9
+palette = 5=#3600DA
 palette = 6=#5AA69E
 palette = 7=#C9CBD1
 palette = 8=#515151
-palette = 9=#D805FF
+palette = 9=#8E00FF
 palette = 10=#2CFF05
 palette = 11=#E6C34A
 palette = 12=#9098E0
-palette = 13=#D805FF
+palette = 13=#8E00FF
 palette = 14=#7FC7BF
 palette = 15=#F4F5F7
 
@@ -296,24 +294,24 @@ mouse-hide-while-typing = true</pre>
 
     <div class="card">
       <div class="card-h"><div class="l"><span class="name">3 · git — no-red diffs</span><span class="path">~/.gitconfig · runs once</span></div>
-        <span class="what">Deletions magenta, additions green, hunks hum-blue, meta dim. Kills red in diff + status + log.</span>
+        <span class="what">Deletions purple, additions green, hunks hum-blue, meta dim. Kills red in diff + status + log.</span>
         <button class="copy" data-src="git">Copy</button></div>
       <pre id="git">git config --global color.ui auto
 git config --global color.diff.meta       "#515151"
 git config --global color.diff.frag       "#6F75D7 bold"
 git config --global color.diff.func       "#5F5295"
 git config --global color.diff.commit     "#6F75D7"
-git config --global color.diff.old        "#B657C9"   <span class="c"># deletions — NOT red</span>
+git config --global color.diff.old        "#8E00FF"   <span class="c"># deletions — the no-red signal (--signal-go)</span>
 git config --global color.diff.new        "#59C24E"   <span class="c"># additions</span>
-git config --global color.diff.whitespace "reverse #D805FF"
+git config --global color.diff.whitespace "reverse #8E00FF"
 git config --global color.status.added     "#59C24E"
 git config --global color.status.changed   "#6F75D7"
 git config --global color.status.untracked "#515151"
-git config --global color.status.deleted   "#B657C9"
+git config --global color.status.deleted   "#8E00FF"
 git config --global color.status.branch    "#2CFF05"
 git config --global color.decorate.branch       "#2CFF05"
 git config --global color.decorate.remoteBranch "#6F75D7"
-git config --global color.decorate.HEAD         "#D805FF"
+git config --global color.decorate.HEAD         "#8E00FF"
 git config --global color.decorate.tag          "#5F5295"</pre>
     </div>
 
@@ -330,16 +328,15 @@ git config --global color.decorate.tag          "#5F5295"</pre>
   "name": "epoq",
   "base": "dark-ansi",
   "overrides": {
-    "claude":          "#2CFF05",   // the thinking pulse
-    "claudeShimmer":   "#1A8F00",
+    "claude":          "#2CFF05",   // the thinking pulse (--signal-live)
     "success":         "#2CFF05",
-    "error":           "#D805FF",
+    "error":           "#8E00FF",   // the no-red flag (--signal-go)
     "warning":         "#6F75D7",
     "promptBorder":    "#5F5295",
     "diffAdded":       "#12301A",
     "diffAddedWord":   "#1F5A2E",
-    "diffRemoved":     "#2A1230",   // no red
-    "diffRemovedWord": "#7A2E8A"
+    "diffRemoved":     "#1A0330",   // no red — a dark --signal-go tint
+    "diffRemovedWord": "#5C1A9E"
   }
 }</pre>
     </div>
@@ -378,7 +375,7 @@ esac
     <div class="prev">
       <div><div class="st">the stage</div><div class="bd">Ghostty skin trued to epoq — glass <span class="dim">#000000</span>, green live cursor, dusk selection.</div></div>
       <div><div class="st">the mark</div><div class="bd">HUB dot-matrix PNG was hallucinated → replaced by the <span class="dim">authored block-letter banner</span>, printed by the shell.</div></div>
-      <div><div class="st">no red</div><div class="bd">git diff/status/log retuned off red (magenta deletions); ANSI red slots 1,9 → flag magenta.</div></div>
+      <div><div class="st">no red</div><div class="bd">git diff/status/log retuned off red (deletions → <span class="dim">--signal-go</span> purple); ANSI red+magenta slots → epoq purples.</div></div>
       <div><div class="st">claude code</div><div class="bd">theme → <span class="dim">dark-ansi</span> (follows the palette); brand coral gone; <span class="dim">epoq.json</span> pins the pulse green.</div></div>
       <div><div class="st">the mono</div><div class="bd">Red Hat Mono installed (the real epoq <span class="dim">--font-mono</span>); IBM Plex retired to fallback.</div></div>
       <div><div class="st">this file</div><div class="bd">the handover — export + demo + deploy plan, one deployable page.</div></div>

@@ -19,7 +19,7 @@ adjust-cursor-thickness = 2
 
 # ── the stage ── --glass-stage #000000 (epoq3 true CLI black), on-dark paper foreground ─
 background          = 000000
-foreground          = E8E8ED
+foreground          = FFFFFF
 background-opacity   = 0.94
 background-blur      = 26
 
@@ -34,26 +34,26 @@ selection-background = 2E2A45
 selection-foreground = F4F5F7
 
 # ── palette — epoq3 inks · chromatics · signals ───────────────
-#  green = --signal-live · magenta = --signal-flag · blue = --hum
+#  green = --signal-live · purple  = --signal-go  · blue = --hum
 #  dim   = --grey-51      · ink     = --graphite
 #  NO RED — epoq3 legislates none. The ANSI red slots (1,9) are
-#  retuned to the flag magenta (#B657C9 / #D805FF) so "red" reads
+#  retuned to epoq purples (#3600DA / #8E00FF) so "red" reads
 #  on-system everywhere: git diffs, Claude Code diffs, errors.
 #  (originals were 1=#E5484D · 9=#FF5C61 — retired 2026-07-07.)
 palette = 0=#2A2A31
-palette = 1=#B657C9
+palette = 1=#3600DA
 palette = 2=#59C24E
 palette = 3=#C9A227
 palette = 4=#6F75D7
-palette = 5=#B657C9
+palette = 5=#3600DA
 palette = 6=#5AA69E
 palette = 7=#C9CBD1
 palette = 8=#515151
-palette = 9=#D805FF
+palette = 9=#8E00FF
 palette = 10=#2CFF05
 palette = 11=#E6C34A
 palette = 12=#9098E0
-palette = 13=#D805FF
+palette = 13=#8E00FF
 palette = 14=#7FC7BF
 palette = 15=#F4F5F7
 

@@ -7,7 +7,7 @@
 #  Costs nothing to print. No image, no hallucinated logo — just
 #  characters on the stage. Sourced by ~/.zshrc on Ghostty shells.
 # ─────────────────────────────────────────────────────────────
-P="$(printf '\033[38;2;232;232;237m')"   # --paper (on-dark)
+P="$(printf '\033[38;2;255;255;255m')"   # --paper (on-dark)
 D="$(printf '\033[38;2;110;110;120m')"   # dim
 R="$(printf '\033[0m')"
 

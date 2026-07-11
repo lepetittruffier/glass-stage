@@ -12,7 +12,8 @@
 
 The window is a glass stage (`#000000` — epoq3's true CLI black). Green is the one
 live signal allowed to glow. There is **no red anywhere** — deletions, errors, and
-flags read as magenta, so a `git diff` doesn't feel like an alarm. Free. Take it.
+flags read as **epoq purple** (`--signal-go`), so a `git diff` doesn't feel like an
+alarm. Every ink is a live EPOQ III token. Free. Take it.
 
 <p>
 <img src="screenshots/01-banner.png" width="49%" alt="The HHG HUB mark on the stage">
@@ -23,16 +24,16 @@ flags read as magenta, so a `git diff` doesn't feel like an alarm. Free. Take it
 
 ## The palette
 
-| ink | hex | role |
+| ink | hex | epoq3 token · role |
 |-----|-----|------|
-| **signal-live** | `#2CFF05` | the live readout · cursor · additions · the pulse |
-| **signal-flag** | `#D805FF` | the flag · error · removed-word |
-| **flag-calm** | `#B657C9` | deletions · the calm magenta (the retuned "red") |
-| **hum** | `#6F75D7` | the locator · hunk headers · warning |
-| **dusk** | `#5F5295` | seen / faded · selection · prompt border |
-| **grey-51** | `#515151` | dim · meta · comments |
-| stage | `#000000` | the glass stage (background) |
-| paper | `#E8E8ED` | foreground |
+| **signal-live** | `#2CFF05` | `--signal-live` — the live readout · cursor · additions · the pulse |
+| **signal-go** | `#8E00FF` | `--signal-go` — the no-red flag · error · deletions · removed-word |
+| **hum** | `#6F75D7` | `--hum` — the locator · hunk headers · warning |
+| **dusk** | `#5F5295` | `--dusk` — seen / faded · selection · prompt border |
+| **grey-51** | `#515151` | `--grey-51` — dim · meta · comments |
+| **graphite** | `#272727` | `--graphite` — hairlines · window chrome |
+| stage | `#000000` | `--ink` — the glass stage (background) |
+| paper | `#FFFFFF` | `--paper` — foreground |
 
 Type is **[Red Hat Mono](https://fonts.google.com/specimen/Red+Hat+Mono)** — the specimen mono.
 The mark is **real CLI art** — epoq3 `.tui-art`: Red Hat Mono block caps, printed on the
@@ -63,7 +64,7 @@ Requires Ghostty ≥ 1.2 (for `background-image`; the skin itself works on any v
 ```sh
 sh git/glass-stage-colors.sh
 ```
-Retunes `diff` / `status` / `log` colors globally: deletions magenta, additions
+Retunes `diff` / `status` / `log` colors globally: deletions purple, additions
 green, hunks hum-blue, meta dim. Reversible — the values live in `~/.gitconfig`.
 </details>
 
@@ -104,7 +105,7 @@ directly.
 ## Why no red
 
 Red is the default alarm of the terminal — and it's exhausting. THE GLASS STAGE
-routes every "negative" signal (deletions, errors, flags) through **magenta**
+routes every "negative" signal (deletions, errors, flags) through **the epoq purple** (`--signal-go`)
 instead: still distinct, still legible, never a jolt. One coherent palette, held
 across every tool that colors your day.
 
