@@ -132,16 +132,13 @@
   .prev .bd{font-family:var(--font-serif);font-size:14px;color:var(--paper)}
   .prev .bd .dim{color:var(--dim)}
 
-  /* ── the group — the live web estate, each domain glowing green (the one live signal) ── */
-  .group{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .grow{display:grid;grid-template-columns:minmax(190px,1.1fr) 1.9fr auto;align-items:baseline;gap:12px 24px;
-    padding:20px 22px;background:var(--stage);border:0;text-decoration:none;transition:background .12s}
-  .grow:hover{background:var(--stage-2);border-bottom-color:transparent}
-  .gname{font-family:var(--font-serif);font-size:var(--fz-heading-3);letter-spacing:var(--track-heading-3);color:var(--paper);text-transform:uppercase}
-  .grole{font-family:var(--font-serif);font-size:14px;line-height:1.5;color:var(--dim)}
-  .gurl{font-family:var(--font-mono);font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;
-    color:var(--live);white-space:nowrap;justify-self:end}
-  .grow:hover .gurl{text-shadow:0 0 12px #2cff0544}
+  /* ── the group — the live web estate, rendered as terminal output (the 01 register) ── */
+  .grouplist{white-space:normal;margin-top:14px;display:flex;flex-direction:column}
+  .grow{display:grid;grid-template-columns:minmax(220px,auto) 1fr;gap:8px 28px;align-items:baseline;
+    padding:7px 0;border:0;text-decoration:none}
+  .gdom{color:var(--live);white-space:nowrap;border-bottom:1px solid #2cff0540;text-shadow:0 0 12px #2cff0522}
+  .grow:hover .gdom{border-bottom-color:var(--live);text-shadow:0 0 14px #2cff0555}
+  .gdesc{color:var(--dim)}
 
   footer{padding:60px 0 90px;font-family:var(--font-mono);color:var(--dim);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase}
@@ -149,7 +146,7 @@
     .sw{grid-template-columns:44px 1fr;grid-template-areas:"chip tok" "chip hex" "chip role"}
     .sw .chip{grid-area:chip} .sw .role{font-size:13px}
     .card-h{flex-wrap:wrap} .card-h .what{text-align:left}
-    .grow{grid-template-columns:1fr;gap:6px} .gurl{justify-self:start}
+    .grow{grid-template-columns:1fr;gap:2px;padding:9px 0}
   }
 </style>
 </head>
@@ -396,28 +393,19 @@ esac
 
   <!-- ── THE GROUP ─────────────────────────────────────── -->
   <section>
-    <div class="sechead"><span class="n">06</span><h2>The group</h2><span class="t">Häegg Häegg Group · the live web estate · one system, every property</span></div>
-    <div class="group">
-      <a class="grow" href="https://haegghaegg.se" target="_blank" rel="noopener">
-        <span class="gname">Häegg Häegg Group</span>
-        <span class="grole">the holding — ventures across technology, creative production, and cultural systems</span>
-        <span class="gurl">haegghaegg.se ↗</span></a>
-      <a class="grow" href="https://byoi.haegghaegg.se" target="_blank" rel="noopener">
-        <span class="gname">BYOI</span>
-        <span class="grole">AI Operations Studio — the cortex, built into systems for owner-operators</span>
-        <span class="gurl">byoi.haegghaegg.se ↗</span></a>
-      <a class="grow" href="https://calleoke.com" target="_blank" rel="noopener">
-        <span class="gname">Calleoke</span>
-        <span class="grole">the first operator surface — a role-shaped client of the CompanyOS, for the sales rep</span>
-        <span class="gurl">calleoke.com ↗</span></a>
-      <a class="grow" href="https://intelligencematters.se" target="_blank" rel="noopener">
-        <span class="gname">Intelligence Matters</span>
-        <span class="grole">Gen-AI image production for fashion + luxury — the creative voice up front, HHG operations behind</span>
-        <span class="gurl">intelligencematters.se ↗</span></a>
-      <a class="grow" href="https://epoq3.vercel.app" target="_blank" rel="noopener">
-        <span class="gname">EPOQ III</span>
-        <span class="grole">the design system that runs the brand, unsupervised — this theme's source</span>
-        <span class="gurl">epoq3.vercel.app ↗</span></a>
+    <div class="sechead"><span class="n">06</span><h2>The group</h2><span class="t">the live web estate · rendered on the stage · one system, every property</span></div>
+    <div class="term">
+      <div class="term-bar"><span class="dot a"></span><span class="dot b"></span><span class="dot c"></span>
+        <span class="term-title">op@hhg — the häegg häegg group — 132×32</span></div>
+      <div class="term-body"><span class="live">jacob@hhg</span> <span class="dim">~/haegg-haegg-group</span> <span class="flag">⎇ main</span>
+<span class="live">$</span> hhg sites --live
+<span class="dim">the häegg häegg group · one design system, every property</span>
+<div class="grouplist">      <a class="grow" href="https://haegghaegg.se" target="_blank" rel="noopener"><span class="gdom">haegghaegg.se</span><span class="gdesc">the holding — technology · creative · cultural systems</span></a>
+      <a class="grow" href="https://byoi.haegghaegg.se" target="_blank" rel="noopener"><span class="gdom">byoi.haegghaegg.se</span><span class="gdesc">AI Operations Studio — the cortex, built into systems</span></a>
+      <a class="grow" href="https://calleoke.com" target="_blank" rel="noopener"><span class="gdom">calleoke.com</span><span class="gdesc">the first operator surface — for the sales rep</span></a>
+      <a class="grow" href="https://intelligencematters.se" target="_blank" rel="noopener"><span class="gdom">intelligencematters.se</span><span class="gdesc">Gen-AI image production — fashion + luxury</span></a>
+      <a class="grow" href="https://epoq3.vercel.app" target="_blank" rel="noopener"><span class="gdom">epoq3.vercel.app</span><span class="gdesc">the design system that runs the brand — this theme's source</span></a></div>
+<span class="live">$</span> <span class="cur"></span></div>
     </div>
   </section>
 
