@@ -16,7 +16,7 @@ flags read as **epoq purple** (`--signal-go`), so a `git diff` doesn't feel like
 alarm. Every ink is a live EPOQ III token. Free. Take it.
 
 <p>
-<img src="screenshots/01-banner.png" width="49%" alt="The HHG HUB mark on the stage">
+<img src="screenshots/01-banner.png" width="49%" alt="THE MUSE printed on the stage">
 <img src="screenshots/03-diff.png" width="49%" alt="A no-red diff">
 </p>
 
@@ -76,9 +76,9 @@ inks (green thinking-pulse, non-red diffs), drop [`claude-code/themes/epoq.json`
 into `~/.claude/themes/` and set `"theme": "custom:epoq"`.
 </details>
 
-<details><summary><b>The HHG HUB banner + palette specimen</b></summary>
+<details><summary><b>THE MUSE banner + palette specimen</b></summary>
 
-`shell/hub-banner.sh` prints the HHG HUB mark on new shells; `shell/palette-specimen.sh`
+`shell/hub-banner.sh` prints THE MUSE — the ruled-G 2ch drawing in the epoq purple, pupils paper-white — on new shells; `shell/palette-specimen.sh`
 shows the full palette in truecolor. Wire the banner in `~/.zshrc`:
 ```sh
 case "$TERM" in

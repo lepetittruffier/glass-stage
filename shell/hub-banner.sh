@@ -1,20 +1,69 @@
 #!/bin/sh
 # ─────────────────────────────────────────────────────────────
-#  HHG · THE GLASS STAGE — the HHG HUB mark, PRINTED.
-#  Real CLI art (epoq3 .tui-art): Red Hat Mono block caps, on the
-#  glass stage. Paper-white — epoq3 renders tui-art in paper, never
-#  a hue; green stays reserved for the ONE live signal.
-#  Costs nothing to print. No image, no hallucinated logo — just
-#  characters on the stage. Sourced by ~/.zshrc on Ghostty shells.
+#  HHG · THE GLASS STAGE — THE MUSE, PRINTED.
+#  The ruled-G 2ch drawing (epoq3 muse/m-head.svg) back in her
+#  native medium: characters on the stage. epoq3 palette:
+#    purple = --hum #6F75D7  ·  pupils = --paper #FFFFFF
+#    dim    = --grey-51 #515151
+#  No image, no hallucinated logo — the drawing IS text.
+#  Sourced by ~/.zshrc on Ghostty shells.
 # ─────────────────────────────────────────────────────────────
-P="$(printf '\033[38;2;255;255;255m')"   # --paper (on-dark)
-D="$(printf '\033[38;2;110;110;120m')"   # dim
+P="$(printf '\033[38;2;111;117;215m')"   # --hum
+W="$(printf '\033[38;2;255;255;255m')"   # --paper (the pupils — she looks back)
+D="$(printf '\033[38;2;81;81;81m')"      # --grey-51
 R="$(printf '\033[0m')"
 
 printf '\n'
-printf '  %s█  █ █  █ ████      █  █ █  █ ███ %s\n' "$P" "$R"
-printf '  %s█  █ █  █ █         █  █ █  █ █  █%s\n' "$P" "$R"
-printf '  %s████ ████ █ ██      ████ █  █ ███ %s\n' "$P" "$R"
-printf '  %s█  █ █  █ █  █      █  █ █  █ █  █%s\n' "$P" "$R"
-printf '  %s█  █ █  █ ████      █  █ ████ ███ %s\n' "$P" "$R"
-printf '  %sop@hhg › ready%s\n\n' "$D" "$R"
+printf '  %s%s%s\n' "$P" '                                           --- -' "$R"
+printf '  %s%s%s\n' "$P" '                                  -- -- --      - -- -- --' "$R"
+printf '  %s%s%s\n' "$P" '                              ///-                        - -\' "$R"
+printf '  %s%s%s\n' "$P" '                           ////                               \\\' "$R"
+printf '  %s%s%s\n' "$P" '                         ///         --- ---- ---- ---          \\\' "$R"
+printf '  %s%s%s\n' "$P" '                        //      --- -                 --- -       \\\' "$R"
+printf '  %s%s%s\n' "$P" '                       //   // /      ----- ---------      \\\      \\' "$R"
+printf '  %s%s%s\n' "$P" '                     //    /    /- ---               ----\    \\\    \\' "$R"
+printf '  %s%s%s\n' "$P" '                     |       ///                          \\\    \    \\' "$R"
+printf '  %s%s%s\n' "$P" '                    |                                        \\\       \' "$R"
+printf '  %s%s%s\n' "$P" '                    |                 ---------- --        |  |         |' "$R"
+printf '  %s%s%s\n' "$P" '                   |  |          ------           --\\     |   |  |     ||' "$R"
+printf '  %s%s%s\n' "$P" '                   |  |                               \\\   |   |  |     |' "$R"
+printf '  %s%s%s\n' "$P" '                  ||  |       |        |        |       \\\ |   |  |     |' "$R"
+printf '  %s%s%s\n' "$P" '                  ||   |      ||\     || \     ||         \\\|  ||  |    |' "$R"
+printf '  %s%s%s\n' "$P" '                  ||   ||    ||| \    | |\\    | \          ||   |  |    |' "$R"
+printf '  %s%s%s\n' "$P" '                  |     |    | ||\\   | | \\   | \\          ||  |  |    ||' "$R"
+printf '  %s%s%s\n' "$P" '                 ||     |\   |  | \\ ||  \ \\ ||  \\         ||  |   |    |' "$R"
+printf '  %s%s%s\n' "$P" '                 ||      \\ |   |\ \\|    \  \|    \\-|      ||   |  |    |' "$R"
+printf '  %s%s%s\n' "$P" '                 ||       \||    \\ ||     \\||       |       ||  |  |    |' "$R"
+printf '  %s%s%s\n' "$P" '                 ||          ---- \\|       \/ ----   ||      ||  |   |   |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |     ---   --           ---   -   |      ||   |  |   |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |      _______            ______   |      ||   |  |   |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |     _________          ______ _  ||     ||   |  |   |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |    ____   __           __    |_   |      ||  |  |   |' "$R"
+printf '  %s%s%s#%s%s%s\n' "$P" '                | | |    _  |  '\''|              |' "$W" "$P" ''\'' |    |      ||  |  |   |' "$R"
+printf '  %s%s%s#%s%s%s\n' "$P" '                | | |       |' "$W" "$P" '  |              ||  |    |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |        \ /|               \-/|    |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |         -/                 -/-    |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |     -------             ------    |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |                                   |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 || |                                   |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 ||||                .                  |      ||  |   |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 | |||               .                  |      ||  |   | |' "$R"
+printf '  %s%s%s\n' "$P" '                 | | |               .                 ||     | |  |   | |' "$R"
+printf '  %s%s%s\n' "$P" '                 | | ||                                |      ||   |   | |' "$R"
+printf '  %s%s%s\n' "$P" '                 | |  \           ______              ||      |    |  |  |' "$R"
+printf '  %s%s%s\n' "$P" '                 | || \\                              |       |    |  | ||' "$R"
+printf '  %s%s%s\n' "$P" '                  | |  \\          -----             //    |            |' "$R"
+printf '  %s%s%s\n' "$P" '                  | |    \             //           //    ||            |' "$R"
+printf '  %s%s%s\n' "$P" '                  ||||    \\\        //     |      //     |       |    ||' "$R"
+printf '  %s%s%s\n' "$P" '                -- | |      \------//       |    ///     ||      |     |' "$R"
+printf '  %s%s%s\n' "$P" '              //--\\|||                     ||   /       |       |    || |' "$R"
+printf '  %s%s%s\n' "$P" '              |    |\\|                      |          //      |    //  |' "$R"
+printf '  %s%s%s\n' "$P" '              ||   | \\\                     ||        //      //    /   |' "$R"
+printf '  %s%s%s\n' "$P" '               |      \/                      \\   //-\\      //   //\--//' "$R"
+printf '  %s%s%s\n' "$P" '               \\\---//                        \\ // //\|    //   //' "$R"
+printf '  %s%s%s\n' "$P" '                                                \  |//     ///  //' "$R"
+printf '  %s%s%s\n' "$P" '                                                   \\     //  ///' "$R"
+printf '  %s%s%s\n' "$P" '                                                     \\------/' "$R"
+printf '\n'
+printf '  %sH H G   C O R T E X%s\n' "$P" "$R"
+printf '  %sop@hub › ready%s\n\n' "$D" "$R"

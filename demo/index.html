@@ -82,6 +82,11 @@
   /* ── the mark — HHG HUB, same CLI art, shown large ── */
   .markwrap{display:flex;flex-direction:column;align-items:center;gap:30px;padding:64px 20px}
   .markwrap .tui-art{font-size:clamp(11px,2.3vw,22px);line-height:1.08;text-align:center;text-shadow:0 0 30px #ffffff22}
+  /* ── muse-art — THE MUSE printed: the ruled-G 2ch drawing in --hum, pupils paper-white (she looks back) ── */
+  .muse-art{font-family:var(--font-mono);font-size:clamp(6px,1.15vw,11px);line-height:1.1;letter-spacing:0;
+    white-space:pre;color:var(--hum);text-shadow:0 0 8px #6F75D766,0 0 26px #6F75D733;display:block}
+  .muse-art .pupil{color:#FFFFFF;text-shadow:0 0 6px #ffffffaa}
+  .markwrap .muse-art{text-align:left;display:inline-block;margin:0 auto}
   .markcap{font-family:var(--font-mono);letter-spacing:.5em;color:var(--dim);font-size:var(--fz-mono-6);text-transform:uppercase}
 
   /* ── palette specimen ── */
@@ -161,7 +166,7 @@
     <div class="metaline">
       <span><b>Ghostty</b> 1.3.1</span><span><b>Claude Code</b> dark-ansi</span>
       <span><b>git</b> diff · status · decorate</span><span><b>Red Hat Mono</b> the epoq mono</span>
-      <span><b>rev</b> 2026-07-08</span>
+      <span><b>rev</b> 2026-07-22</span>
     </div>
   </header>
 
@@ -173,11 +178,57 @@
     <div class="term">
       <div class="term-bar"><span class="dot a"></span><span class="dot b"></span><span class="dot c"></span>
         <span class="term-title">op@hhg — the glass stage — 132×32</span></div>
-      <div class="term-body"><span class="tui-art">█  █ █  █ ████      █  █ █  █ ███
-█  █ █  █ █         █  █ █  █ █  █
-████ ████ █ ██      ████ █  █ ███
-█  █ █  █ █  █      █  █ █  █ █  █
-█  █ █  █ ████      █  █ ████ ███ </span>
+      <div class="term-body"><span class="muse-art">                                           --- -
+                                  -- -- --      - -- -- --
+                              ///-                        - -\
+                           ////                               \\\
+                         ///         --- ---- ---- ---          \\\
+                        //      --- -                 --- -       \\\
+                       //   // /      ----- ---------      \\\      \\
+                     //    /    /- ---               ----\    \\\    \\
+                     |       ///                          \\\    \    \\
+                    |                                        \\\       \
+                    |                 ---------- --        |  |         |
+                   |  |          ------           --\\     |   |  |     ||
+                   |  |                               \\\   |   |  |     |
+                  ||  |       |        |        |       \\\ |   |  |     |
+                  ||   |      ||\     || \     ||         \\\|  ||  |    |
+                  ||   ||    ||| \    | |\\    | \          ||   |  |    |
+                  |     |    | ||\\   | | \\   | \\          ||  |  |    ||
+                 ||     |\   |  | \\ ||  \ \\ ||  \\         ||  |   |    |
+                 ||      \\ |   |\ \\|    \  \|    \\-|      ||   |  |    |
+                 ||       \||    \\ ||     \\||       |       ||  |  |    |
+                 ||          ---- \\|       \/ ----   ||      ||  |   |   |
+                 || |     ---   --           ---   -   |      ||   |  |   |
+                 || |      _______            ______   |      ||   |  |   |
+                 || |     _________          ______ _  ||     ||   |  |   |
+                 || |    ____   __           __    |_   |      ||  |  |   |
+                | | |    _  |  '|              |<span class="pupil">#</span>' |    |      ||  |  |   |
+                | | |       |<span class="pupil">#</span>  |              ||  |    |      ||  |   |  |
+                 || |        \ /|               \-/|    |      ||  |   |  |
+                 || |         -/                 -/-    |      ||  |   |  |
+                 || |     -------             ------    |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 ||||                .                  |      ||  |   |  |
+                 | |||               .                  |      ||  |   | |
+                 | | |               .                 ||     | |  |   | |
+                 | | ||                                |      ||   |   | |
+                 | |  \           ______              ||      |    |  |  |
+                 | || \\                              |       |    |  | ||
+                  | |  \\          -----             //    |            |
+                  | |    \             //           //    ||            |
+                  ||||    \\\        //     |      //     |       |    ||
+                -- | |      \------//       |    ///     ||      |     |
+              //--\\|||                     ||   /       |       |    || |
+              |    |\\|                      |          //      |    //  |
+              ||   | \\\                     ||        //      //    /   |
+               |      \/                      \\   //-\\      //   //\--//
+               \\\---//                        \\ // //\|    //   //
+                                                \  |//     ///  //
+                                                   \\     //  ///
+                                                     \\------/</span>
+  <span class="hum">H H G   C O R T E X</span>
   <span class="dim">op@hhg › ready</span>
 
 <span class="live">jacob@hhg</span> <span class="dim">~/hhg_cortex_v1</span> <span class="flag">⎇ main</span>
@@ -194,15 +245,60 @@
 
   <!-- ── THE MARK ─────────────────────────────────────── -->
   <section>
-    <div class="sechead"><span class="n">·</span><h2>The mark</h2><span class="t">HHG HUB · real CLI art · epoq3 tui-art · Red Hat Mono block caps, printed not drawn</span></div>
+    <div class="sechead"><span class="n">·</span><h2>The mark</h2><span class="t">THE MUSE · the ruled-G 2ch drawing (epoq3 muse/m-head) · printed not drawn — she looks back</span></div>
     <div class="term" style="border-color:var(--line)">
-      <div class="term-body markwrap">
-        <pre class="tui-art">█  █ █  █ ████      █  █ █  █ ███
-█  █ █  █ █         █  █ █  █ █  █
-████ ████ █ ██      ████ █  █ ███
-█  █ █  █ █  █      █  █ █  █ █  █
-█  █ █  █ ████      █  █ ████ ███ </pre>
-        <span class="markcap">H H G&nbsp;&nbsp;&nbsp;H U B</span>
+      <div class="term-body markwrap" style="text-align:center">
+        <pre class="muse-art">                                           --- -
+                                  -- -- --      - -- -- --
+                              ///-                        - -\
+                           ////                               \\\
+                         ///         --- ---- ---- ---          \\\
+                        //      --- -                 --- -       \\\
+                       //   // /      ----- ---------      \\\      \\
+                     //    /    /- ---               ----\    \\\    \\
+                     |       ///                          \\\    \    \\
+                    |                                        \\\       \
+                    |                 ---------- --        |  |         |
+                   |  |          ------           --\\     |   |  |     ||
+                   |  |                               \\\   |   |  |     |
+                  ||  |       |        |        |       \\\ |   |  |     |
+                  ||   |      ||\     || \     ||         \\\|  ||  |    |
+                  ||   ||    ||| \    | |\\    | \          ||   |  |    |
+                  |     |    | ||\\   | | \\   | \\          ||  |  |    ||
+                 ||     |\   |  | \\ ||  \ \\ ||  \\         ||  |   |    |
+                 ||      \\ |   |\ \\|    \  \|    \\-|      ||   |  |    |
+                 ||       \||    \\ ||     \\||       |       ||  |  |    |
+                 ||          ---- \\|       \/ ----   ||      ||  |   |   |
+                 || |     ---   --           ---   -   |      ||   |  |   |
+                 || |      _______            ______   |      ||   |  |   |
+                 || |     _________          ______ _  ||     ||   |  |   |
+                 || |    ____   __           __    |_   |      ||  |  |   |
+                | | |    _  |  '|              |<span class="pupil">#</span>' |    |      ||  |  |   |
+                | | |       |<span class="pupil">#</span>  |              ||  |    |      ||  |   |  |
+                 || |        \ /|               \-/|    |      ||  |   |  |
+                 || |         -/                 -/-    |      ||  |   |  |
+                 || |     -------             ------    |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 ||||                .                  |      ||  |   |  |
+                 | |||               .                  |      ||  |   | |
+                 | | |               .                 ||     | |  |   | |
+                 | | ||                                |      ||   |   | |
+                 | |  \           ______              ||      |    |  |  |
+                 | || \\                              |       |    |  | ||
+                  | |  \\          -----             //    |            |
+                  | |    \             //           //    ||            |
+                  ||||    \\\        //     |      //     |       |    ||
+                -- | |      \------//       |    ///     ||      |     |
+              //--\\|||                     ||   /       |       |    || |
+              |    |\\|                      |          //      |    //  |
+              ||   | \\\                     ||        //      //    /   |
+               |      \/                      \\   //-\\      //   //\--//
+               \\\---//                        \\ // //\|    //   //
+                                                \  |//     ///  //
+                                                   \\     //  ///
+                                                     \\------/</pre>
+        <span class="markcap">H H G&nbsp;&nbsp;&nbsp;C O R T E X</span>
       </div>
     </div>
   </section>
