@@ -6,7 +6,7 @@
 <title>GLASSCI — the studies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../glassci/glassci.css">
 <style>
   *{box-sizing:border-box}
@@ -15,7 +15,9 @@
     --dim:rgba(255,255,255,.62);
     --hum:#6F75D7; --dusk:#5F5295; --signal-go:#8E00FF; --signal-live:#2CFF05;
     --novel:#332078; --signal-attn:#3600DA; --go:#8E00FF;
+    --font-serif:"Scheherazade New",Georgia,serif;
     --font-mono:"Red Hat Mono","IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --fz-display:36px; --fz-heading-3:16px; --fz-body-1:14px; --fz-serif-8:9px;
     --fz-mono-6:7px; --lh-mono-6:2; --track-mono-6:.3em;
     --fz-mono-cli:14px; --lh-mono-cli:1.5;
     --fz-page-title:24px;
@@ -23,15 +25,21 @@
     --hairline:0.5px;
     --gut:clamp(20px,5vw,64px);
   }
+  /* THE TYPE LAW. Mono is the record's voice — the CLI, the ASCII, everything
+     the glass sits on or holds. The page around it reads in the serif. Round 3
+     had the whole wall in mono, which flattened the two registers into one. */
   html,body{margin:0;background:var(--ink);color:var(--paper);
-    font-family:var(--font-mono);font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli);
+    font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.6;
     -webkit-font-smoothing:antialiased}
+  .glassci-field, .glassci-field *, .glassci, .glassci *{font-family:var(--font-mono)}
   .wrap{max-width:1080px;margin:0 auto;padding:0 var(--gut)}
   header{padding:var(--s-5) 0 var(--s-3)}
-  h1{font-size:var(--fz-page-title);font-weight:400;letter-spacing:-.02em;margin:0 0 var(--s-2)}
-  .cap{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
-    text-transform:uppercase;color:var(--dim)}
+  h1{font-family:var(--font-serif);font-size:var(--fz-display);font-weight:400;
+    letter-spacing:-.02em;line-height:1.05;margin:0 0 var(--s-2)}
+  .cap{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
   .rule{height:var(--hairline);background:var(--line);border:0;margin:0}
+  .lede{font-family:var(--font-serif);font-size:16px;line-height:1.6;color:var(--paper);max-width:62ch}
   .readout{display:flex;gap:var(--s-3);flex-wrap:wrap;padding:var(--s-2) 0;
     font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
     text-transform:uppercase;color:var(--dim)}
@@ -40,9 +48,10 @@
   section{padding:var(--s-4) 0}
   .sechead{display:flex;align-items:baseline;gap:var(--s-2);margin-bottom:var(--s-3);flex-wrap:wrap}
   .sechead .n{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);color:var(--hum)}
-  .sechead h2{font-size:var(--fz-page-title);font-weight:400;margin:0;letter-spacing:-.02em}
-  .sechead .t{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
-    text-transform:uppercase;color:var(--dim);max-width:52ch}
+  .sechead h2{font-family:var(--font-serif);font-size:var(--fz-page-title);font-weight:400;
+    margin:0;letter-spacing:-.02em}
+  .sechead .t{font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.5;
+    letter-spacing:0;text-transform:none;color:var(--dim);max-width:56ch}
 
   .plate{border:var(--hairline) solid var(--line);overflow:hidden;position:relative}
 
@@ -102,19 +111,19 @@
   .mirror .lbl{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;
     color:var(--paper);opacity:.34}
 
-  .note{padding-top:var(--s-2);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
-    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .note{padding-top:var(--s-3);font-family:var(--font-serif);font-size:var(--fz-body-1);
+    line-height:1.6;letter-spacing:0;text-transform:none;color:var(--dim);max-width:72ch}
   .actrule{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--hum);
-    border-top:var(--hairline) solid var(--line);padding-top:var(--s-2);margin-top:var(--s-4)}
-  footer{padding:var(--s-5) 0 var(--s-6);color:var(--dim);
-    font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase}
+    border-top:var(--hairline) solid var(--line);padding-top:var(--s-2);margin-top:var(--s-5)}
+  footer{padding:var(--s-5) 0 var(--s-6);color:var(--dim);font-family:var(--font-serif);
+    font-size:var(--fz-body-1);line-height:1.6;letter-spacing:0;text-transform:none}
 
   /* ══ the tier switch — tier is a document setting, so it lives in the header ══ */
   .tiers{display:flex;gap:var(--s-1);align-items:center;flex-wrap:wrap;margin-top:var(--s-2)}
-  .tiers button{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
-    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim);
-    background:transparent;border:var(--hairline) solid var(--line);padding:2px 12px;cursor:pointer}
+  .tiers button{font-family:var(--font-serif);text-transform:none;letter-spacing:.02em;font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    font-size:var(--fz-body-1);line-height:1.5;color:var(--dim);
+    background:transparent;border:var(--hairline) solid var(--line);padding:3px 14px;cursor:pointer}
   .tiers button.on{color:var(--hum);border-color:var(--hum)}
 
   /* ══ ACT II · the contact sheet ══════════════════════════════════════════ */
@@ -139,8 +148,8 @@
   .cell figcaption{padding-top:var(--s-2);display:flex;flex-direction:column;gap:3px}
   .cell figcaption b{font-family:var(--font-mono);font-size:var(--fz-mono-6);
     line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);color:var(--paper);font-weight:400}
-  .cell figcaption span{font-family:var(--font-mono);font-size:var(--fz-mono-6);
-    line-height:1.9;letter-spacing:.08em;color:var(--dim);text-transform:none}
+  .cell figcaption span{font-family:var(--font-serif);font-size:var(--fz-body-1);
+    line-height:1.5;letter-spacing:0;color:var(--dim);text-transform:none}
 
   /* every object is absolutely placed by the generator on the character grid */
   .g-obj{position:absolute}
@@ -188,7 +197,7 @@
   .hub-main{flex:1;min-width:0;display:flex;flex-direction:column}
   .hub-top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-2);
     padding:var(--s-3) var(--s-4);border-bottom:var(--hairline) solid var(--line)}
-  .hub-title{font-size:var(--fz-page-title);letter-spacing:-.02em;color:var(--paper)}
+  .hub-title{font-family:var(--font-serif);font-size:var(--fz-page-title);letter-spacing:-.02em;color:var(--paper)}
   .hub-ctx{font-family:var(--font-mono);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
   .hub-body{position:relative;flex:1;padding:var(--s-4);overflow:hidden}
@@ -211,9 +220,8 @@
   .stage--paper .panel .v{color:var(--paper)}
 
   /* ══ ACT IV · the matrix ═════════════════════════════════════════════════ */
-  .mxrow{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
-    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim);
-    padding:var(--s-4) 0 var(--s-2)}
+  .mxrow{font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.5;
+    letter-spacing:0;text-transform:none;color:var(--dim);padding:var(--s-4) 0 var(--s-2)}
   .mx{position:absolute;left:29px;top:63px;width:219px;height:63px}
 
   @media(max-width:640px){
@@ -230,7 +238,7 @@
   <header>
     <div class="cap">HHG · glassci · four cuts · localhost wall</div>
     <h1>GLASSCI — THE STUDIES</h1>
-    <div class="cap" style="text-transform:none;letter-spacing:.04em;color:var(--paper);max-width:64ch">
+    <div class="lede">
       Glass with nothing to refract but characters. Four divergent cuts, nothing killed on taste.
       Rule each one G / B / U — the survivor becomes section 07.
     </div>

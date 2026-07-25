@@ -148,14 +148,18 @@
 
   footer{padding:60px 0 90px;font-family:var(--font-mono);color:var(--dim);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase}
+  /* THE TYPE LAW · mono is the record and everything the glass holds; the page
+     around it stays in the serif it already uses. */
+  .glassci-field, .glassci-field *, .glassci, .glassci *{font-family:var(--font-mono)}
+
   /* ── 07 · glassci — the material ────────────────────────────────────────
      Reuses the page's .term chrome. Everything below is layout only; the
      material itself lives in /glassci/glassci.css. */
   .gc-stage{position:relative;height:420px;overflow:hidden;background:var(--stage);padding:22px 24px}
-  .gc-field{position:absolute;inset:22px 24px;color:#4A4A52;
+  .gc-field{position:absolute;inset:22px 24px;color:#33333D;
     font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli);white-space:pre;pointer-events:none;
     -webkit-user-select:none;user-select:none}
-  .gc-field .live{color:var(--live)} .gc-field .go{color:var(--flag)}
+  .gc-field .live{color:var(--hum)} .gc-field .go{color:var(--flag)}
   .gc-lens{position:absolute;top:74px;left:52px;width:min(430px,60%);height:180px;cursor:grab;
     display:grid;place-items:center;touch-action:none}
   .gc-lens:active{cursor:grabbing}
@@ -172,14 +176,15 @@
     background:var(--line);border:1px solid var(--line);margin-top:26px}
   .gc-laws div{background:var(--stage);padding:18px 20px}
   .gc-laws .n{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
-    letter-spacing:var(--track-mono-6);color:var(--live);text-transform:uppercase}
-  .gc-laws .h{display:block;margin:4px 0 6px;font-size:var(--fz-heading-3);letter-spacing:-.01em}
-  .gc-laws .b{font-size:13px;line-height:1.55;color:var(--dim)}
+    letter-spacing:var(--track-mono-6);color:var(--hum);text-transform:uppercase}
+  .gc-laws .h{display:block;margin:4px 0 6px;font-family:var(--font-serif);
+    font-size:var(--fz-heading-3);letter-spacing:-.01em}
+  .gc-laws .b{font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.6;color:var(--dim)}
 
   .gc-read{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;
     font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
-  .gc-read b{color:var(--live);font-weight:400}
+  .gc-read b{color:var(--hum);font-weight:400}
   @media(max-width:640px){
     .gc-lens{width:66%;height:140px;left:24px;top:60px}
     .gc-tile{display:none}
@@ -617,7 +622,7 @@ esac
     <div class="gc-read">
       <span>tier <b id="gc-tier">…</b></span>
       <span>corners <b id="gc-corner">…</b></span>
-      <span>dispersion <b>#8E00FF · #2CFF05</b></span>
+      <span>dispersion <b>#8E00FF · #3600DA</b></span>
       <span>red in the fringe <b>none</b></span>
       <span>dependencies <b>0</b></span>
     </div>
@@ -630,7 +635,7 @@ esac
       <div><span class="n">law 03</span><b class="h">Black glass</b>
         <span class="b">The pane is dark. The specular rim is the only white on it.</span></div>
       <div><span class="n">law 04</span><b class="h">The prism obeys the palette</b>
-        <span class="b">Ordinary aberration splits into red, green, blue. This one splits into inks you name — and the default set contains no red. Epoq legislates none, down to the physics.</span></div>
+        <span class="b">Ordinary aberration splits into red, green, blue. This one splits into inks you name — the default pair is go against attn, both violet. No red, no green. Epoq legislates none, down to the physics.</span></div>
     </div>
 
     <div class="card" style="margin-top:26px">
