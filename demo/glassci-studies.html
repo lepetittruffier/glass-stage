@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLASSCI — the studies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Mono:wght@400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../glassci/glassci.css">
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --ink:#000000; --paper:#FFFFFF; --line:#272727; --grey-51:#515151;
+    --dim:rgba(255,255,255,.62);
+    --hum:#6F75D7; --dusk:#5F5295; --signal-go:#8E00FF; --signal-live:#2CFF05;
+    --novel:#332078; --signal-attn:#3600DA; --go:#8E00FF;
+    --font-serif:"Scheherazade New",Georgia,serif;
+    --font-mono:"Red Hat Mono","IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --fz-display:36px; --fz-heading-3:16px; --fz-body-1:14px; --fz-serif-8:9px;
+    --fz-mono-6:7px; --lh-mono-6:2; --track-mono-6:.3em;
+    --fz-mono-cli:14px; --lh-mono-cli:1.5;
+    --fz-page-title:24px;
+    --s-1:8px; --s-2:16px; --s-3:24px; --s-4:40px; --s-5:80px; --s-6:120px;
+    --hairline:0.5px;
+    --gut:clamp(20px,5vw,64px);
+  }
+  /* THE TYPE LAW. Mono is the record's voice — the CLI, the ASCII, everything
+     the glass sits on or holds. The page around it reads in the serif. Round 3
+     had the whole wall in mono, which flattened the two registers into one. */
+  html,body{margin:0;background:var(--ink);color:var(--paper);
+    font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.6;
+    -webkit-font-smoothing:antialiased}
+  .glassci-field, .glassci-field *, .glassci, .glassci *{font-family:var(--font-mono)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 var(--gut)}
+  header{padding:var(--s-5) 0 var(--s-3)}
+  h1{font-family:var(--font-serif);font-size:var(--fz-display);font-weight:400;
+    letter-spacing:-.02em;line-height:1.05;margin:0 0 var(--s-2)}
+  .cap{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .rule{height:var(--hairline);background:var(--line);border:0;margin:0}
+  .lede{font-family:var(--font-serif);font-size:16px;line-height:1.6;color:var(--paper);max-width:62ch}
+  .readout{display:flex;gap:var(--s-3);flex-wrap:wrap;padding:var(--s-2) 0;
+    font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
+    text-transform:uppercase;color:var(--dim)}
+  .readout b{color:var(--hum);font-weight:400}
+
+  section{padding:var(--s-4) 0}
+  .sechead{display:flex;align-items:baseline;gap:var(--s-2);margin-bottom:var(--s-3);flex-wrap:wrap}
+  .sechead .n{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);color:var(--hum)}
+  .sechead h2{font-family:var(--font-serif);font-size:var(--fz-page-title);font-weight:400;
+    margin:0;letter-spacing:-.02em}
+  .sechead .t{font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.5;
+    letter-spacing:0;text-transform:none;color:var(--dim);max-width:56ch}
+
+  .plate{border:var(--hairline) solid var(--line);overflow:hidden;position:relative}
+
+  /* S1 — the reference: flat grey room, one tile */
+  .room{background:#1E1E1E;display:grid;place-items:center;padding:var(--s-6) var(--s-3);min-height:620px}
+  /* width AND height stated: the tile is a square by decree, not by whatever the
+     50-line Muse happens to measure. Otherwise the specimen sets the silhouette. */
+  .icon{width:min(420px,78vw);height:min(420px,78vw);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:var(--s-2)}
+  /* the specimen's own metrics, carried over with it — lifting the DOM without
+     its line-height is how a specimen silently rots into something else */
+  .muse-art{font-family:var(--font-mono);line-height:1.1;letter-spacing:0;white-space:pre;
+    display:block;margin:0;color:var(--hum)}
+  .muse-art .pupil{color:#FFFFFF;text-shadow:0 0 6px #ffffffaa}
+  .icon .muse-art{font-size:clamp(2.4px,.36vw,4.6px)}
+  .markcap{letter-spacing:.5em;color:var(--hum);font-size:var(--fz-mono-6);text-transform:uppercase;
+    text-shadow:0 0 8px #6F75D7aa,0 0 24px #6F75D755}
+
+  /* the substrate — shared by S2/S3/S4 */
+  .stage{position:relative;background:var(--ink);padding:var(--s-3);overflow:hidden}
+  /* the substrate is absolutely placed so it cannot drive the stage height —
+     the stage is a window onto the field, not a container sized by it */
+  .stage .glassci-field{position:absolute;inset:var(--s-3);color:var(--grey-51);
+    font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
+  .stage .glassci-field .go{color:var(--signal-go)}
+  .glassci-field .hum{color:var(--hum)} .glassci-field .go{color:var(--signal-go)}
+  .stage .glassci-field .live{color:var(--hum)}
+  .stage .glassci-field .hum{color:var(--hum)}
+
+  /* S2 — the draggable slab */
+  .slab{position:absolute;width:min(420px,66%);height:190px;top:96px;left:56px;cursor:grab;
+    display:grid;place-items:center;touch-action:none}
+  .slab:active{cursor:grabbing}
+  .slab .lbl{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;
+    color:var(--paper);opacity:.5}
+
+  /* S2·B — the same lens, inverted ground: ink on paper, dark crisp glass.
+     No glow here — a dark object on white paper occludes and casts, it does not
+     emit. The bleed becomes a contact shadow by changing the ink, not the rule. */
+  .stage--paper{background:var(--paper)}
+  .stage--paper .glassci-field{color:var(--grey-51)}
+  .stage--paper .glassci-field .go{color:var(--signal-go)}
+  .stage--paper .glassci-field .live{color:var(--novel)}
+  .slab--paper .lbl{color:var(--paper);opacity:.62}
+
+  /* S3 — the rack */
+  .rack{position:absolute;inset:auto var(--s-3) var(--s-3) var(--s-3);display:flex;gap:var(--s-2);flex-wrap:wrap}
+  .panel{flex:1 1 190px;min-height:96px;padding:var(--s-2);display:flex;flex-direction:column;gap:6px;
+    justify-content:center}
+  .panel .k{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .panel .v{font-size:var(--fz-mono-cli);color:var(--paper)}
+  .panel .v.live{color:var(--hum)}
+
+  /* S4 — the black mirror */
+  .mirror{position:absolute;inset:var(--s-5) var(--s-4);display:grid;place-items:center}
+  .mirror .lbl{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;
+    color:var(--paper);opacity:.34}
+
+  .note{padding-top:var(--s-3);font-family:var(--font-serif);font-size:var(--fz-body-1);
+    line-height:1.6;letter-spacing:0;text-transform:none;color:var(--dim);max-width:72ch}
+  .actrule{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--hum);
+    border-top:var(--hairline) solid var(--line);padding-top:var(--s-2);margin-top:var(--s-5)}
+  footer{padding:var(--s-5) 0 var(--s-6);color:var(--dim);font-family:var(--font-serif);
+    font-size:var(--fz-body-1);line-height:1.6;letter-spacing:0;text-transform:none}
+
+  /* ══ the tier switch — tier is a document setting, so it lives in the header ══ */
+  .tiers{display:flex;gap:var(--s-1);align-items:center;flex-wrap:wrap;margin-top:var(--s-2)}
+  .tiers button{font-family:var(--font-serif);text-transform:none;letter-spacing:.02em;font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    font-size:var(--fz-body-1);line-height:1.5;color:var(--dim);
+    background:transparent;border:var(--hairline) solid var(--line);padding:3px 14px;cursor:pointer}
+  .tiers button.on{color:var(--hum);border-color:var(--hum)}
+
+  /* ══ ACT II · the contact sheet ══════════════════════════════════════════ */
+  /* Breaks out of the 1080 measure — comparison needs the cells side by side.
+     No transform: it would create a containing block around every pane. */
+  .sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--s-3);
+    width:min(1440px, calc(100vw - 2 * var(--gut)));
+    margin-left:calc(50% - min(720px, 50vw - var(--gut)))}
+  .sheet--3{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  .cell{margin:0}
+  .cell-stage{position:relative;height:268px;overflow:hidden;background:var(--ink);
+    border:var(--hairline) solid var(--line)}
+  .cell-stage--paper{background:var(--paper)}
+  .cell-stage--paper .cell-field{color:#8C8C93}
+  .cell-stage--room{background:#1E1E1E}
+
+  /* THE GROUND. Monochrome, quiet, inset from the frame — it is the ruler the
+     bend gets measured against, never the subject. Round 2 had it at #4A4A52
+     edge-to-edge with four registers stacked; it shouted over every object. */
+  .cell-field{position:absolute;left:24px;top:24px;color:#33333D;
+    font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
+  .cell figcaption{padding-top:var(--s-2);display:flex;flex-direction:column;gap:3px}
+  .cell figcaption b{font-family:var(--font-mono);font-size:var(--fz-mono-6);
+    line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);color:var(--paper);font-weight:400}
+  .cell figcaption span{font-family:var(--font-serif);font-size:var(--fz-body-1);
+    line-height:1.5;letter-spacing:0;color:var(--dim);text-transform:none}
+
+  /* every object is absolutely placed by the generator on the character grid */
+  .g-obj{position:absolute}
+
+  /* MAGNIFY · the base prints at the 7px law; the loupe holds a scaled copy
+     UNDER the glass. The filter bends, it does not zoom — keeping those two
+     jobs separate is the only honest way to build a loupe. */
+  .cell[data-verb="magnify"] .cell-field{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    left:107px;top:-60px;color:#3A3A46}
+  .cell-loupe{position:absolute;inset:0;pointer-events:none}
+  .cmag{position:absolute;left:100px;top:64px;width:140px;height:140px;overflow:hidden;border-radius:50%}
+  .cmag-field{position:absolute;transform-origin:0 0;margin:0;white-space:pre;color:var(--paper);
+    font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6)}
+  .cell-loupe .loupe-glass{position:absolute;left:100px;top:64px;width:140px;height:140px}
+
+  .g-label{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 16px}
+  .g-pal{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:0 16px}
+  .g-chiprail{position:absolute;display:flex;gap:9px;flex-wrap:wrap}
+  .g-chip{height:24px;padding:0 14px;display:inline-flex;align-items:center;
+    font-family:var(--font-mono);font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);
+    text-transform:uppercase;color:var(--paper)}
+
+  /* type inside the glass — one mono law, one body size */
+  .g-label .k,.ag .k,.panel .k{font-family:var(--font-mono);font-size:var(--fz-mono-6);
+    line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .g-label .v,.ag .v,.panel .v{font-size:13px;line-height:1.5;color:var(--paper)}
+  .ag .v.live{color:var(--signal-live)}   /* the one live thing on the wall */
+  .g-pal .p,.g-pal .q{font-family:var(--font-mono);font-size:var(--fz-mono-cli);line-height:1}
+  .g-pal .p{color:var(--hum)} .g-pal .q{color:var(--paper)}
+  .g-pal .c{color:var(--go);animation:gblink 1.05s steps(1) infinite}
+  @keyframes gblink{50%{visibility:hidden}}
+
+  /* ══ ACT III · H1 the hub ════════════════════════════════════════════════ */
+  .hub{display:flex;min-height:540px;background:var(--ink);overflow:hidden}
+  .hub-rail{width:158px;flex:none;border-right:var(--hairline) solid var(--line);
+    padding:var(--s-3) var(--s-3);display:flex;flex-direction:column;gap:11px}
+  .hub-mark{font-family:var(--font-mono);font-size:var(--fz-mono-cli);color:var(--paper);
+    letter-spacing:.3em;margin-bottom:var(--s-2)}
+  .hub-nav{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .hub-nav.is-on{color:var(--hum)}
+  .hub-rail-foot{margin-top:auto;font-family:var(--font-mono);font-size:var(--fz-mono-6);
+    letter-spacing:var(--track-mono-6);color:var(--dim);
+    border-top:var(--hairline) solid var(--line);padding-top:var(--s-2)}
+  .hub-main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .hub-top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-2);
+    padding:var(--s-3) var(--s-4);border-bottom:var(--hairline) solid var(--line)}
+  .hub-title{font-family:var(--font-serif);font-size:var(--fz-page-title);letter-spacing:-.02em;color:var(--paper)}
+  .hub-ctx{font-family:var(--font-mono);font-size:var(--fz-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .hub-body{position:relative;flex:1;padding:var(--s-4);overflow:hidden}
+  .hub-body .glassci-field{position:absolute;left:var(--s-4);top:var(--s-4);color:#33333D;
+    font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
+  .hub-agency{position:absolute;right:var(--s-4);top:var(--s-4);width:250px;
+    display:flex;flex-direction:column;gap:var(--s-3)}
+  .ag{padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+
+  /* ══ ACT III · H2 the rack on paper ══════════════════════════════════════ */
+  .stage{position:relative;height:420px;overflow:hidden;background:var(--ink);padding:var(--s-4)}
+  .stage--paper{background:var(--paper)}
+  .stage .glassci-field{position:absolute;left:var(--s-4);top:var(--s-4);color:#33333D;
+    font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
+  .stage--paper .glassci-field{color:#8C8C93}
+  .rack{position:absolute;right:var(--s-4);bottom:var(--s-4);display:flex;gap:var(--s-3);flex-wrap:wrap}
+  .panel{width:300px;min-height:96px;padding:16px 18px;display:flex;flex-direction:column;
+    justify-content:center;gap:5px}
+  .stage--paper .panel .k{color:rgba(255,255,255,.62)}
+  .stage--paper .panel .v{color:var(--paper)}
+
+  /* ══ ACT IV · the matrix ═════════════════════════════════════════════════ */
+  .mxrow{font-family:var(--font-serif);font-size:var(--fz-body-1);line-height:1.5;
+    letter-spacing:0;text-transform:none;color:var(--dim);padding:var(--s-4) 0 var(--s-2)}
+  .mx{position:absolute;left:29px;top:63px;width:219px;height:63px}
+
+  @media(max-width:640px){
+    .hub-rail{display:none}
+    .hub-agency{position:static;width:auto;margin-top:var(--s-3)}
+    .rack{position:static;margin-top:var(--s-3)}
+    .panel{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="cap">HHG · glassci · four cuts · localhost wall</div>
+    <h1>GLASSCI — THE STUDIES</h1>
+    <div class="lede">
+      Glass with nothing to refract but characters. Four divergent cuts, nothing killed on taste.
+      Rule each one G / B / U — the survivor becomes section 07.
+    </div>
+    <div class="readout">
+      <span>tier <b id="r-tier">…</b></span>
+      <span>corners <b id="r-corner">…</b></span>
+      <span>dispersion <b>go · attn</b></span>
+      <span>red in the fringe <b>none</b></span>
+    </div>
+    <div class="tiers" id="tiers"></div>
+  </header>
+
+  <hr class="rule">
+
+  <div class="actrule">ACT I · THE MATERIAL — what it is</div>
+
+  <!-- ── S1 ─────────────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">S1</span><h2>The icon</h2>
+      <span class="t">the reference reproduced · squircle · phosphor · rim · bleed</span></div>
+    <div class="plate room">
+      <div class="icon glassci" data-glassci
+           data-glassci-radius="0.26" data-glassci-n="4.2" data-glassci-depth="16"
+           data-glassci-strength="21" data-glassci-dispersion="3" data-glassci-blur="2"
+           data-glassci-bleed="72" data-glassci-emission="#6F75D7" data-glassci-rim="0.8"
+           data-glassci-fill="rgba(4,4,7,.94)">
+        <pre class="muse-art glassci-lit">                                           --- -
+                                  -- -- --      - -- -- --
+                              ///-                        - -\
+                           ////                               \\\
+                         ///         --- ---- ---- ---          \\\
+                        //      --- -                 --- -       \\\
+                       //   // /      ----- ---------      \\\      \\
+                     //    /    /- ---               ----\    \\\    \\
+                     |       ///                          \\\    \    \\
+                    |                                        \\\       \
+                    |                 ---------- --        |  |         |
+                   |  |          ------           --\\     |   |  |     ||
+                   |  |                               \\\   |   |  |     |
+                  ||  |       |        |        |       \\\ |   |  |     |
+                  ||   |      ||\     || \     ||         \\\|  ||  |    |
+                  ||   ||    ||| \    | |\\    | \          ||   |  |    |
+                  |     |    | ||\\   | | \\   | \\          ||  |  |    ||
+                 ||     |\   |  | \\ ||  \ \\ ||  \\         ||  |   |    |
+                 ||      \\ |   |\ \\|    \  \|    \\-|      ||   |  |    |
+                 ||       \||    \\ ||     \\||       |       ||  |  |    |
+                 ||          ---- \\|       \/ ----   ||      ||  |   |   |
+                 || |     ---   --           ---   -   |      ||   |  |   |
+                 || |      _______            ______   |      ||   |  |   |
+                 || |     _________          ______ _  ||     ||   |  |   |
+                 || |    ____   __           __    |_   |      ||  |  |   |
+                | | |    _  |  '|              |<span class="pupil">#</span>' |    |      ||  |  |   |
+                | | |       |<span class="pupil">#</span>  |              ||  |    |      ||  |   |  |
+                 || |        \ /|               \-/|    |      ||  |   |  |
+                 || |         -/                 -/-    |      ||  |   |  |
+                 || |     -------             ------    |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 ||||                .                  |      ||  |   |  |
+                 | |||               .                  |      ||  |   | |
+                 | | |               .                 ||     | |  |   | |
+                 | | ||                                |      ||   |   | |
+                 | |  \           ______              ||      |    |  |  |
+                 | || \\                              |       |    |  | ||
+                  | |  \\          -----             //    |            |
+                  | |    \             //           //    ||            |
+                  ||||    \\\        //     |      //     |       |    ||
+                -- | |      \------//       |    ///     ||      |     |
+              //--\\|||                     ||   /       |       |    || |
+              |    |\\|                      |          //      |    //  |
+              ||   | \\\                     ||        //      //    /   |
+               |      \/                      \\   //-\\      //   //\--//
+               \\\---//                        \\ // //\|    //   //
+                                                \  |//     ///  //
+                                                   \\     //  ///
+                                                     \\------/</pre>
+        <span class="markcap">H H G&nbsp;&nbsp;&nbsp;C O R T E X</span>
+      </div>
+    </div>
+    <div class="note">the tile emits · the light leaves the silhouette · the only white on it is the rim</div>
+  </section>
+
+  <!-- ── S2 ─────────────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">S2</span><h2>The lens</h2>
+      <span class="t">drag it · the grid is the ruler that proves the bend</span></div>
+    <div class="plate stage" style="height:560px">
+      <pre class="glassci-field" id="field-2"></pre>
+      <div class="slab glassci" id="slab" data-glassci
+           data-glassci-radius="26" data-glassci-n="4" data-glassci-depth="30"
+           data-glassci-strength="42" data-glassci-dispersion="5" data-glassci-blur="2"
+           data-glassci-bleed="30" data-glassci-emission="#5F5295" data-glassci-rim="0.85">
+        <span class="lbl">drag me</span>
+      </div>
+    </div>
+    <div class="note">a photograph hides distortion · a monospace grid measures it</div>
+  </section>
+
+  <!-- ── S2·B ───────────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">S2·B</span><h2>The lens on paper</h2>
+      <span class="t">the ground inverted · ink on paper · the glass dark and crisp, no frost</span></div>
+    <div class="plate stage stage--paper" style="height:560px">
+      <pre class="glassci-field" id="field-2b"></pre>
+      <div class="slab slab--paper glassci" id="slab-b" data-glassci
+           data-glassci-radius="26" data-glassci-n="4" data-glassci-depth="36"
+           data-glassci-strength="22" data-glassci-dispersion="4"
+           data-glassci-blur="0" data-glassci-softness="0.34" data-glassci-saturate="1"
+           data-glassci-invert="1"
+           data-glassci-bleed="24" data-glassci-emission="rgba(21,0,51,.55)"
+           data-glassci-fill="rgba(0,0,0,.10)" data-glassci-rim="0.7">
+        <span class="lbl">drag me</span>
+      </div>
+    </div>
+    <div class="note">no frost · the glass develops the ground instead of shading it — the pane is black because the paper under it is inverted, so the bent characters stay legible</div>
+  </section>
+
+  <!-- ── S4 ─────────────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">S3</span><h2>The black mirror</h2>
+      <span class="t">frost struck · dispersion at maximum · only the rim and the fringe prove it is there</span></div>
+    <div class="plate stage" style="height:560px">
+      <pre class="glassci-field" id="field-4"></pre>
+      <div class="mirror glassci" data-glassci
+           data-glassci-radius="0.12" data-glassci-n="4" data-glassci-depth="44"
+           data-glassci-strength="60" data-glassci-dispersion="9" data-glassci-blur="0"
+           data-glassci-saturate="1" data-glassci-bleed="0" data-glassci-rim="0.95">
+        <span class="lbl">withheld</span>
+      </div>
+    </div>
+    <div class="note">no frost · no bleed · the material declares itself only at the edge</div>
+  </section>
+
+  <div class="actrule">ACT II · THE VERBS — what it does</div>
+  <!-- ══ ACT II · THE VERBS ═══════════════════════════════ -->
+  <section>
+    <div class="sechead"><span class="n">ACT II</span><h2>The verbs</h2>
+      <span class="t">one record · six things the glass does to it · the treatment is the only variable</span></div>
+    <div class="sheet">
+      <figure class="cell" data-verb="magnify">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="cell-loupe"><div class="cmag"><pre class="cmag-field"></pre></div><div class="loupe-glass glassci" data-glassci data-glassci-radius="0.5" data-glassci-n="2" data-glassci-depth="17" data-glassci-strength="22" data-glassci-dispersion="3" data-glassci-bleed="25" data-glassci-rim="0.72" data-glassci-bias="0.72" data-glassci-blur="0" data-glassci-emission="#6F75D7"></div></div>
+        </div>
+        <figcaption><b>MAGNIFY</b><span>mono is 7px by decree — the lens is how you read it</span></figcaption>
+      </figure>
+      <figure class="cell" data-verb="withhold">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="g-obj glassci" data-glassci data-glassci-radius="4" data-glassci-depth="4" data-glassci-strength="34" data-glassci-dispersion="13" data-glassci-bleed="0" data-glassci-rim="0.9" data-glassci-softness="0.1" data-glassci-bias="0.08" data-glassci-blur="2" data-glassci-emission="#332078" data-glassci-fill="rgba(6,2,18,.72)" style="left:24.0px;top:124px;width:176.4px;height:32px"></div>
+        </div>
+        <figcaption><b>WITHHOLD</b><span>present, shaped, unreadable — redaction as a material</span></figcaption>
+      </figure>
+      <figure class="cell" data-verb="select">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="g-obj glassci" data-glassci data-glassci-radius="4" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-bias="0.8" data-glassci-blur="0" data-glassci-emission="#5F5295" data-glassci-fill="rgba(95,82,149,.16)" style="left:32.4px;top:45px;width:218.4px;height:63px"></div>
+        </div>
+        <figcaption><b>SELECT</b><span>a text selection as glass, not a blue rectangle</span></figcaption>
+      </figure>
+      <figure class="cell" data-verb="annotate">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="g-obj g-label glassci" data-glassci data-glassci-radius="12" data-glassci-depth="10" data-glassci-strength="13" data-glassci-dispersion="2" data-glassci-bleed="15" data-glassci-rim="0.81" data-glassci-blur="4" data-glassci-emission="#6F75D7" style="left:133.2px;top:93px;width:196px;height:84px"><span class="k">H-401 · BONES</span><span class="v">presence, always running</span></div>
+        </div>
+        <figcaption><b>ANNOTATE</b><span>the wall label floats; the record keeps running under it</span></figcaption>
+      </figure>
+      <figure class="cell" data-verb="palette">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="g-obj g-pal glassci" data-glassci data-glassci-radius="12" data-glassci-depth="9" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-bleed="13" data-glassci-rim="0.83" data-glassci-blur="6" data-glassci-emission="#8E00FF" style="left:74.4px;top:91px;width:238px;height:72px"><span class="p">op@hub ›</span><span class="q">lens --describe</span><span class="c">▌</span></div>
+        </div>
+        <figcaption><b>PALETTE</b><span>⌘K — the most-used glass surface in real software</span></figcaption>
+      </figure>
+      <figure class="cell" data-verb="chip">
+        <div class="cell-stage">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="g-chiprail" style="left:24.0px;top:127px"><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#5F5295">DRIVING</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#6F75D7">LIVE</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#8E00FF">OWED</span></div>
+        </div>
+        <figcaption><b>CHIP</b><span>24px — the smallest scale the material still holds at</span></figcaption>
+      </figure>
+    </div>
+    <div class="note">not a component grid — glass is not a skin you put on widgets, it is an instrument acting on a record</div>
+  </section>
+
+  <div class="actrule">ACT III · AT SIZE — the applications</div>
+  <!-- ══ ACT III · AT SIZE ════════════════════════════════ -->
+  <section>
+    <div class="sechead"><span class="n">H1</span><h2>The hub</h2>
+      <span class="t">400_glassci's own promise, rendered · the record drawn in characters, agency floating on glass</span></div>
+    <div class="plate hub">
+      <aside class="hub-rail">
+        <span class="hub-mark">HHG</span>
+        <span class="hub-nav is-on">signal</span><span class="hub-nav">desk</span>
+        <span class="hub-nav">record</span><span class="hub-nav">garden</span>
+        <span class="hub-rail-foot">op@hub</span>
+      </aside>
+      <div class="hub-main">
+        <div class="hub-top"><span class="hub-title">Signal</span><span class="hub-ctx">3 driving · 1 owed</span></div>
+        <div class="hub-body">
+          <pre class="glassci-field" id="hub-record"></pre>
+          <div class="hub-agency">
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#6F75D7">
+              <span class="k">H-404 · APPROVAL</span><span class="v">reviewer · diff · reason</span>
+              <span class="k">two human gates, forever</span></div>
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#2CFF05">
+              <span class="k">H-406 · WINDOW</span><span class="v live">live &lt; 30m</span>
+              <span class="k">the state is the heartbeat</span></div>
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#5F5295">
+              <span class="k">H-405 · TELEMETRY</span><span class="v">12:07 lane moved</span>
+              <span class="k">the audit log, glass-skinned</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">one screen · the record stays printed, every acting surface is glass · the single green on this wall is the one thing that is genuinely live</div>
+  </section>
+
+  <section>
+    <div class="sechead"><span class="n">H2</span><h2>The rack on paper</h2>
+      <span class="t">the ground inverted · the glass dark and crisp on the printed record, no frost</span></div>
+    <div class="plate stage stage--paper">
+      <pre class="glassci-field" id="paper-rack-field"></pre>
+      <div class="rack">
+        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="2" data-glassci-bleed="17" data-glassci-rim="0.79" data-glassci-blur="0" data-glassci-softness="0.34"
+             data-glassci-saturate="1" data-glassci-invert="1"
+             data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)">
+          <span class="k">H-404 · approval</span><span class="v">reviewer · diff · reason</span></div>
+        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="2" data-glassci-bleed="17" data-glassci-rim="0.79" data-glassci-blur="0" data-glassci-softness="0.34"
+             data-glassci-saturate="1" data-glassci-invert="1"
+             data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)">
+          <span class="k">H-405 · telemetry</span><span class="v">12:07 lane moved</span></div>
+      </div>
+    </div>
+    <div class="note">print is the record · glass is the agency · a dark object on paper does not glow, it casts</div>
+  </section>
+
+  <div class="actrule">ACT IV · THE REGISTER MATRIX — pick the ground</div>
+  <!-- ══ ACT IV · THE REGISTER MATRIX ═════════════════════ -->
+  <section>
+    <div class="sechead"><span class="n">ACT IV</span><h2>The register matrix</h2>
+      <span class="t">the same pane against the two axes still open · tier switches live in the header, it is a document-wide setting</span></div>
+    <div class="mxrow">ground</div>
+    <div class="sheet sheet--3">
+      <figure class="cell">
+        <div class="cell-stage ">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2"></div>
+        </div>
+        <figcaption><b>STAGE · black</b></figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="cell-stage cell-stage--paper">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="0" data-glassci-softness="0.34" data-glassci-invert="1" data-glassci-saturate="1" data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)"></div>
+        </div>
+        <figcaption><b>PAPER · inverted</b></figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="cell-stage cell-stage--room">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-fill="rgba(4,4,7,.94)"></div>
+        </div>
+        <figcaption><b>ICON · on a room</b></figcaption>
+      </figure>
+    </div>
+    <div class="mxrow">bias — which axis the lens leans on. a text grid is not isotropic</div>
+    <div class="sheet sheet--3">
+      <figure class="cell">
+        <div class="cell-stage ">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="0"></div>
+        </div>
+        <figcaption><b>BIAS 0 · X only</b></figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="cell-stage ">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="0.5"></div>
+        </div>
+        <figcaption><b>BIAS 0.5 · equal</b></figcaption>
+      </figure>
+      <figure class="cell">
+        <div class="cell-stage ">
+          <pre class="glassci-field cell-field"></pre>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="1"></div>
+        </div>
+        <figcaption><b>BIAS 1 · Y only</b></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule">
+  <footer>GLASSCI · the studies · localhost wall · not linked from the index · rule them G / B / U</footer>
+</div>
+
+<script src="../glassci/glassci.js"></script>
+<script>
+  var FIELD = '┌─ cortex ────────────────────────────┬─ lane ────┬─ tier ──┬─ last ───┐\n│ 400_glassci · the material          │ DRIVING   │ T1      │ 00:00:12 │\n│ the-watch · full-week wrap          │ OWED      │ T2      │ 04:18:55 │\n│ epoq3 · v3.58.1 the accession floor │ GARDEN    │ T1      │ 1d 06:02 │\n│ glass-stage · terminal theme        │ LIVE      │ T1      │ 3d 11:40 │\n└─────────────────────────────────────┴───────────┴─────────┴──────────┘\nop@hub › lens --describe --substrate=characters\n  substrate ....... monospace field, 2ch cell, no photograph\n  bearing ......... the grid measures the bend; a photo would hide it\n  dispersion ...... legislated · go #8E00FF · attn #3600DA · no red, no green\n  emission ........ inward · the characters are the phosphor\ndiff --git a/obsessions.md b/obsessions.md\n@@ -1,6 +1,6 @@\n   taste is the whole product\n - generated at scale\n + authored, on the system\n   culture over algorithm\n   world before surface\n0x0000  48 48 47 20 43 4f 52 54  45 58 20 c2 b7 20 67 6c  HHG CORTEX · gl\n0x0010  61 73 73 63 69 20 c2 b7  20 74 68 65 20 72 65 63  assci · the rec\n0x0020  6f 72 64 20 69 73 20 64  72 61 77 6e 20 69 6e 20  ord is drawn in\n0x0030  63 68 61 72 61 63 74 65  72 73 2c 20 61 67 65 6e  characters, agen\n0x0040  63 79 20 66 6c 6f 61 74  73 20 6f 6e 20 67 6c 61  cy floats on gla\n┌─ H-401 bones ─┐┌─ H-404 approval ─┐┌─ H-405 telemetry ─┐┌─ H-406 window ─┐\n│ ▓▒░ presence  ││ reviewer · diff  ││ 12:04 gate opened ││ live   < 30m   │\n│ ░▒▓ substrate ││ reason · the nod ││ 12:07 lane moved  ││ bright <  2h   │\n└───────────────┘└──────────────────┘└───────────────────┘└────────────────┘\nop@hub › _';
+
+  // Paint the substrate, tiled tall enough to fill each stage, with the epoq
+  // signal inks marking what they always mark. Never red.
+  function paint(id, reps){
+    var t = [];
+    for (var i = 0; i < reps; i++) t.push(FIELD);
+    document.getElementById(id).innerHTML = t.join('\n')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/^(\s*\+.*)$/gm, '<span class="hum">$1</span>')
+      .replace(/^(\s*-\s.*)$/gm, '<span class="go">$1</span>')
+      .replace(/(op@hub ›)/g, '<span class="hum">$1</span>')
+      .replace(/(DRIVING|LIVE)/g, '<span class="hum">$1</span>')
+      .replace(/(OWED)/g, '<span class="go">$1</span>');
+  }
+  paint('field-2', 3); paint('field-2b', 3); paint('field-4', 3);
+
+  glassci.auto();
+  document.getElementById('r-tier').textContent = document.documentElement.getAttribute('data-glassci-tier');
+  document.getElementById('r-corner').textContent = document.documentElement.getAttribute('data-glassci-squircle');
+
+  // S2 / S2·B — drag the slabs. Pointer events only; no library.
+  ['slab','slab-b'].forEach(function(id){
+    var s = document.getElementById(id), stage = s.parentElement, drag = null;
+    s.addEventListener('pointerdown', function(e){
+      var b = s.getBoundingClientRect(), p = stage.getBoundingClientRect();
+      drag = { dx: e.clientX - b.left, dy: e.clientY - b.top, p: p };
+      s.setPointerCapture(e.pointerId); e.preventDefault();
+    });
+    s.addEventListener('pointermove', function(e){
+      if (!drag) return;
+      var x = e.clientX - drag.p.left - drag.dx, y = e.clientY - drag.p.top - drag.dy;
+      s.style.left = Math.max(0, Math.min(x, drag.p.width  - s.offsetWidth )) + 'px';
+      s.style.top  = Math.max(0, Math.min(y, drag.p.height - s.offsetHeight)) + 'px';
+    });
+    s.addEventListener('pointerup', function(){ drag = null; });
+  });
+
+  // ── the substrate ─────────────────────────────────────────────────────────
+  // The cells get their record MONOCHROME on purpose: all colour on this wall
+  // is the material, never the ground. Only H1 tints, because there the lane
+  // state is real information rather than decoration.
+  var CELL = "\u250c\u2500 cortex \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2510\n\u2502 400_glassci      \u2502 DRIVING \u2502\n\u2502 glass-stage      \u2502 LIVE    \u2502\n\u2502 epoq3 \u00b7 v3.58.1  \u2502 GARDEN  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lens --verb\n  the record, in characters", HUBR = "\u250c\u2500 project \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2500\u2500\u252c\u2500 tier \u2500\u252c\u2500 last \u2500\u2500\u2500\u2510\n\u2502 400_glassci \u00b7 the material          \u2502 DRIVING   \u2502 T1     \u2502 00:00:12 \u2502\n\u2502 glass-stage \u00b7 terminal theme        \u2502 LIVE      \u2502 T1     \u2502 3d 11:40 \u2502\n\u2502 epoq3 \u00b7 v3.58.1 \u00b7 accession floor   \u2502 GARDEN    \u2502 T1     \u2502 1d 06:02 \u2502\n\u2502 the-watch \u00b7 the weekly wrap         \u2502 OWED      \u2502 T2     \u2502 04:18:55 \u2502\n\u2502 hub \u00b7 signal board                  \u2502 GARDEN    \u2502 T1     \u2502 2d 09:31 \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lane --show driving\n  400_glassci ...... the record is drawn in characters\n                     agency floats on glass\n                     the bones are presence\n                     the prompt is the door\nop@hub \u203a _", PAPR = "\u250c\u2500 project \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2500\u2500\u252c\u2500 tier \u2500\u2510\n\u2502 400_glassci \u00b7 the material          \u2502 DRIVING   \u2502 T1     \u2502\n\u2502 glass-stage \u00b7 terminal theme        \u2502 LIVE      \u2502 T1     \u2502\n\u2502 epoq3 \u00b7 v3.58.1 \u00b7 accession floor   \u2502 GARDEN    \u2502 T1     \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lane --show driving\n  the record is printed \u00b7 the agency is glass";
+
+  function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function plain(sel, text){
+    document.querySelectorAll(sel).forEach(function(n){ n.innerHTML = esc(text); });
+  }
+  function lanes(sel, text){
+    document.querySelectorAll(sel).forEach(function(n){
+      n.innerHTML = esc(text)
+        .replace(/(op@hub ›)/g, '<span class="hum">$1</span>')
+        .replace(/\b(DRIVING)\b/g, '<span class="hum">$1</span>')
+        .replace(/\b(OWED)\b/g, '<span class="go">$1</span>');
+    });
+  }
+  plain('.cell-field, .cmag-field', CELL);
+  var TALL = [CELL,CELL,CELL,CELL].join('\n');
+  plain('.cell[data-verb="magnify"] .cell-field, .cmag-field', TALL);
+  lanes('#hub-record', HUBR);
+  lanes('#paper-rack-field', [PAPR,PAPR,PAPR].join('\n'));
+
+  // Point the cell loupes at whatever actually sits under them. Hardcoding the
+  // offsets breaks the moment the base font size changes.
+  document.querySelectorAll('.cell-loupe').forEach(function(w){
+    var mag=w.querySelector('.cmag'), fld=w.querySelector('.cmag-field'), Z=2.8;
+    var base=w.parentElement.querySelector('.cell-field');
+    var ox=base.offsetLeft, oy=base.offsetTop;          // the record's own origin
+    var cx=mag.offsetLeft+mag.offsetWidth/2 - ox;
+    var cy=mag.offsetTop +mag.offsetHeight/2 - oy;
+    fld.style.transform='scale('+Z+')';
+    fld.style.left=(mag.offsetWidth/2 - cx*Z)+'px';
+    fld.style.top =(mag.offsetHeight/2 - cy*Z)+'px';
+  });
+
+  glassci.auto();
+
+  // ── the tier switch ───────────────────────────────────────────────────────
+  (function(){
+    var host=document.getElementById('tiers'); if(!host) return;
+    ['lens','frost','plate'].forEach(function(t){
+      var b=document.createElement('button'); b.textContent=t; b.dataset.tier=t;
+      b.addEventListener('click',function(){
+        document.documentElement.setAttribute('data-glassci-tier',t);
+        host.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.tier===t);});
+        document.querySelectorAll('.glassci').forEach(function(e){ e.__glassci && e.__glassci.redraw(); });
+        var r=document.getElementById('r-tier'); if(r) r.textContent=t;
+      });
+      host.appendChild(b);
+    });
+    var cur=document.documentElement.getAttribute('data-glassci-tier');
+    host.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.tier===cur);});
+  })();
+
+</script>
+</body>
+</html>

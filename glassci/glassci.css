@@ -1,0 +1,188 @@
+/*! glassci — glass with nothing to refract but characters.
+ *  Zero dependencies. MIT. Part of THE GLASS STAGE (HHG).
+ *
+ *  Pairs with glassci.js, which measures the element, generates the lens filter
+ *  and the specular rim, and hands the results back as the custom properties
+ *  below. Nothing here is decorative: every layer is one physical behaviour.
+ *
+ *  Every ink defaults to a live EPOQ III token value and reads through var(),
+ *  so dropping this into an epoq page inherits the system automatically and
+ *  dropping it anywhere else still works. No red. The palette legislates none.
+ */
+
+:root {
+  --glassci-ink:        var(--ink, #000000);          /* the stage — black glass */
+  --glassci-paper:      var(--paper, #FFFFFF);        /* the specular */
+  --glassci-hum:        var(--hum, #6F75D7);          /* the locator — default emission */
+  --glassci-go:         var(--signal-go, #8E00FF);    /* the outer ray of the prism */
+  --glassci-live:       var(--signal-live, #2CFF05);  /* the inner ray */
+  --glassci-hairline:   var(--hairline, 0.5px);
+}
+
+/* ── the host ──────────────────────────────────────────────────────────────
+   Unclipped, so the emission can leave the silhouette.
+
+   `z-index: 0` is load-bearing, and the exact value matters. The pane below
+   sits at negative z-index so ordinary content paints over it without needing
+   a wrapper; that only works if this element is a stacking context, or the
+   pane escapes upward and hides behind an ancestor's background. But it has to
+   be a stacking context WITHOUT being a backdrop root — `isolation: isolate`,
+   `filter`, `opacity`, `contain` and `will-change` all form one, and inside a
+   backdrop root the lens has nothing behind it left to bend. A plain z-index
+   stacking context does not. That is the whole reason this is `z-index: 0`
+   and not `isolation: isolate`. */
+.glassci {
+  position: relative;
+  z-index: 0;
+  --glassci-shape: none;
+  --glassci-lens: blur(6px) saturate(1.06);
+  --glassci-radius: 28px;
+  --glassci-bleed: 44px;
+  --glassci-emission: var(--glassci-hum);
+  --glassci-fill: color-mix(in srgb, var(--glassci-paper) 5%, transparent);
+  --glassci-rim: 0.72;
+}
+
+/* ── 1 · the pane, and the light that leaves it ────────────────────────────
+   The lens. --glassci-lens is an SVG filter reference on the top tier and a
+   plain blur further down; the property is the same either way, so the ladder
+   costs no extra rules here.
+
+   The emission rides on this same layer as a drop-shadow rather than sitting
+   underneath as its own filled layer. That distinction is the whole look: a
+   filled layer behind the pane washes the interior violet, because the pane is
+   translucent by definition and cannot hide it. drop-shadow works off the
+   clipped silhouette's alpha, so the light only exists OUTSIDE the shape —
+   which is what emission actually looks like. The interior stays black. */
+.glassci::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  clip-path: var(--glassci-shape);
+  background: var(--glassci-fill);
+  -webkit-backdrop-filter: var(--glassci-lens);
+  backdrop-filter: var(--glassci-lens);
+  filter:
+    drop-shadow(0 0 calc(var(--glassci-bleed) / 3.2) color-mix(in srgb, var(--glassci-emission) 62%, transparent))
+    drop-shadow(0 0 var(--glassci-bleed) color-mix(in srgb, var(--glassci-emission) 34%, transparent));
+  pointer-events: none;
+}
+
+/* No bleed asked for — skip the two shadow passes entirely rather than paying
+   for a zero-radius blur on every paint. */
+.glassci[data-glassci-bleed="0"]::after { filter: none; }
+
+/* ── 2 · the rim ───────────────────────────────────────────────────────────
+   Drawn by the JS on the real squircle path, so it tracks the silhouette
+   exactly instead of approximating it with a border-radius. overflow stays
+   visible: the soft pass is wider than the box. */
+.glassci > .glassci__rim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.glassci > .glassci__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Content needs no rule at all to sit above the pane. Painting order inside a
+   stacking context puts negative-z children (the pane) before in-flow content,
+   so ordinary children are already on top. An earlier version forced
+   `position: relative` onto every child to guarantee it — unnecessary, and
+   harmful: `.glassci > *:not(…):not(…)` outranks a plain author class and would
+   quietly break anyone positioning their own content inside the tile.
+   Left as a note so it does not come back. */
+
+/* ── 3 · the field ─────────────────────────────────────────────────────────
+   The substrate. A monospace grid, not a photograph — a photo hides distortion,
+   a grid measures it. This is the thing the lens has to bend, and the reason
+   the bend is legible at all. */
+.glassci-field {
+  font-family: var(--font-mono, "Red Hat Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace);
+  white-space: pre;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── 4 · the phosphor ──────────────────────────────────────────────────────
+   Characters as the light source. The glow is stacked rather than single so it
+   falls off the way emission does instead of the way a drop-shadow does. */
+.glassci-lit {
+  color: var(--glassci-emission);
+  text-shadow:
+    0 0 2px  color-mix(in srgb, var(--glassci-emission) 90%, transparent),
+    0 0 8px  color-mix(in srgb, var(--glassci-emission) 55%, transparent),
+    0 0 22px color-mix(in srgb, var(--glassci-emission) 32%, transparent),
+    0 0 48px color-mix(in srgb, var(--glassci-emission) 18%, transparent);
+}
+
+/* ── the ladder ────────────────────────────────────────────────────────────
+   Three tiers, feature-tested at boot and stamped on <html> by glassci.js.
+   The specimen prints which one it is running — an instrument that lies about
+   its conditions is not an instrument. */
+
+/* T1 · lens — full refraction, legislated dispersion, rim, bleed. */
+[data-glassci-tier="lens"] .glassci { --glassci-fill: color-mix(in srgb, var(--glassci-paper) 4%, transparent); }
+
+/* T2 · frost — the property takes a blur but not an SVG reference. The bend is
+   gone, so the fill and the rim carry the material on their own. */
+[data-glassci-tier="frost"] .glassci { --glassci-fill: color-mix(in srgb, var(--glassci-paper) 9%, transparent); }
+
+/* T3 · plate — no backdrop-filter at all. Honest flat glass: a tinted plate,
+   a hairline, and the same rim. Nothing reflows between tiers. */
+[data-glassci-tier="plate"] .glassci { --glassci-fill: color-mix(in srgb, var(--glassci-paper) 12%, var(--glassci-ink)); }
+[data-glassci-tier="plate"] .glassci::after {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: inset 0 0 0 var(--glassci-hairline) color-mix(in srgb, var(--glassci-paper) 14%, transparent);
+}
+
+/* Native continuous corners where the engine has them — but only when a keyword
+   actually matches the exponent the JS was given. `n` can express shapes the
+   keywords cannot; those keep the generated path. */
+@supports (corner-shape: squircle) {
+  [data-glassci-squircle="native"] .glassci[data-glassci-native="round"]::after,
+  [data-glassci-squircle="native"] .glassci[data-glassci-native="squircle"]::after {
+    clip-path: none;
+    border-radius: var(--glassci-radius);
+  }
+  [data-glassci-squircle="native"] .glassci[data-glassci-native="round"]::after { corner-shape: round; }
+  [data-glassci-squircle="native"] .glassci[data-glassci-native="squircle"]::after { corner-shape: squircle; }
+  /* data-glassci-native="off" — no keyword fits this exponent, keep the path */
+}
+
+/* ── reading conditions ────────────────────────────────────────────────────
+   Same idiom as EPOQ III: motion preference kills transitions, transparency
+   preference lifts the frost entirely and the glass reads as a solid plate. */
+@media (prefers-reduced-motion: reduce) {
+  .glassci, .glassci::after { transition: none !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glassci::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background: color-mix(in srgb, var(--glassci-paper) 14%, var(--glassci-ink));
+    filter: none;
+  }
+  .glassci-lit { text-shadow: none; }
+}
+
+@media print {
+  .glassci > .glassci__rim { display: none; }
+  .glassci::after { -webkit-backdrop-filter: none; backdrop-filter: none; background: none; filter: none; }
+  .glassci-lit { color: var(--glassci-ink); text-shadow: none; }
+}
