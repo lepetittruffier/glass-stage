@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Red+Hat+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/glassci/glassci.css">
 <style>
   :root{
     /* epoq3-conformant: every ink is a live EPOQ III token (system.css v3.58.1). no red, no magenta (pruned), no foreign hue. */
@@ -147,6 +148,43 @@
 
   footer{padding:60px 0 90px;font-family:var(--font-mono);color:var(--dim);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase}
+  /* ── 07 · glassci — the material ────────────────────────────────────────
+     Reuses the page's .term chrome. Everything below is layout only; the
+     material itself lives in /glassci/glassci.css. */
+  .gc-stage{position:relative;height:420px;overflow:hidden;background:var(--stage);padding:22px 24px}
+  .gc-field{position:absolute;inset:22px 24px;color:#4A4A52;
+    font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli);white-space:pre;pointer-events:none;
+    -webkit-user-select:none;user-select:none}
+  .gc-field .live{color:var(--live)} .gc-field .go{color:var(--flag)}
+  .gc-lens{position:absolute;top:74px;left:52px;width:min(430px,60%);height:180px;cursor:grab;
+    display:grid;place-items:center;touch-action:none}
+  .gc-lens:active{cursor:grabbing}
+  .gc-lens .l{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--paper);opacity:.45}
+  .gc-tile{position:absolute;right:34px;bottom:30px;width:196px;height:196px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+  /* 2.4px, not 1.5 — small enough to read as an icon, large enough to survive a
+     browser minimum-font-size setting turning a 50-line face into a smear */
+  .gc-tile .muse-art{font-size:2.4px;line-height:1.1}
+  .gc-tile .cap{letter-spacing:.34em;color:var(--hum);font-size:var(--fz-mono-6);text-transform:uppercase}
+
+  .gc-laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);margin-top:26px}
+  .gc-laws div{background:var(--stage);padding:18px 20px}
+  .gc-laws .n{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);color:var(--live);text-transform:uppercase}
+  .gc-laws .h{display:block;margin:4px 0 6px;font-size:var(--fz-heading-3);letter-spacing:-.01em}
+  .gc-laws .b{font-size:13px;line-height:1.55;color:var(--dim)}
+
+  .gc-read{display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;
+    font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .gc-read b{color:var(--live);font-weight:400}
+  @media(max-width:640px){
+    .gc-lens{width:66%;height:140px;left:24px;top:60px}
+    .gc-tile{display:none}
+  }
+
   @media(max-width:640px){
     .sw{grid-template-columns:44px 1fr;grid-template-areas:"chip tok" "chip hex" "chip role"}
     .sw .chip{grid-area:chip} .sw .role{font-size:13px}
@@ -503,6 +541,115 @@ esac
     </div>
   </section>
 
+  <!-- ── GLASSCI ─────────────────────────────────────── -->
+  <section>
+    <div class="sechead"><span class="n">07</span><h2>Glassci</h2><span class="t">the material · glass with nothing to refract but characters · drag the lens</span></div>
+
+    <div class="term">
+      <div class="term-bar"><span class="dot a"></span><span class="dot b"></span><span class="dot c"></span>
+        <span class="term-title">op@hub — glassci — the lens on the record</span></div>
+      <div class="gc-stage" id="gc-stage">
+        <pre class="gc-field" id="gc-field"></pre>
+        <div class="gc-lens glassci" id="gc-lens" data-glassci
+             data-glassci-radius="24" data-glassci-depth="30" data-glassci-strength="42"
+             data-glassci-dispersion="5" data-glassci-blur="2" data-glassci-bleed="26"
+             data-glassci-emission="#5F5295" data-glassci-rim="0.85"><span class="l">drag me</span></div>
+        <div class="gc-tile glassci" data-glassci
+             data-glassci-radius="0.26" data-glassci-n="4.2" data-glassci-depth="12"
+             data-glassci-strength="16" data-glassci-dispersion="2" data-glassci-blur="2"
+             data-glassci-bleed="34" data-glassci-emission="#6F75D7" data-glassci-rim="0.8"
+             data-glassci-fill="rgba(4,4,7,.94)">
+          <pre class="muse-art glassci-lit">                                           --- -
+                                  -- -- --      - -- -- --
+                              ///-                        - -\
+                           ////                               \\\
+                         ///         --- ---- ---- ---          \\\
+                        //      --- -                 --- -       \\\
+                       //   // /      ----- ---------      \\\      \\
+                     //    /    /- ---               ----\    \\\    \\
+                     |       ///                          \\\    \    \\
+                    |                                        \\\       \
+                    |                 ---------- --        |  |         |
+                   |  |          ------           --\\     |   |  |     ||
+                   |  |                               \\\   |   |  |     |
+                  ||  |       |        |        |       \\\ |   |  |     |
+                  ||   |      ||\     || \     ||         \\\|  ||  |    |
+                  ||   ||    ||| \    | |\\    | \          ||   |  |    |
+                  |     |    | ||\\   | | \\   | \\          ||  |  |    ||
+                 ||     |\   |  | \\ ||  \ \\ ||  \\         ||  |   |    |
+                 ||      \\ |   |\ \\|    \  \|    \\-|      ||   |  |    |
+                 ||       \||    \\ ||     \\||       |       ||  |  |    |
+                 ||          ---- \\|       \/ ----   ||      ||  |   |   |
+                 || |     ---   --           ---   -   |      ||   |  |   |
+                 || |      _______            ______   |      ||   |  |   |
+                 || |     _________          ______ _  ||     ||   |  |   |
+                 || |    ____   __           __    |_   |      ||  |  |   |
+                | | |    _  |  '|              |<span class="pupil">#</span>' |    |      ||  |  |   |
+                | | |       |<span class="pupil">#</span>  |              ||  |    |      ||  |   |  |
+                 || |        \ /|               \-/|    |      ||  |   |  |
+                 || |         -/                 -/-    |      ||  |   |  |
+                 || |     -------             ------    |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 || |                                   |      ||  |   |  |
+                 ||||                .                  |      ||  |   |  |
+                 | |||               .                  |      ||  |   | |
+                 | | |               .                 ||     | |  |   | |
+                 | | ||                                |      ||   |   | |
+                 | |  \           ______              ||      |    |  |  |
+                 | || \\                              |       |    |  | ||
+                  | |  \\          -----             //    |            |
+                  | |    \             //           //    ||            |
+                  ||||    \\\        //     |      //     |       |    ||
+                -- | |      \------//       |    ///     ||      |     |
+              //--\\|||                     ||   /       |       |    || |
+              |    |\\|                      |          //      |    //  |
+              ||   | \\\                     ||        //      //    /   |
+               |      \/                      \\   //-\\      //   //\--//
+               \\\---//                        \\ // //\|    //   //
+                                                \  |//     ///  //
+                                                   \\     //  ///
+                                                     \\------/</pre>
+          <span class="cap">HHG&nbsp;CORTEX</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gc-read">
+      <span>tier <b id="gc-tier">…</b></span>
+      <span>corners <b id="gc-corner">…</b></span>
+      <span>dispersion <b>#8E00FF · #2CFF05</b></span>
+      <span>red in the fringe <b>none</b></span>
+      <span>dependencies <b>0</b></span>
+    </div>
+
+    <div class="gc-laws">
+      <div><span class="n">law 01</span><b class="h">Characters, not photographs</b>
+        <span class="b">A photo hides distortion. A monospace grid measures it. The bend is legible because the thing behind the glass is a ruler.</span></div>
+      <div><span class="n">law 02</span><b class="h">Lit from inside</b>
+        <span class="b">Apple's glass is lit by its environment. This one is lit by its contents — the characters are the phosphor, and the light leaves the tile.</span></div>
+      <div><span class="n">law 03</span><b class="h">Black glass</b>
+        <span class="b">The pane is dark. The specular rim is the only white on it.</span></div>
+      <div><span class="n">law 04</span><b class="h">The prism obeys the palette</b>
+        <span class="b">Ordinary aberration splits into red, green, blue. This one splits into inks you name — and the default set contains no red. Epoq legislates none, down to the physics.</span></div>
+    </div>
+
+    <div class="card" style="margin-top:26px">
+      <div class="card-h"><div class="l"><span class="name">Take it</span><span class="path">glassci/glassci.css + glassci.js — MIT, zero dependencies</span></div>
+        <span class="what">Two files. No WebGL, no canvas, no build step. Every ink reads through var(), so it inherits an epoq page and still works anywhere else.</span>
+        <button class="copy" data-t='<link rel="stylesheet" href="glassci/glassci.css">\n<script src="glassci/glassci.js"></script>\n\n<div class="glassci" data-glassci\n     data-glassci-radius="0.26"\n     data-glassci-depth="18"\n     data-glassci-strength="24"\n     data-glassci-dispersion="3">\n  <pre class="glassci-lit">the record, drawn in characters</pre>\n</div>'>Copy</button></div>
+      <pre>&lt;link rel="stylesheet" href="glassci/glassci.css"&gt;
+&lt;script src="glassci/glassci.js"&gt;&lt;/script&gt;
+
+&lt;div class="glassci" data-glassci
+     data-glassci-radius="0.26"
+     data-glassci-depth="18"
+     data-glassci-strength="24"
+     data-glassci-dispersion="3"&gt;
+  &lt;pre class="glassci-lit"&gt;the record, drawn in characters&lt;/pre&gt;
+&lt;/div&gt;</pre>
+    </div>
+  </section>
+
   <hr class="rule">
   <footer>THE GLASS STAGE · an epoq terminal theme · authored on the stage · HHG 2026-07-08 · <span class="dim">no red — epoq legislates none</span></footer>
 
@@ -519,6 +666,37 @@ esac
       });
     });
   });
+</script>
+<script src="/glassci/glassci.js"></script>
+<script>
+  (function(){
+    var FIELD = '┌─ cortex ────────────────────────────┬─ lane ────┬─ tier ──┬─ last ───┐\n│ 400_glassci · the material          │ DRIVING   │ T1      │ 00:00:12 │\n│ glass-stage · terminal theme        │ LIVE      │ T1      │ 3d 11:40 │\n│ epoq3 · v3.58.1 the accession floor │ GARDEN    │ T1      │ 1d 06:02 │\n└─────────────────────────────────────┴───────────┴─────────┴──────────┘\nop@hub › lens --describe --substrate=characters\n  substrate ....... monospace field, 2ch cell, no photograph\n  bearing ......... the grid measures the bend; a photo would hide it\n  dispersion ...... legislated · go #8E00FF · live #2CFF05 · no red\n  emission ........ inward · the characters are the phosphor\n  the record is drawn in characters, agency floats on glass\n  the bones are presence, the prompt is the door\n0x0000  48 48 47 20 43 4f 52 54  45 58 20 c2 b7 20 67 6c\n0x0010  61 73 73 63 69 20 c2 b7  20 6e 6f 20 72 65 64 20\nop@hub › _';
+    var f = document.getElementById('gc-field');
+    if (!f) return;
+    var t = []; for (var i = 0; i < 3; i++) t.push(FIELD);
+    f.innerHTML = t.join('\n').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/(op@hub ›)/g, '<span class="live">$1</span>')
+      .replace(/(DRIVING|LIVE)/g, '<span class="live">$1</span>');
+
+    glassci.auto();
+    document.getElementById('gc-tier').textContent   = document.documentElement.getAttribute('data-glassci-tier');
+    document.getElementById('gc-corner').textContent = document.documentElement.getAttribute('data-glassci-squircle');
+
+    // drag the lens across the record — pointer events only, no library
+    var s = document.getElementById('gc-lens'), stage = document.getElementById('gc-stage'), d = null;
+    s.addEventListener('pointerdown', function(e){
+      var b = s.getBoundingClientRect(), p = stage.getBoundingClientRect();
+      d = { dx: e.clientX - b.left, dy: e.clientY - b.top, p: p };
+      s.setPointerCapture(e.pointerId); e.preventDefault();
+    });
+    s.addEventListener('pointermove', function(e){
+      if (!d) return;
+      var x = e.clientX - d.p.left - d.dx, y = e.clientY - d.p.top - d.dy;
+      s.style.left = Math.max(0, Math.min(x, d.p.width  - s.offsetWidth )) + 'px';
+      s.style.top  = Math.max(0, Math.min(y, d.p.height - s.offsetHeight)) + 'px';
+    });
+    s.addEventListener('pointerup', function(){ d = null; });
+  })();
 </script>
 </body>
 </html>
