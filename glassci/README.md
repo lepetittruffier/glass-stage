@@ -40,8 +40,9 @@ The pane is dark. The specular rim is the only white on it.
 
 **4 · The prism obeys the palette.**
 Ordinary chromatic aberration splits into red/green/blue because that is what
-light does. glassci splits into inks **you name**, and the default set contains
-no red at all. A refractive material that legislates its own dispersion is the
+light does. glassci splits into inks **you name** — the default pair is `#8E00FF` against
+`#3600DA`, warm violet against cool blue-violet, so the whole split lives inside
+one axis with no red and no green in it at all. A refractive material that legislates its own dispersion is the
 point, not a limitation — this is the one thing here you will not find in any
 other implementation, because it requires having a palette worth obeying.
 
@@ -83,7 +84,7 @@ Every option is also a `data-glassci-*` attribute, which wins over the argument.
 | `bias` | `0.5` | `0`–`1` — which axis the lens leans on. `0` = X only, `1` = Y only |
 | `invert` | `0` | `0`–`1` — develop the backdrop through the pane |
 | `saturate` | `1.06` | saturation of the refracted image |
-| `fringe` | `['#8E00FF','#2CFF05']` | the legislated prism — `[outer ray, inner ray]` |
+| `fringe` | `['#8E00FF','#3600DA']` | the legislated prism — `[outer ray, inner ray]`, both violet |
 | `emission` | `'#6F75D7'` | the ink the tile emits |
 | `bleed` | `44` | px — how far that emission escapes the tile |
 | `fill` | `''` | pane tint. empty = the tier decides; any CSS colour overrides |

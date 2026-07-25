@@ -60,7 +60,12 @@
                                          // Frost (blur) softens the IMAGE; this softens
                                          // the BEND. Drop both for a crisp lens.
     saturate:   1.06,
-    fringe:     ['#8E00FF', '#2CFF05'],  // the legislated prism — [outer ray, inner ray]
+    /* The legislated prism — [outer ray, inner ray]. Both inside the violet axis:
+       #8E00FF go (warm violet) against #3600DA attn (cool blue-violet). Far enough
+       apart in hue that the dispersion still reads as a prism, with no green and
+       no red in the fringe. epoq's own token calls the green SPECIAL OCCASIONS
+       ONLY — a fringe on every pane is the opposite of a special occasion. */
+    fringe:     ['#8E00FF', '#3600DA'],
     emission:   '#6F75D7',               // the ink the tile emits
     bleed:      44,                      // px — how far that emission escapes the tile
     rim:        0.72,                    // specular edge strength 0..1

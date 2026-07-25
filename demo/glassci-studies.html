@@ -14,6 +14,7 @@
     --ink:#000000; --paper:#FFFFFF; --line:#272727; --grey-51:#515151;
     --dim:rgba(255,255,255,.62);
     --hum:#6F75D7; --dusk:#5F5295; --signal-go:#8E00FF; --signal-live:#2CFF05;
+    --novel:#332078; --signal-attn:#3600DA; --go:#8E00FF;
     --font-mono:"Red Hat Mono","IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     --fz-mono-6:7px; --lh-mono-6:2; --track-mono-6:.3em;
     --fz-mono-cli:14px; --lh-mono-cli:1.5;
@@ -34,11 +35,11 @@
   .readout{display:flex;gap:var(--s-3);flex-wrap:wrap;padding:var(--s-2) 0;
     font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
     text-transform:uppercase;color:var(--dim)}
-  .readout b{color:var(--signal-live);font-weight:400}
+  .readout b{color:var(--hum);font-weight:400}
 
   section{padding:var(--s-4) 0}
   .sechead{display:flex;align-items:baseline;gap:var(--s-2);margin-bottom:var(--s-3);flex-wrap:wrap}
-  .sechead .n{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);color:var(--signal-live)}
+  .sechead .n{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);color:var(--hum)}
   .sechead h2{font-size:var(--fz-page-title);font-weight:400;margin:0;letter-spacing:-.02em}
   .sechead .t{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
     text-transform:uppercase;color:var(--dim);max-width:52ch}
@@ -68,7 +69,8 @@
   .stage .glassci-field{position:absolute;inset:var(--s-3);color:var(--grey-51);
     font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
   .stage .glassci-field .go{color:var(--signal-go)}
-  .stage .glassci-field .live{color:var(--signal-live)}
+  .glassci-field .hum{color:var(--hum)} .glassci-field .go{color:var(--signal-go)}
+  .stage .glassci-field .live{color:var(--hum)}
   .stage .glassci-field .hum{color:var(--hum)}
 
   /* S2 — the draggable slab */
@@ -84,7 +86,7 @@
   .stage--paper{background:var(--paper)}
   .stage--paper .glassci-field{color:var(--grey-51)}
   .stage--paper .glassci-field .go{color:var(--signal-go)}
-  .stage--paper .glassci-field .live{color:#1F7A0B}
+  .stage--paper .glassci-field .live{color:var(--novel)}
   .slab--paper .lbl{color:var(--paper);opacity:.62}
 
   /* S3 — the rack */
@@ -93,7 +95,7 @@
     justify-content:center}
   .panel .k{font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
   .panel .v{font-size:var(--fz-mono-cli);color:var(--paper)}
-  .panel .v.live{color:var(--signal-live)}
+  .panel .v.live{color:var(--hum)}
 
   /* S4 — the black mirror */
   .mirror{position:absolute;inset:var(--s-5) var(--s-4);display:grid;place-items:center}
@@ -103,7 +105,7 @@
   .note{padding-top:var(--s-2);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
   .actrule{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
-    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--signal-live);
+    letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--hum);
     border-top:var(--hairline) solid var(--line);padding-top:var(--s-2);margin-top:var(--s-4)}
   footer{padding:var(--s-5) 0 var(--s-6);color:var(--dim);
     font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase}
@@ -113,133 +115,112 @@
   .tiers button{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim);
     background:transparent;border:var(--hairline) solid var(--line);padding:2px 12px;cursor:pointer}
-  .tiers button.on{color:var(--signal-live);border-color:var(--signal-live)}
+  .tiers button.on{color:var(--hum);border-color:var(--hum)}
 
   /* ══ ACT II · the contact sheet ══════════════════════════════════════════ */
-  /* the sheet breaks out of the 1080 measure — a contact sheet is for comparing,
-     and comparison needs the cells side by side. No transform: it would create a
-     containing block around every pane on the page. */
-  .sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--s-2);
+  /* Breaks out of the 1080 measure — comparison needs the cells side by side.
+     No transform: it would create a containing block around every pane. */
+  .sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--s-3);
     width:min(1440px, calc(100vw - 2 * var(--gut)));
     margin-left:calc(50% - min(720px, 50vw - var(--gut)))}
   .sheet--3{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
   .cell{margin:0}
-  .cell-stage{position:relative;height:282px;overflow:hidden;background:var(--ink);
-    border:var(--hairline) solid var(--line);padding:14px}
+  .cell-stage{position:relative;height:268px;overflow:hidden;background:var(--ink);
+    border:var(--hairline) solid var(--line)}
   .cell-stage--paper{background:var(--paper)}
-  .cell-stage--paper .cell-field{color:var(--grey-51)}
+  .cell-stage--paper .cell-field{color:#8C8C93}
   .cell-stage--room{background:#1E1E1E}
-  .cell-field{position:absolute;inset:14px;color:#4A4A52;
+
+  /* THE GROUND. Monochrome, quiet, inset from the frame — it is the ruler the
+     bend gets measured against, never the subject. Round 2 had it at #4A4A52
+     edge-to-edge with four registers stacked; it shouted over every object. */
+  .cell-field{position:absolute;left:24px;top:24px;color:#33333D;
     font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
-  .cell-field--tiny{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);inset:0}
-  .cell figcaption{padding-top:var(--s-1);display:flex;flex-direction:column;gap:2px}
+  .cell figcaption{padding-top:var(--s-2);display:flex;flex-direction:column;gap:3px}
   .cell figcaption b{font-family:var(--font-mono);font-size:var(--fz-mono-6);
     line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);color:var(--paper);font-weight:400}
-  .cell figcaption span{font-size:12px;line-height:1.5;color:var(--dim)}
+  .cell figcaption span{font-family:var(--font-mono);font-size:var(--fz-mono-6);
+    line-height:1.9;letter-spacing:.08em;color:var(--dim);text-transform:none}
 
-  /* the verbs — position only */
-  /* MAGNIFY · the base record prints at the 7px law; the loupe holds a scaled
-     copy UNDER the glass. The filter bends, it does not zoom — keeping those
-     two jobs separate is the only honest way to build a loupe. */
-  .cell[data-verb="magnify"] .cell-field{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6)}
-  .cell-loupe{position:absolute;inset:14px;pointer-events:none}
-  .cmag{position:absolute;left:44px;top:52px;width:126px;height:126px;overflow:hidden;border-radius:50%}
+  /* every object is absolutely placed by the generator on the character grid */
+  .g-obj{position:absolute}
+
+  /* MAGNIFY · the base prints at the 7px law; the loupe holds a scaled copy
+     UNDER the glass. The filter bends, it does not zoom — keeping those two
+     jobs separate is the only honest way to build a loupe. */
+  .cell[data-verb="magnify"] .cell-field{font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
+    left:107px;top:-60px;color:#3A3A46}
+  .cell-loupe{position:absolute;inset:0;pointer-events:none}
+  .cmag{position:absolute;left:100px;top:64px;width:140px;height:140px;overflow:hidden;border-radius:50%}
   .cmag-field{position:absolute;transform-origin:0 0;margin:0;white-space:pre;color:var(--paper);
     font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6)}
-  .cell-loupe .loupe-glass{position:absolute;left:44px;top:52px;width:126px;height:126px}
-  .g-bar{position:absolute}
-  .g-scan{position:absolute;left:12px;right:12px;top:0;height:18px;
-    animation:gscan 4.6s linear infinite}
-  @keyframes gscan{0%{transform:translateY(8px)}100%{transform:translateY(256px)}}
-  .g-sel{position:absolute;left:14px;top:128px;width:286px;height:66px}
-  .g-cur{position:absolute;left:90px;top:245px;width:9px;height:21px;
-    animation:gblink 1.05s steps(1) infinite}
-  @keyframes gblink{50%{visibility:hidden}}
-  .g-label{position:absolute;right:16px;bottom:18px;width:190px;padding:10px 12px;
-    display:flex;flex-direction:column;gap:3px}
-  .g-st{position:absolute;width:150px;height:104px}
-  .g-st--a{left:34px;top:52px}
-  .g-st--b{left:112px;top:98px}
-  .g-spine{position:absolute;left:14px;top:14px;bottom:14px;width:46px}
-  .g-toast{position:absolute;right:16px;bottom:16px;padding:9px 14px}
-  .g-pal{position:absolute;left:26px;right:26px;top:70px;padding:14px 16px;
-    display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .g-gut{position:absolute;left:14px;width:266px;height:21px}
-  .g-gut--rm{top:203px}
-  .g-gut--ad{top:224px}
-  .g-chiprail{position:absolute;left:14px;bottom:20px;display:flex;gap:8px;flex-wrap:wrap}
+  .cell-loupe .loupe-glass{position:absolute;left:100px;top:64px;width:140px;height:140px}
+
+  .g-label{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 16px}
+  .g-pal{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:0 16px}
+  .g-chiprail{position:absolute;display:flex;gap:9px;flex-wrap:wrap}
   .g-chip{height:24px;padding:0 14px;display:inline-flex;align-items:center;
     font-family:var(--font-mono);font-size:var(--fz-mono-6);letter-spacing:var(--track-mono-6);
     text-transform:uppercase;color:var(--paper)}
 
-  /* shared glass-content type */
-  .g-label .k,.g-toast .k,.ag .k,.panel .k{font-family:var(--font-mono);font-size:var(--fz-mono-6);
+  /* type inside the glass — one mono law, one body size */
+  .g-label .k,.ag .k,.panel .k{font-family:var(--font-mono);font-size:var(--fz-mono-6);
     line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
-  .g-label .v,.g-toast .v,.ag .v,.panel .v{font-size:13px;color:var(--paper)}
-  .ag .v.live{color:var(--signal-live)}
-  .g-pal .p{font-family:var(--font-mono);font-size:var(--fz-mono-cli);color:var(--signal-live)}
-  .g-pal .q,.t-pal .q{font-family:var(--font-mono);font-size:var(--fz-mono-cli);color:var(--paper)}
-  .g-pal .c,.t-pal .c{color:var(--signal-live);animation:gblink 1.05s steps(1) infinite}
+  .g-label .v,.ag .v,.panel .v{font-size:13px;line-height:1.5;color:var(--paper)}
+  .ag .v.live{color:var(--signal-live)}   /* the one live thing on the wall */
+  .g-pal .p,.g-pal .q{font-family:var(--font-mono);font-size:var(--fz-mono-cli);line-height:1}
+  .g-pal .p{color:var(--hum)} .g-pal .q{color:var(--paper)}
+  .g-pal .c{color:var(--go);animation:gblink 1.05s steps(1) infinite}
+  @keyframes gblink{50%{visibility:hidden}}
 
   /* ══ ACT III · H1 the hub ════════════════════════════════════════════════ */
-  .hub{display:flex;min-height:520px;background:var(--ink);overflow:hidden}
-  .hub-rail{width:150px;flex:none;border-right:var(--hairline) solid var(--line);
-    padding:var(--s-3) var(--s-2);display:flex;flex-direction:column;gap:10px}
+  .hub{display:flex;min-height:540px;background:var(--ink);overflow:hidden}
+  .hub-rail{width:158px;flex:none;border-right:var(--hairline) solid var(--line);
+    padding:var(--s-3) var(--s-3);display:flex;flex-direction:column;gap:11px}
   .hub-mark{font-family:var(--font-mono);font-size:var(--fz-mono-cli);color:var(--paper);
     letter-spacing:.3em;margin-bottom:var(--s-2)}
   .hub-nav{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
-  .hub-nav.is-on{color:var(--signal-live)}
+  .hub-nav.is-on{color:var(--hum)}
   .hub-rail-foot{margin-top:auto;font-family:var(--font-mono);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);color:var(--dim);
     border-top:var(--hairline) solid var(--line);padding-top:var(--s-2)}
   .hub-main{flex:1;min-width:0;display:flex;flex-direction:column}
   .hub-top{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-2);
-    padding:var(--s-2) var(--s-3);border-bottom:var(--hairline) solid var(--line)}
+    padding:var(--s-3) var(--s-4);border-bottom:var(--hairline) solid var(--line)}
   .hub-title{font-size:var(--fz-page-title);letter-spacing:-.02em;color:var(--paper)}
   .hub-ctx{font-family:var(--font-mono);font-size:var(--fz-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
-  .hub-body{position:relative;flex:1;padding:var(--s-3);overflow:hidden}
-  .hub-body .glassci-field{position:absolute;inset:var(--s-3);color:#4A4A52;
+  .hub-body{position:relative;flex:1;padding:var(--s-4);overflow:hidden}
+  .hub-body .glassci-field{position:absolute;left:var(--s-4);top:var(--s-4);color:#33333D;
     font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
-  .hub-agency{position:absolute;right:var(--s-3);top:var(--s-3);width:250px;
-    display:flex;flex-direction:column;gap:var(--s-2)}
-  .ag{padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+  .hub-agency{position:absolute;right:var(--s-4);top:var(--s-4);width:250px;
+    display:flex;flex-direction:column;gap:var(--s-3)}
+  .ag{padding:14px 16px;display:flex;flex-direction:column;gap:5px}
 
-  /* ══ ACT III · H2 the loupe ══════════════════════════════════════════════ */
-  .loupe-stage{position:relative;height:480px;overflow:hidden;background:var(--ink);
-    padding:var(--s-3);cursor:crosshair}
-  #loupe-base{position:absolute;inset:var(--s-3);color:#43434B;
-    font-size:var(--fz-mono-6);line-height:var(--lh-mono-6)}
-  .loupe{position:absolute;left:180px;top:150px;width:230px;height:230px;pointer-events:none}
-  .loupe-mag{position:absolute;inset:0;overflow:hidden;border-radius:50%}
-  .loupe-mag .glassci-field{position:absolute;left:0;top:0;transform-origin:0 0;
-    color:var(--paper);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6)}
-  .loupe-glass{position:absolute;inset:0}
-
-  /* ══ ACT III · H3 the terminal ═══════════════════════════════════════════ */
-  .term-stage{position:relative;height:470px;overflow:hidden;background:var(--stage);padding:22px 24px}
-  #term-record{position:absolute;inset:22px 24px;color:#5A5A64;
+  /* ══ ACT III · H2 the rack on paper ══════════════════════════════════════ */
+  .stage{position:relative;height:420px;overflow:hidden;background:var(--ink);padding:var(--s-4)}
+  .stage--paper{background:var(--paper)}
+  .stage .glassci-field{position:absolute;left:var(--s-4);top:var(--s-4);color:#33333D;
     font-size:var(--fz-mono-cli);line-height:var(--lh-mono-cli)}
-  .t-sel{position:absolute;left:24px;top:106px;width:min(560px,72%);height:105px}
-  .t-cur{position:absolute;left:32px;top:401px;width:9px;height:21px;
-    animation:gblink 1.05s steps(1) infinite}
-  .t-pal{position:absolute;right:26px;bottom:26px;width:min(340px,52%);padding:14px 16px;
-    display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
-  .t-pal .p{font-family:var(--font-mono);font-size:var(--fz-mono-cli);color:var(--signal-live)}
-  .t-pal .r{flex:0 0 100%;font-family:var(--font-mono);font-size:var(--fz-mono-6);
-    line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
+  .stage--paper .glassci-field{color:#8C8C93}
+  .rack{position:absolute;right:var(--s-4);bottom:var(--s-4);display:flex;gap:var(--s-3);flex-wrap:wrap}
+  .panel{width:300px;min-height:96px;padding:16px 18px;display:flex;flex-direction:column;
+    justify-content:center;gap:5px}
+  .stage--paper .panel .k{color:rgba(255,255,255,.62)}
+  .stage--paper .panel .v{color:var(--paper)}
 
   /* ══ ACT IV · the matrix ═════════════════════════════════════════════════ */
   .mxrow{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim);
-    padding:var(--s-3) 0 var(--s-1)}
-  .mx{position:absolute;left:36px;top:56px;right:36px;height:128px}
+    padding:var(--s-4) 0 var(--s-2)}
+  .mx{position:absolute;left:29px;top:63px;width:219px;height:63px}
 
   @media(max-width:640px){
     .hub-rail{display:none}
-    .hub-agency{position:static;width:auto;margin-top:var(--s-2)}
-    .loupe{display:none}
+    .hub-agency{position:static;width:auto;margin-top:var(--s-3)}
+    .rack{position:static;margin-top:var(--s-3)}
+    .panel{width:100%}
   }
 </style>
 </head>
@@ -256,7 +237,7 @@
     <div class="readout">
       <span>tier <b id="r-tier">…</b></span>
       <span>corners <b id="r-corner">…</b></span>
-      <span>dispersion <b>go · live</b></span>
+      <span>dispersion <b>go · attn</b></span>
       <span>red in the fringe <b>none</b></span>
     </div>
     <div class="tiers" id="tiers"></div>
@@ -367,36 +348,9 @@
     <div class="note">no frost · the glass develops the ground instead of shading it — the pane is black because the paper under it is inverted, so the bent characters stay legible</div>
   </section>
 
-  <!-- ── S3 ─────────────────────────────────────────────── -->
-  <section>
-    <div class="sechead"><span class="n">S3</span><h2>The rack</h2>
-      <span class="t">UI scale · 400_glassci's own parts in the real material</span></div>
-    <div class="plate stage" style="height:460px">
-      <pre class="glassci-field" id="field-3"></pre>
-      <div class="rack">
-        <div class="panel glassci" data-glassci data-glassci-radius="14" data-glassci-depth="12"
-             data-glassci-strength="17" data-glassci-dispersion="2" data-glassci-blur="5"
-             data-glassci-bleed="18" data-glassci-rim="0.6">
-          <span class="k">H-404 · approval</span><span class="v">reviewer · diff · reason</span>
-          <span class="k">two human gates, forever</span></div>
-        <div class="panel glassci" data-glassci data-glassci-radius="14" data-glassci-depth="12"
-             data-glassci-strength="17" data-glassci-dispersion="2" data-glassci-blur="5"
-             data-glassci-bleed="18" data-glassci-rim="0.6">
-          <span class="k">H-405 · telemetry</span><span class="v">12:07 lane moved</span>
-          <span class="k">the audit log, glass-skinned</span></div>
-        <div class="panel glassci" data-glassci data-glassci-radius="14" data-glassci-depth="12"
-             data-glassci-strength="17" data-glassci-dispersion="2" data-glassci-blur="5"
-             data-glassci-bleed="18" data-glassci-emission="#2CFF05" data-glassci-rim="0.6">
-          <span class="k">H-406 · window</span><span class="v live">live &lt; 30m</span>
-          <span class="k">the state is the heartbeat</span></div>
-      </div>
-    </div>
-    <div class="note">agency floats on glass · the record stays drawn in characters underneath</div>
-  </section>
-
   <!-- ── S4 ─────────────────────────────────────────────── -->
   <section>
-    <div class="sechead"><span class="n">S4</span><h2>The black mirror</h2>
+    <div class="sechead"><span class="n">S3</span><h2>The black mirror</h2>
       <span class="t">frost struck · dispersion at maximum · only the rim and the fringe prove it is there</span></div>
     <div class="plate stage" style="height:560px">
       <pre class="glassci-field" id="field-4"></pre>
@@ -414,89 +368,47 @@
   <!-- ══ ACT II · THE VERBS ═══════════════════════════════ -->
   <section>
     <div class="sechead"><span class="n">ACT II</span><h2>The verbs</h2>
-      <span class="t">one record · twelve things the glass does to it · the treatment is the only variable</span></div>
+      <span class="t">one record · six things the glass does to it · the treatment is the only variable</span></div>
     <div class="sheet">
       <figure class="cell" data-verb="magnify">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="cell-loupe"><div class="cmag"><pre class="cmag-field"></pre></div><div class="loupe-glass glassci" data-glassci data-glassci-radius="0.5" data-glassci-n="2" data-glassci-depth="16" data-glassci-strength="20" data-glassci-dispersion="3" data-glassci-bias="0.72" data-glassci-blur="0" data-glassci-bleed="18" data-glassci-rim="0.95"></div></div>
+          <div class="cell-loupe"><div class="cmag"><pre class="cmag-field"></pre></div><div class="loupe-glass glassci" data-glassci data-glassci-radius="0.5" data-glassci-n="2" data-glassci-depth="17" data-glassci-strength="22" data-glassci-dispersion="3" data-glassci-bleed="25" data-glassci-rim="0.72" data-glassci-bias="0.72" data-glassci-blur="0" data-glassci-emission="#6F75D7"></div></div>
         </div>
-        <figcaption><b>MAGNIFY</b><span>the 7px record, read through a scaled copy under the glass</span></figcaption>
+        <figcaption><b>MAGNIFY</b><span>mono is 7px by decree — the lens is how you read it</span></figcaption>
       </figure>
       <figure class="cell" data-verb="withhold">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="g-bar glassci" data-glassci data-glassci-radius="4" data-glassci-depth="14" data-glassci-strength="30" data-glassci-dispersion="11" data-glassci-softness="0.1" data-glassci-bias="0.1" data-glassci-blur="1" data-glassci-bleed="0" data-glassci-fill="rgba(0,0,0,.30)" data-glassci-rim="0.5" style="top:118px;left:14px;width:300px;height:26px"></div>
+          <div class="g-obj glassci" data-glassci data-glassci-radius="4" data-glassci-depth="4" data-glassci-strength="34" data-glassci-dispersion="13" data-glassci-bleed="0" data-glassci-rim="0.9" data-glassci-softness="0.1" data-glassci-bias="0.08" data-glassci-blur="2" data-glassci-emission="#332078" data-glassci-fill="rgba(6,2,18,.72)" style="left:24.0px;top:124px;width:176.4px;height:32px"></div>
         </div>
         <figcaption><b>WITHHOLD</b><span>present, shaped, unreadable — redaction as a material</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="scan">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-scan glassci" data-glassci data-glassci-radius="2" data-glassci-depth="10" data-glassci-strength="18" data-glassci-dispersion="6" data-glassci-bias="0.9" data-glassci-blur="0" data-glassci-bleed="22" data-glassci-emission="#2CFF05" data-glassci-rim="0.9"></div>
-        </div>
-        <figcaption><b>SCAN</b><span>a bar travelling the record — the OCR pass, the platen</span></figcaption>
       </figure>
       <figure class="cell" data-verb="select">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="g-sel glassci" data-glassci data-glassci-radius="3" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-bias="0.8" data-glassci-blur="0" data-glassci-bleed="14" data-glassci-emission="#5F5295" data-glassci-fill="rgba(111,117,215,.16)" data-glassci-rim="0.7"></div>
+          <div class="g-obj glassci" data-glassci data-glassci-radius="4" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-bias="0.8" data-glassci-blur="0" data-glassci-emission="#5F5295" data-glassci-fill="rgba(95,82,149,.16)" style="left:32.4px;top:45px;width:218.4px;height:63px"></div>
         </div>
         <figcaption><b>SELECT</b><span>a text selection as glass, not a blue rectangle</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="mark">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-cur glassci" data-glassci data-glassci-radius="1" data-glassci-depth="4" data-glassci-strength="9" data-glassci-dispersion="2" data-glassci-blur="0" data-glassci-bleed="16" data-glassci-emission="#2CFF05" data-glassci-fill="rgba(44,255,5,.20)" data-glassci-rim="1"></div>
-        </div>
-        <figcaption><b>MARK</b><span>the block cursor as one character of glass</span></figcaption>
       </figure>
       <figure class="cell" data-verb="annotate">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="g-label glassci" data-glassci data-glassci-radius="10" data-glassci-depth="14" data-glassci-strength="18" data-glassci-dispersion="3" data-glassci-blur="4" data-glassci-bleed="20"><span class="k">H-401 · BONES</span><span class="v">presence, always running</span></div>
+          <div class="g-obj g-label glassci" data-glassci data-glassci-radius="12" data-glassci-depth="10" data-glassci-strength="13" data-glassci-dispersion="2" data-glassci-bleed="15" data-glassci-rim="0.81" data-glassci-blur="4" data-glassci-emission="#6F75D7" style="left:133.2px;top:93px;width:196px;height:84px"><span class="k">H-401 · BONES</span><span class="v">presence, always running</span></div>
         </div>
         <figcaption><b>ANNOTATE</b><span>the wall label floats; the record keeps running under it</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="stack">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-st g-st--a glassci" data-glassci data-glassci-radius="14" data-glassci-depth="16" data-glassci-strength="22" data-glassci-dispersion="4" data-glassci-blur="1" data-glassci-bleed="18"></div><div class="g-st g-st--b glassci" data-glassci data-glassci-radius="14" data-glassci-depth="16" data-glassci-strength="22" data-glassci-dispersion="4" data-glassci-blur="1" data-glassci-bleed="18" data-glassci-emission="#8E00FF"></div>
-        </div>
-        <figcaption><b>STACK</b><span>two panes, the upper refracting the lower — glass composes</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="spine">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-spine glassci" data-glassci data-glassci-radius="0" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="4" data-glassci-bias="0.15" data-glassci-blur="2" data-glassci-bleed="20"></div>
-        </div>
-        <figcaption><b>SPINE</b><span>a vertical rail — the nav register, at rail width</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="toast">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-toast glassci" data-glassci data-glassci-radius="8" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-blur="4" data-glassci-bleed="20" data-glassci-emission="#2CFF05"><span class="v">gate opened · 12:07</span></div>
-        </div>
-        <figcaption><b>TOAST</b><span>a receipt that arrives and leaves; the record never moves</span></figcaption>
       </figure>
       <figure class="cell" data-verb="palette">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="g-pal glassci" data-glassci data-glassci-radius="12" data-glassci-depth="18" data-glassci-strength="24" data-glassci-dispersion="4" data-glassci-blur="6" data-glassci-bleed="26"><span class="p">op@hub ›</span><span class="q">lens --describe</span><span class="c">▌</span></div>
+          <div class="g-obj g-pal glassci" data-glassci data-glassci-radius="12" data-glassci-depth="9" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-bleed="13" data-glassci-rim="0.83" data-glassci-blur="6" data-glassci-emission="#8E00FF" style="left:74.4px;top:91px;width:238px;height:72px"><span class="p">op@hub ›</span><span class="q">lens --describe</span><span class="c">▌</span></div>
         </div>
         <figcaption><b>PALETTE</b><span>⌘K — the most-used glass surface in real software</span></figcaption>
-      </figure>
-      <figure class="cell" data-verb="gutter">
-        <div class="cell-stage">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="g-gut g-gut--rm glassci" data-glassci data-glassci-radius="2" data-glassci-depth="8" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-bias="0.85" data-glassci-blur="0" data-glassci-bleed="14" data-glassci-emission="#8E00FF" data-glassci-fill="rgba(142,0,255,.14)"></div><div class="g-gut g-gut--ad glassci" data-glassci data-glassci-radius="2" data-glassci-depth="8" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-bias="0.85" data-glassci-blur="0" data-glassci-bleed="14" data-glassci-emission="#2CFF05" data-glassci-fill="rgba(44,255,5,.12)"></div>
-        </div>
-        <figcaption><b>GUTTER</b><span>diff hunks in glass — the fringe inks are the diff inks</span></figcaption>
       </figure>
       <figure class="cell" data-verb="chip">
         <div class="cell-stage">
           <pre class="glassci-field cell-field"></pre>
-          <div class="g-chiprail"><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="10" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-blur="2" data-glassci-bleed="12">DRIVING</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="10" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-blur="2" data-glassci-bleed="12" data-glassci-emission="#2CFF05">LIVE</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="10" data-glassci-strength="12" data-glassci-dispersion="2" data-glassci-blur="2" data-glassci-bleed="12" data-glassci-emission="#8E00FF">OWED</span></div>
+          <div class="g-chiprail" style="left:24.0px;top:127px"><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#5F5295">DRIVING</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#6F75D7">LIVE</span><span class="g-chip glassci" data-glassci data-glassci-radius="12" data-glassci-depth="4" data-glassci-strength="5" data-glassci-dispersion="2" data-glassci-bleed="4" data-glassci-rim="0.91" data-glassci-blur="2" data-glassci-emission="#8E00FF">OWED</span></div>
         </div>
         <figcaption><b>CHIP</b><span>24px — the smallest scale the material still holds at</span></figcaption>
       </figure>
@@ -521,156 +433,71 @@
         <div class="hub-body">
           <pre class="glassci-field" id="hub-record"></pre>
           <div class="hub-agency">
-            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="16"
-                 data-glassci-strength="20" data-glassci-dispersion="3" data-glassci-blur="5"
-                 data-glassci-bleed="22">
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#6F75D7">
               <span class="k">H-404 · APPROVAL</span><span class="v">reviewer · diff · reason</span>
               <span class="k">two human gates, forever</span></div>
-            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="16"
-                 data-glassci-strength="20" data-glassci-dispersion="3" data-glassci-blur="5"
-                 data-glassci-bleed="22" data-glassci-emission="#2CFF05">
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#2CFF05">
               <span class="k">H-406 · WINDOW</span><span class="v live">live &lt; 30m</span>
               <span class="k">the state is the heartbeat</span></div>
-            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="16"
-                 data-glassci-strength="20" data-glassci-dispersion="3" data-glassci-blur="5"
-                 data-glassci-bleed="22">
+            <div class="ag glassci" data-glassci data-glassci-radius="12" data-glassci-depth="11" data-glassci-strength="14" data-glassci-dispersion="2" data-glassci-bleed="16" data-glassci-rim="0.8" data-glassci-blur="5"
+                 data-glassci-emission="#5F5295">
               <span class="k">H-405 · TELEMETRY</span><span class="v">12:07 lane moved</span>
               <span class="k">the audit log, glass-skinned</span></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="note">one screen · the record stays printed, every acting surface is glass</div>
+    <div class="note">one screen · the record stays printed, every acting surface is glass · the single green on this wall is the one thing that is genuinely live</div>
   </section>
 
   <section>
-    <div class="sechead"><span class="n">H2</span><h2>The loupe</h2>
-      <span class="t">mono is 7px by decree — the lens is how you read it · move the pointer over the record</span></div>
-    <div class="plate loupe-stage" id="loupe-stage">
-      <pre class="glassci-field" id="loupe-base"></pre>
-      <div class="loupe" id="loupe">
-        <div class="loupe-mag"><pre class="glassci-field" id="loupe-mag"></pre></div>
-        <div class="loupe-glass glassci" data-glassci data-glassci-radius="0.5" data-glassci-n="2"
-             data-glassci-depth="26" data-glassci-strength="30" data-glassci-dispersion="5"
-             data-glassci-bias="0.7" data-glassci-blur="0" data-glassci-bleed="34"
-             data-glassci-rim="0.95"></div>
-      </div>
-    </div>
-    <div class="note">the magnification is a scaled copy of the record under the glass — the filter bends, it does not zoom · the 7px law generates its own instrument</div>
-  </section>
-
-  <section>
-    <div class="sechead"><span class="n">H3</span><h2>The terminal</h2>
-      <span class="t">selection · cursor · palette at once — the verbs composing instead of sitting alone</span></div>
-    <div class="term">
-      <div class="term-bar"><span class="dot a"></span><span class="dot b"></span><span class="dot c"></span>
-        <span class="term-title">jacob@hhg — glass-stage — 132×32</span></div>
-      <div class="term-stage" id="term-stage">
-        <pre class="glassci-field" id="term-record"></pre>
-        <div class="t-sel glassci" data-glassci data-glassci-radius="3" data-glassci-depth="12"
-             data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-bias="0.8"
-             data-glassci-blur="0" data-glassci-bleed="16" data-glassci-emission="#5F5295"
-             data-glassci-fill="rgba(111,117,215,.14)"></div>
-        <div class="t-cur glassci" data-glassci data-glassci-radius="1" data-glassci-depth="4"
-             data-glassci-strength="9" data-glassci-dispersion="2" data-glassci-blur="0"
-             data-glassci-bleed="18" data-glassci-emission="#2CFF05"
-             data-glassci-fill="rgba(44,255,5,.22)" data-glassci-rim="1"></div>
-        <div class="t-pal glassci" data-glassci data-glassci-radius="12" data-glassci-depth="18"
-             data-glassci-strength="24" data-glassci-dispersion="4" data-glassci-blur="7"
-             data-glassci-bleed="30">
-          <span class="p">op@hub ›</span><span class="q">glassci --tier</span><span class="c">▌</span>
-          <span class="r">lens · refraction + legislated dispersion</span>
-          <span class="r">frost · blur + rim, no bend</span>
-          <span class="r">plate · tinted, hairline, no backdrop</span>
-        </div>
-      </div>
-    </div>
-    <div class="note">three verbs on one surface · nothing here is a component, every one is the glass doing a job</div>
-  </section>
-
-  <section>
-    <div class="sechead"><span class="n">H4</span><h2>The rack on paper</h2>
-      <span class="t">S3 inverted · the agency panels black and crisp on the printed record</span></div>
-    <div class="plate stage stage--paper" style="height:440px">
+    <div class="sechead"><span class="n">H2</span><h2>The rack on paper</h2>
+      <span class="t">the ground inverted · the glass dark and crisp on the printed record, no frost</span></div>
+    <div class="plate stage stage--paper">
       <pre class="glassci-field" id="paper-rack-field"></pre>
       <div class="rack">
-        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="20"
-             data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-blur="0"
-             data-glassci-softness="0.34" data-glassci-saturate="1" data-glassci-invert="1"
-             data-glassci-bleed="20" data-glassci-emission="rgba(21,0,51,.55)"
-             data-glassci-fill="rgba(0,0,0,.10)" data-glassci-rim="0.7">
-          <span class="k">H-404 · approval</span><span class="v">reviewer · diff · reason</span>
-          <span class="k">two human gates, forever</span></div>
-        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="20"
-             data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-blur="0"
-             data-glassci-softness="0.34" data-glassci-saturate="1" data-glassci-invert="1"
-             data-glassci-bleed="20" data-glassci-emission="rgba(21,0,51,.55)"
-             data-glassci-fill="rgba(0,0,0,.10)" data-glassci-rim="0.7">
-          <span class="k">H-405 · telemetry</span><span class="v">12:07 lane moved</span>
-          <span class="k">the audit log, glass-skinned</span></div>
-        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="20"
-             data-glassci-strength="16" data-glassci-dispersion="3" data-glassci-blur="0"
-             data-glassci-softness="0.34" data-glassci-saturate="1" data-glassci-invert="1"
-             data-glassci-bleed="20" data-glassci-emission="rgba(21,0,51,.55)"
-             data-glassci-fill="rgba(0,0,0,.10)" data-glassci-rim="0.7">
-          <span class="k">H-406 · window</span><span class="v">live &lt; 30m</span>
-          <span class="k">the state is the heartbeat</span></div>
+        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="2" data-glassci-bleed="17" data-glassci-rim="0.79" data-glassci-blur="0" data-glassci-softness="0.34"
+             data-glassci-saturate="1" data-glassci-invert="1"
+             data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)">
+          <span class="k">H-404 · approval</span><span class="v">reviewer · diff · reason</span></div>
+        <div class="panel glassci" data-glassci data-glassci-radius="12" data-glassci-depth="12" data-glassci-strength="16" data-glassci-dispersion="2" data-glassci-bleed="17" data-glassci-rim="0.79" data-glassci-blur="0" data-glassci-softness="0.34"
+             data-glassci-saturate="1" data-glassci-invert="1"
+             data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)">
+          <span class="k">H-405 · telemetry</span><span class="v">12:07 lane moved</span></div>
       </div>
     </div>
-    <div class="note">print is the record · glass is the agency · the two registers on one sheet</div>
+    <div class="note">print is the record · glass is the agency · a dark object on paper does not glow, it casts</div>
   </section>
 
   <div class="actrule">ACT IV · THE REGISTER MATRIX — pick the ground</div>
   <!-- ══ ACT IV · THE REGISTER MATRIX ═════════════════════ -->
   <section>
     <div class="sechead"><span class="n">ACT IV</span><h2>The register matrix</h2>
-      <span class="t">the same pane against every axis · tier switches live in the header, it is a document-wide setting</span></div>
+      <span class="t">the same pane against the two axes still open · tier switches live in the header, it is a document-wide setting</span></div>
     <div class="mxrow">ground</div>
     <div class="sheet sheet--3">
       <figure class="cell">
         <div class="cell-stage ">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="24"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2"></div>
         </div>
         <figcaption><b>STAGE · black</b></figcaption>
       </figure>
       <figure class="cell">
         <div class="cell-stage cell-stage--paper">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-invert="1" data-glassci-softness="0.34" data-glassci-blur="0" data-glassci-bleed="18" data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="0" data-glassci-softness="0.34" data-glassci-invert="1" data-glassci-saturate="1" data-glassci-emission="rgba(21,0,51,.55)" data-glassci-fill="rgba(0,0,0,.10)"></div>
         </div>
         <figcaption><b>PAPER · inverted</b></figcaption>
       </figure>
       <figure class="cell">
         <div class="cell-stage cell-stage--room">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="40" data-glassci-fill="rgba(4,4,7,.94)"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-fill="rgba(4,4,7,.94)"></div>
         </div>
         <figcaption><b>ICON · on a room</b></figcaption>
-      </figure>
-    </div>
-    <div class="mxrow">dispersion — how far the legislated inks separate</div>
-    <div class="sheet sheet--3">
-      <figure class="cell">
-        <div class="cell-stage ">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="0" data-glassci-bleed="24"></div>
-        </div>
-        <figcaption><b>DISPERSION 0</b></figcaption>
-      </figure>
-      <figure class="cell">
-        <div class="cell-stage ">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="24"></div>
-        </div>
-        <figcaption><b>DISPERSION 4</b></figcaption>
-      </figure>
-      <figure class="cell">
-        <div class="cell-stage ">
-          <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="10" data-glassci-bleed="24"></div>
-        </div>
-        <figcaption><b>DISPERSION 10</b></figcaption>
       </figure>
     </div>
     <div class="mxrow">bias — which axis the lens leans on. a text grid is not isotropic</div>
@@ -678,21 +505,21 @@
       <figure class="cell">
         <div class="cell-stage ">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="24" data-glassci-bias="0"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="0"></div>
         </div>
         <figcaption><b>BIAS 0 · X only</b></figcaption>
       </figure>
       <figure class="cell">
         <div class="cell-stage ">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="24" data-glassci-bias="0.5"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="0.5"></div>
         </div>
         <figcaption><b>BIAS 0.5 · equal</b></figcaption>
       </figure>
       <figure class="cell">
         <div class="cell-stage ">
           <pre class="glassci-field cell-field"></pre>
-          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="20" data-glassci-strength="26" data-glassci-blur="2" data-glassci-dispersion="4" data-glassci-bleed="24" data-glassci-bias="1"></div>
+          <div class="mx glassci" data-glassci data-glassci-radius="14" data-glassci-depth="8" data-glassci-strength="10" data-glassci-dispersion="2" data-glassci-bleed="11" data-glassci-rim="0.85" data-glassci-blur="2" data-glassci-bias="1"></div>
         </div>
         <figcaption><b>BIAS 1 · Y only</b></figcaption>
       </figure>
@@ -705,7 +532,7 @@
 
 <script src="../glassci/glassci.js"></script>
 <script>
-  var FIELD = '┌─ cortex ────────────────────────────┬─ lane ────┬─ tier ──┬─ last ───┐\n│ 400_glassci · the material          │ DRIVING   │ T1      │ 00:00:12 │\n│ the-watch · full-week wrap          │ OWED      │ T2      │ 04:18:55 │\n│ epoq3 · v3.58.1 the accession floor │ GARDEN    │ T1      │ 1d 06:02 │\n│ glass-stage · terminal theme        │ LIVE      │ T1      │ 3d 11:40 │\n└─────────────────────────────────────┴───────────┴─────────┴──────────┘\nop@hub › lens --describe --substrate=characters\n  substrate ....... monospace field, 2ch cell, no photograph\n  bearing ......... the grid measures the bend; a photo would hide it\n  dispersion ...... legislated · go #8E00FF · live #2CFF05 · no red\n  emission ........ inward · the characters are the phosphor\ndiff --git a/obsessions.md b/obsessions.md\n@@ -1,6 +1,6 @@\n   taste is the whole product\n - generated at scale\n + authored, on the system\n   culture over algorithm\n   world before surface\n0x0000  48 48 47 20 43 4f 52 54  45 58 20 c2 b7 20 67 6c  HHG CORTEX · gl\n0x0010  61 73 73 63 69 20 c2 b7  20 74 68 65 20 72 65 63  assci · the rec\n0x0020  6f 72 64 20 69 73 20 64  72 61 77 6e 20 69 6e 20  ord is drawn in\n0x0030  63 68 61 72 61 63 74 65  72 73 2c 20 61 67 65 6e  characters, agen\n0x0040  63 79 20 66 6c 6f 61 74  73 20 6f 6e 20 67 6c 61  cy floats on gla\n┌─ H-401 bones ─┐┌─ H-404 approval ─┐┌─ H-405 telemetry ─┐┌─ H-406 window ─┐\n│ ▓▒░ presence  ││ reviewer · diff  ││ 12:04 gate opened ││ live   < 30m   │\n│ ░▒▓ substrate ││ reason · the nod ││ 12:07 lane moved  ││ bright <  2h   │\n└───────────────┘└──────────────────┘└───────────────────┘└────────────────┘\nop@hub › _';
+  var FIELD = '┌─ cortex ────────────────────────────┬─ lane ────┬─ tier ──┬─ last ───┐\n│ 400_glassci · the material          │ DRIVING   │ T1      │ 00:00:12 │\n│ the-watch · full-week wrap          │ OWED      │ T2      │ 04:18:55 │\n│ epoq3 · v3.58.1 the accession floor │ GARDEN    │ T1      │ 1d 06:02 │\n│ glass-stage · terminal theme        │ LIVE      │ T1      │ 3d 11:40 │\n└─────────────────────────────────────┴───────────┴─────────┴──────────┘\nop@hub › lens --describe --substrate=characters\n  substrate ....... monospace field, 2ch cell, no photograph\n  bearing ......... the grid measures the bend; a photo would hide it\n  dispersion ...... legislated · go #8E00FF · attn #3600DA · no red, no green\n  emission ........ inward · the characters are the phosphor\ndiff --git a/obsessions.md b/obsessions.md\n@@ -1,6 +1,6 @@\n   taste is the whole product\n - generated at scale\n + authored, on the system\n   culture over algorithm\n   world before surface\n0x0000  48 48 47 20 43 4f 52 54  45 58 20 c2 b7 20 67 6c  HHG CORTEX · gl\n0x0010  61 73 73 63 69 20 c2 b7  20 74 68 65 20 72 65 63  assci · the rec\n0x0020  6f 72 64 20 69 73 20 64  72 61 77 6e 20 69 6e 20  ord is drawn in\n0x0030  63 68 61 72 61 63 74 65  72 73 2c 20 61 67 65 6e  characters, agen\n0x0040  63 79 20 66 6c 6f 61 74  73 20 6f 6e 20 67 6c 61  cy floats on gla\n┌─ H-401 bones ─┐┌─ H-404 approval ─┐┌─ H-405 telemetry ─┐┌─ H-406 window ─┐\n│ ▓▒░ presence  ││ reviewer · diff  ││ 12:04 gate opened ││ live   < 30m   │\n│ ░▒▓ substrate ││ reason · the nod ││ 12:07 lane moved  ││ bright <  2h   │\n└───────────────┘└──────────────────┘└───────────────────┘└────────────────┘\nop@hub › _';
 
   // Paint the substrate, tiled tall enough to fill each stage, with the epoq
   // signal inks marking what they always mark. Never red.
@@ -714,13 +541,13 @@
     for (var i = 0; i < reps; i++) t.push(FIELD);
     document.getElementById(id).innerHTML = t.join('\n')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/^(\s*\+.*)$/gm, '<span class="live">$1</span>')
+      .replace(/^(\s*\+.*)$/gm, '<span class="hum">$1</span>')
       .replace(/^(\s*-\s.*)$/gm, '<span class="go">$1</span>')
-      .replace(/(op@hub ›)/g, '<span class="live">$1</span>')
-      .replace(/(DRIVING|LIVE)/g, '<span class="live">$1</span>')
+      .replace(/(op@hub ›)/g, '<span class="hum">$1</span>')
+      .replace(/(DRIVING|LIVE)/g, '<span class="hum">$1</span>')
       .replace(/(OWED)/g, '<span class="go">$1</span>');
   }
-  paint('field-2', 3); paint('field-2b', 3); paint('field-3', 3); paint('field-4', 3);
+  paint('field-2', 3); paint('field-2b', 3); paint('field-4', 3);
 
   glassci.auto();
   document.getElementById('r-tier').textContent = document.documentElement.getAttribute('data-glassci-tier');
@@ -743,34 +570,38 @@
     s.addEventListener('pointerup', function(){ drag = null; });
   });
 
-  // ── the substrate, painted into every field that asks for it ──────────────
-  var CELL = "\u250c\u2500 cortex \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u252c\u2500 T \u2510\n\u2502 400_glassci       \u2502 DRIVING \u2502 T1 \u2502\n\u2502 glass-stage       \u2502 LIVE    \u2502 T1 \u2502\n\u2502 epoq3 \u00b7 v3.58.1   \u2502 GARDEN  \u2502 T1 \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lens --verb\n  substrate .. characters\n  bearing .... the grid measures\n  fringe ..... go \u00b7 live \u00b7 no red\n- generated at scale\n+ authored, on the system\nop@hub \u203a _", HUBR = "\u250c\u2500 project \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2500\u2500\u252c\u2500 tier \u2500\u252c\u2500 last \u2500\u2500\u2500\u2510\n\u2502 400_glassci \u00b7 the material          \u2502 DRIVING   \u2502 T1     \u2502 00:00:12 \u2502\n\u2502 glass-stage \u00b7 terminal theme        \u2502 LIVE      \u2502 T1     \u2502 3d 11:40 \u2502\n\u2502 epoq3 \u00b7 v3.58.1 \u00b7 accession floor   \u2502 GARDEN    \u2502 T1     \u2502 1d 06:02 \u2502\n\u2502 the-watch \u00b7 the weekly wrap         \u2502 OWED      \u2502 T2     \u2502 04:18:55 \u2502\n\u2502 hub \u00b7 signal board                  \u2502 GARDEN    \u2502 T1     \u2502 2d 09:31 \u2502\n\u2502 negative space \u00b7 the gallery        \u2502 GARDEN    \u2502 T2     \u2502 5d 02:14 \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lane --show driving\n  400_glassci ...... the record is drawn in characters\n                     agency floats on glass\n                     the bones are presence\n                     the prompt is the door\nop@hub \u203a _", TERM = "jacob@hhg ~/glass-stage \u2387 main\n$ glassci --describe\n  substrate ....... monospace field \u00b7 2ch cell \u00b7 no photograph\n  bearing ......... the grid measures the bend; a photo would hide it\n  dispersion ...... legislated \u00b7 go #8E00FF \u00b7 live #2CFF05 \u00b7 no red\n  emission ........ inward \u00b7 the characters are the phosphor\n  tiers ........... lens \u00b7 frost \u00b7 plate \u2014 nothing reflows\n$ git diff obsessions.md\n@@ -1,6 +1,6 @@\n   taste is the whole product\n-  generated at scale\n+  authored, on the system\n   culture over algorithm\n$ ";
+  // ── the substrate ─────────────────────────────────────────────────────────
+  // The cells get their record MONOCHROME on purpose: all colour on this wall
+  // is the material, never the ground. Only H1 tints, because there the lane
+  // state is real information rather than decoration.
+  var CELL = "\u250c\u2500 cortex \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2510\n\u2502 400_glassci      \u2502 DRIVING \u2502\n\u2502 glass-stage      \u2502 LIVE    \u2502\n\u2502 epoq3 \u00b7 v3.58.1  \u2502 GARDEN  \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lens --verb\n  the record, in characters", HUBR = "\u250c\u2500 project \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2500\u2500\u252c\u2500 tier \u2500\u252c\u2500 last \u2500\u2500\u2500\u2510\n\u2502 400_glassci \u00b7 the material          \u2502 DRIVING   \u2502 T1     \u2502 00:00:12 \u2502\n\u2502 glass-stage \u00b7 terminal theme        \u2502 LIVE      \u2502 T1     \u2502 3d 11:40 \u2502\n\u2502 epoq3 \u00b7 v3.58.1 \u00b7 accession floor   \u2502 GARDEN    \u2502 T1     \u2502 1d 06:02 \u2502\n\u2502 the-watch \u00b7 the weekly wrap         \u2502 OWED      \u2502 T2     \u2502 04:18:55 \u2502\n\u2502 hub \u00b7 signal board                  \u2502 GARDEN    \u2502 T1     \u2502 2d 09:31 \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lane --show driving\n  400_glassci ...... the record is drawn in characters\n                     agency floats on glass\n                     the bones are presence\n                     the prompt is the door\nop@hub \u203a _", PAPR = "\u250c\u2500 project \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500 lane \u2500\u2500\u2500\u2500\u252c\u2500 tier \u2500\u2510\n\u2502 400_glassci \u00b7 the material          \u2502 DRIVING   \u2502 T1     \u2502\n\u2502 glass-stage \u00b7 terminal theme        \u2502 LIVE      \u2502 T1     \u2502\n\u2502 epoq3 \u00b7 v3.58.1 \u00b7 accession floor   \u2502 GARDEN    \u2502 T1     \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\nop@hub \u203a lane --show driving\n  the record is printed \u00b7 the agency is glass";
 
-  function ink(t){
-    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/^(\s*\+.*)$/gm,'<span class="live">$1</span>')
-      .replace(/^(\s*-\s.*)$/gm,'<span class="go">$1</span>')
-      .replace(/(op@hub ›|jacob@hhg|\$ )/g,'<span class="live">$1</span>')
-      .replace(/\b(DRIVING|LIVE)\b/g,'<span class="live">$1</span>')
-      .replace(/\b(OWED)\b/g,'<span class="go">$1</span>');
+  function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function plain(sel, text){
+    document.querySelectorAll(sel).forEach(function(n){ n.innerHTML = esc(text); });
   }
-  function fill(sel, text, reps){
-    var t=[]; for(var i=0;i<(reps||1);i++) t.push(text);
-    document.querySelectorAll(sel).forEach(function(n){ n.innerHTML=ink(t.join('\n')); });
+  function lanes(sel, text){
+    document.querySelectorAll(sel).forEach(function(n){
+      n.innerHTML = esc(text)
+        .replace(/(op@hub ›)/g, '<span class="hum">$1</span>')
+        .replace(/\b(DRIVING)\b/g, '<span class="hum">$1</span>')
+        .replace(/\b(OWED)\b/g, '<span class="go">$1</span>');
+    });
   }
-  fill('.cell-field, .cmag-field', CELL, 3);
-  fill('#hub-record', HUBR, 2);
-  fill('#term-record', TERM, 2);
-  fill('#paper-rack-field', HUBR, 2);
-  fill('#loupe-base', HUBR, 6);
-  fill('#loupe-mag', HUBR, 6);
+  plain('.cell-field, .cmag-field', CELL);
+  var TALL = [CELL,CELL,CELL,CELL].join('\n');
+  plain('.cell[data-verb="magnify"] .cell-field, .cmag-field', TALL);
+  lanes('#hub-record', HUBR);
+  lanes('#paper-rack-field', [PAPR,PAPR,PAPR].join('\n'));
 
   // Point the cell loupes at whatever actually sits under them. Hardcoding the
-  // offsets breaks the moment the base font size changes — the loupe ends up
-  // staring at the right margin.
+  // offsets breaks the moment the base font size changes.
   document.querySelectorAll('.cell-loupe').forEach(function(w){
     var mag=w.querySelector('.cmag'), fld=w.querySelector('.cmag-field'), Z=2.8;
-    var cx=mag.offsetLeft+mag.offsetWidth/2, cy=mag.offsetTop+mag.offsetHeight/2;
+    var base=w.parentElement.querySelector('.cell-field');
+    var ox=base.offsetLeft, oy=base.offsetTop;          // the record's own origin
+    var cx=mag.offsetLeft+mag.offsetWidth/2 - ox;
+    var cy=mag.offsetTop +mag.offsetHeight/2 - oy;
     fld.style.transform='scale('+Z+')';
     fld.style.left=(mag.offsetWidth/2 - cx*Z)+'px';
     fld.style.top =(mag.offsetHeight/2 - cy*Z)+'px';
@@ -793,30 +624,6 @@
     });
     var cur=document.documentElement.getAttribute('data-glassci-tier');
     host.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.tier===cur);});
-  })();
-
-  // ── H2 · the loupe follows the pointer ────────────────────────────────────
-  // The magnification is a scaled copy of the record sitting UNDER the glass.
-  // The filter bends light; it does not zoom. Keeping those separate is the
-  // honest way to build a loupe.
-  (function(){
-    var stage=document.getElementById('loupe-stage'), loupe=document.getElementById('loupe'),
-        mag=document.getElementById('loupe-mag');
-    if(!stage||!loupe||!mag) return;
-    var base=document.getElementById('loupe-base'), Z=3.4;
-    function place(cx,cy){
-      var p=stage.getBoundingClientRect(), b=base.getBoundingClientRect(), d=loupe.offsetWidth;
-      var x=Math.max(0,Math.min(cx-p.left,p.width)), y=Math.max(0,Math.min(cy-p.top,p.height));
-      loupe.style.left=(x-d/2)+'px'; loupe.style.top=(y-d/2)+'px';
-      /* Offset against the RECORD's own box, not the stage's. The stage is
-         padded, so measuring from its border box puts the loupe padding×zoom
-         away from what it is pointing at. */
-      var fx=cx-b.left, fy=cy-b.top;
-      mag.style.transform='scale('+Z+')';
-      mag.style.left=(d/2-fx*Z)+'px'; mag.style.top=(d/2-fy*Z)+'px';
-    }
-    stage.addEventListener('pointermove',function(e){ place(e.clientX,e.clientY); });
-    var r=stage.getBoundingClientRect(); place(r.left+r.width*0.34, r.top+r.height*0.42);
   })();
 
 </script>
