@@ -39,6 +39,11 @@
   .cap{font-family:var(--font-mono);font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);
     letter-spacing:var(--track-mono-6);text-transform:uppercase;color:var(--dim)}
   .rule{height:var(--hairline);background:var(--line);border:0;margin:0}
+  .gs-back{display:inline-block;margin-bottom:var(--s-3);font-family:var(--font-mono);
+    font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
+    text-transform:uppercase;color:var(--hum);text-decoration:none;
+    border-bottom:1px solid #6F75D755}
+  .gs-back:hover{border-bottom-color:var(--hum)}
   .lede{font-family:var(--font-serif);font-size:16px;line-height:1.6;color:var(--paper);max-width:62ch}
   .readout{display:flex;gap:var(--s-3);flex-wrap:wrap;padding:var(--s-2) 0;
     font-size:var(--fz-mono-6);line-height:var(--lh-mono-6);letter-spacing:var(--track-mono-6);
@@ -236,7 +241,8 @@
 <div class="wrap">
 
   <header>
-    <div class="cap">HHG · glassci · four cuts · localhost wall</div>
+    <a class="gs-back" href="/">&larr; THE GLASS STAGE</a>
+    <div class="cap">HHG · glassci · the wall</div>
     <h1>GLASSCI — THE STUDIES</h1>
     <div class="lede">
       Glass with nothing to refract but characters. Four divergent cuts, nothing killed on taste.
@@ -535,7 +541,7 @@
   </section>
 
   <hr class="rule">
-  <footer>GLASSCI · the studies · localhost wall · not linked from the index · rule them G / B / U</footer>
+  <footer>GLASSCI · the studies wall · glass-stage.vercel.app/glassci · the material, the verbs, the applications</footer>
 </div>
 
 <script src="../glassci/glassci.js"></script>

@@ -1,5 +1,16 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/demo/index.html" }
+    {
+      "source": "/",
+      "destination": "/demo/index.html"
+    },
+    {
+      "source": "/glassci",
+      "destination": "/demo/glassci-studies.html"
+    },
+    {
+      "source": "/studies",
+      "destination": "/demo/glassci-studies.html"
+    }
   ]
 }
