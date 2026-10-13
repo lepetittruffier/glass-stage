@@ -1,0 +1,21 @@
+# GLASS STAGE v2 · git · SIGNAL — the v1 reading, every slot a canon ink
+[color "diff"]
+	meta = 8
+	frag = 12
+	func = 5
+	commit = 12
+	old = 9
+	new = 10
+	whitespace = reverse 9
+[color "status"]
+	header = 8
+	branch = 13
+	added = 10
+	changed = 12
+	untracked = 8
+	deleted = 9
+[color "decorate"]
+	branch = 13
+	remoteBranch = 12
+	HEAD = 9
+	tag = 5
