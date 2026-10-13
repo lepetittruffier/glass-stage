@@ -3,7 +3,7 @@
 
     python3 v2/build.py             pull the live EPOQ III spine, write every surface, run the check
     python3 v2/build.py --check     the check only (exit 1 on any off-canon colour)
-    python3 v2/build.py --diff-stock   what this build sets over stock Ghostty
+    python3 v2/build.py --diff-v1   the v1 Ghostty keys this build moves
 
 The source of truth is the live weblink, never a copy:
     https://www.intelligencematters.se/epoq/system.css
@@ -30,7 +30,8 @@ OUT = ROOT / "out"
 WEB = "https://www.intelligencematters.se/epoq/"
 HOME = pathlib.Path.home()
 FONT = HOME / "Library" / "Fonts" / "RedHatMono[wght].ttf"
-GHOSTTY = pathlib.Path("/Applications/Ghostty.app/Contents/MacOS/ghostty")  # stock defaults: the receipt's baseline
+V1_SKIN = HOME / ".hermes" / "skins" / "glass-stage.yaml"
+V1_GHOSTTY = REPO / "ghostty" / "config"
 
 INKS = ("ink", "ink-60", "ink-50", "ink-40", "ink-20", "ink-12", "ink-03",
         "paper", "paper-90", "paper-82", "paper-70", "paper-62",
@@ -87,7 +88,7 @@ ROLE_NOTE = [
 # ── the two readings ─────────────────────────────────────────────────────────
 # LITERAL — E13 taken at its word: text is ink; colour only where function is needed —
 #           the door, the mark, the flag. A program's colour is promoted to full ink.
-# SIGNAL  — colour as information: every slot a canon ink.
+# SIGNAL  — the v1 reading (shipped 2026-07-11), every slot now a canon ink.
 VARIANTS = {
     "literal": {"label": "LITERAL", "fg": "field", "bold": "ink",
                 "slots": ["deep", "flag", "ink", "ink", "ink", "ink", "ink", "field",
@@ -324,29 +325,19 @@ def kv(text: str) -> dict:
     return out
 
 
-def stock_defaults() -> str:
-    """Ghostty's own defaults: the baseline every receipt diffs against. v1 is never read."""
-    if not GHOSTTY.exists():
-        return ""
-    try:
-        return subprocess.run([str(GHOSTTY), "+show-config", "--default"],
-                              capture_output=True, text=True, timeout=30).stdout
-    except Exception:  # noqa: BLE001 — no Ghostty here: the receipt is left out
-        return ""
-
-
-def diff_stock(v2_config: str) -> list:
-    a, b = kv(stock_defaults()), kv(v2_config)
-    if not a:
+def diff_v1(v2_config: str) -> list:
+    if not V1_GHOSTTY.exists():
         return []
-    rows = [("--- ghostty +show-config --default", "meta"), ("+++ v2/out/ghostty/config", "meta")]
+    a, b = kv(V1_GHOSTTY.read_text()), kv(v2_config)
+    rows = [("--- ghostty/config  (v1 · shipped 2026-07-11)", "meta"), ("+++ v2/out/ghostty/config", "meta")]
     for k in ("theme", "window-theme", "font-size", "adjust-cell-height", "font-style-bold",
-              "cursor-style", "background-opacity", "unfocused-split-opacity"):
-        if k not in b or a.get(k) == b[k]:
+              "cursor-style", "background-opacity", "background-blur"):
+        if a.get(k) == b.get(k):
             continue
-        if a.get(k):
+        if k in a:
             rows.append((f"-{k} = {a[k]}", "del"))
-        rows.append((f"+{k} = {b[k]}", "ins"))
+        if k in b:
+            rows.append((f"+{k} = {b[k]}", "ins"))
     return rows
 
 
@@ -368,7 +359,7 @@ GIT = {
                 "[color \"status\"]\n\theader = 8\n\tbranch = 15 italic\n\tadded = 15 ul\n"
                 "\tchanged = 15\n\tuntracked = 8\n\tdeleted = 15 strike\n"
                 "[color \"decorate\"]\n\tbranch = 15 italic\n\tremoteBranch = 15\n\tHEAD = 9\n\ttag = 15\n"),
-    "signal": ("# GLASS STAGE v2 · git · SIGNAL — colour as information, every slot a canon ink\n"
+    "signal": ("# GLASS STAGE v2 · git · SIGNAL — the v1 reading, every slot a canon ink\n"
                "[color \"diff\"]\n\tmeta = 8\n\tfrag = 12\n\tfunc = 5\n\tcommit = 12\n"
                "\told = 9\n\tnew = 10\n\twhitespace = reverse 9\n"
                "[color \"status\"]\n\theader = 8\n\tbranch = 13\n\tadded = 10\n"
@@ -378,6 +369,13 @@ GIT = {
 
 
 # ── the Hermes skin ──────────────────────────────────────────────────────────
+def v1_block(key: str) -> str:
+    if not V1_SKIN.exists():
+        return ""
+    m = re.search(rf"^{key}: \|-?\n((?:  .*\n?)+)", V1_SKIN.read_text(), re.M)
+    return "\n".join(line[2:] for line in m.group(1).rstrip("\n").split("\n")) if m else ""
+
+
 def one_ink(art: str, hum: str) -> str:
     """The mark is printed in one ink that holds on both grounds — --hum, the hero."""
     return re.sub(r"#[0-9A-Fa-f]{6}", hum, art.replace("[bold ", "["))
@@ -389,8 +387,12 @@ def skin_colors(canon: Canon, gname: str, vname: str) -> dict:
 
 
 def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
+    hum = canon.on("hum", "paper")
     name = "glass-stage" if vname == "literal" else "glass-stage-signal"
     stage = skin_colors(canon, "stage", vname)
+
+    def block(key, s):
+        return f"{key}: |-\n" + "\n".join("  " + line for line in s.split("\n")) + "\n"
 
     L = [f"# {name} — GLASS STAGE v2 · Hermes skin · {VARIANTS[vname]['label']}",
          f"# generated by v2/build.py from {WEB}system.css · sha256 {lock['system.css']['sha256'][:12]}",
@@ -413,9 +415,14 @@ def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
           '  welcome: "THE GLASS STAGE · LIVE"', '  goodbye: "STAGE CLOSED"',
           '  response_label: " OPERATOR "', '  prompt_symbol: "▮"',
           '  help_header: "THE CONTROL SURFACE"', "", 'tool_prefix: "│"', "",
-          "# banner art: the gynoid, an abstract piece made for this skin. Pending.",
-          "# Until it lands, Hermes prints its stock logo and caduceus. Nothing is carried from v1."]
-    return "\n".join(L) + "\n"
+          "# the mark, printed in one ink that holds on both grounds: --hum, the hero"]
+    text = "\n".join(L) + "\n"
+    logo, hero = v1_block("banner_logo"), v1_block("banner_hero")
+    if logo:
+        text += block("banner_logo", one_ink(logo, hum))
+    if hero:
+        text += "\n" + block("banner_hero", one_ink(hero, hum))
+    return text
 
 
 # ── specimens (SVG — terminal art, drawn on the cell grid) ──────────────────
@@ -514,9 +521,9 @@ def ghostty_rows(t, status_lines, diff_rows, report_rows):
             raw.append([("??", "meta"), (line[2:], "out")])
         else:
             raw.append([(line[:2], "mod"), (line[2:], "out")])
-    raw += [[], P(bench) + [("python3 v2/build.py --diff-stock", "cmd")]]
+    raw += [[], P(bench) + [("python3 v2/build.py --diff-v1", "cmd")]]
     raw += [[(text, kind)] for text, kind in diff_rows]
-    raw += [[(" window-theme = ", "out"), ("auto", "mark")], [],
+    raw += [[(" background = ", "out"), ("000000", "mark")], [],
             P(bench) + [("python3 v2/build.py --check", "cmd")]]
     raw += [[(text, kind)] for text, kind in report_rows]
     raw += [P(bench) + [("", "cursor")]]
@@ -656,9 +663,9 @@ RULINGS = [
      "canon holds in your skin (--signal-go 3.3 · --grey-51 2.4); upstream, glass-stage rides the PR as its demo, not as a built-in"),
     ("Stress", "E1 · E12", "bold sets as the tism, Red Hat Mono Italic"),
     ("Tracking", ".term-body at --track-code 0.3em", "untracked for the daily terminal; tracked is +50% cell width"),
-    ("The banner art", "one ink must hold on both grounds",
-     "the gynoid: an abstract piece made for this skin from Jacob's references; nothing from v1, nothing stock. Pending the references"),
-    ("Glass on the Ghostty window", "glass on agency surfaces only", "opaque: the window is the ground"),
+    ("The banner", "one ink must hold on both grounds",
+     "printed in --hum, like THE MUSE; the braille hero thins on paper (4.0) — a polarity-aware banner rides the Nous patch"),
+    ("Glass on the Ghostty window", "glass on agency surfaces only", "opaque; v1 ran 0.94 + blur"),
     ("Desktop register", "main-view law", "HUB shell + serif voice; CLI only at the door; glass on gates + door"),
     ("The door's glass", "colour arrives only where something has to happen",
      "the gate emits, the door refracts: on the stage the composer keeps no fringe and no bleed, rim 0.4, frost 10"),
@@ -729,7 +736,7 @@ GLASS_PANE = {
 }
 
 
-def desk(ground: str, rows: list) -> str:
+def desk(ground: str) -> str:
     tag = "the stage" if ground == "stage" else "the paper"
     # One attribute set per ground: an attribute repeated on a tag keeps its FIRST value, so the
     # paper override once appended after the shared set never applied (it bled --hum at 18px).
@@ -752,13 +759,17 @@ def desk(ground: str, rows: list) -> str:
                            f'<span class="act-who">{esc(b)}</span><span class="act-ev">{esc(c)}</span></div>')
     before_rows = "".join(row(*a) for a in acts)
     after_rows = "".join(row(*a) for a in after)
-    changes = [(text[1:], "del" if kind == "del" else "ins") for text, kind in rows if kind in ("del", "ins")][:8]
     receipt = ('<div class="station"><div class="term" aria-label="a receipt — the canon paper terminal">'
                '<div class="term-body mono"><div class="term-stream">'
-               '<span class="term-row term-cmd"><span class="pr">op@hub</span>:~/glass-stage-v2$ '
-               'python3 v2/build.py --diff-stock</span>'
-               + "".join(f'<span class="term-row term-out"><{tag}>{esc(text)}</{tag}></span>' for text, tag in changes)
-               + '</div></div></div></div>')
+               '<span class="term-row term-cmd"><span class="pr">op@hub</span>:~/glass-stage-v2$ python3 v2/build.py --diff-v1</span>'
+               '<span class="term-row term-out"><del>window-theme = dark</del></span>'
+               '<span class="term-row term-out"><ins>window-theme = auto</ins></span>'
+               '<span class="term-row term-out"><del>background-opacity = 0.94</del></span>'
+               '<span class="term-row term-out"><ins>background-opacity = 1</ins></span>'
+               '<span class="term-row term-out"><del>cursor-style = block</del></span>'
+               '<span class="term-row term-out"><ins>cursor-style = bar</ins></span>'
+               '<span class="term-row term-out"><ins>theme = light:glass-paper,dark:glass-stage</ins></span>'
+               '</div></div></div></div>')
     return f"""
 <div class="ws-desk" data-ground="{ground}">
  <div class="hub-shell hub-shell-specimen">
@@ -806,7 +817,7 @@ def desk(ground: str, rows: list) -> str:
 def page(canon, lock, m, themes, report_rows, status_lines, diff_rows, skins, facts) -> str:
     sv = lock["styles.css"]["sha256"][:8]
     hum = canon.on("hum", "paper")
-    logo = hero = ""  # banner art: the gynoid, pending. Nothing from v1, nothing stock.
+    logo, hero = one_ink(v1_block("banner_logo"), hum), one_ink(v1_block("banner_hero"), hum)
 
     def terms(gname):
         out = []
@@ -847,7 +858,7 @@ def page(canon, lock, m, themes, report_rows, status_lines, diff_rows, skins, fa
     switch = ('<div class="ws-switch"><span class="mono m6">reading</span>'
               '<button type="button" class="ctl-pill on mono m6" data-set-variant="literal" aria-pressed="true">literal</button>'
               '<button type="button" class="ctl-pill mono m6" data-set-variant="signal" aria-pressed="false">signal</button>'
-              '<span class="mono m6">literal · colour only for the door, the mark, the flag — signal · colour as information, every ink a token</span></div>')
+              '<span class="mono m6">literal · colour only for the door, the mark, the flag — signal · the v1 reading, every ink a token</span></div>')
 
     def git_rows(vname):
         cur, rows = "", []
@@ -958,7 +969,7 @@ def page(canon, lock, m, themes, report_rows, status_lines, diff_rows, skins, fa
  </div>
  <div class="gridrow"><div class="container-tile u-full"><div class="m-stage"><span class="mono m6 ann">Hermes TUI · the stage · colors</span>{tui("stage")}</div></div></div>
  <div class="gridrow"><div class="container-tile u-full"><div class="m-stage"><span class="mono m6 ann">Hermes TUI · the paper · light_colors</span>{tui("paper")}</div></div></div>
- <div class="gridrow"><div class="container-tile u-full"><div class="spec-rail mono m6"><span class="family">hermes tui</span><span>mock after hermes_cli/banner.py · inks from v2/out/hermes/glass-stage.yaml</span><span>classic CLI on paper · the Nous patch</span><span class="open-ruling">banner art · the gynoid, pending</span></div></div></div>
+ <div class="gridrow"><div class="container-tile u-full"><div class="spec-rail mono m6"><span class="family">hermes tui</span><span>mock after hermes_cli/banner.py · inks from v2/out/hermes/glass-stage.yaml</span><span>classic CLI on paper · the Nous patch</span><span class="open-ruling">banner in one ink</span></div></div></div>
 </section>
 
 <section id="desktop" class="epoq-section" data-density="tight">
@@ -966,8 +977,8 @@ def page(canon, lock, m, themes, report_rows, status_lines, diff_rows, skins, fa
   <h2 class="serif-page-title">004_desktop</h2>
   <p class="sec-tagline serif-8-caps">Desktop is a main view, so it wears the HUB shell — the record in the workhorse rows, the serif carrying the prose, glass only on the gate and the door.</p>
  </div>
- <div class="gridrow"><div class="container-tile u-full">{desk("paper", diff_rows)}</div></div>
- <div class="gridrow"><div class="container-tile u-full">{desk("stage", diff_rows)}</div></div>
+ <div class="gridrow"><div class="container-tile u-full">{desk("paper")}</div></div>
+ <div class="gridrow"><div class="container-tile u-full">{desk("stage")}</div></div>
  <div class="gridrow"><div class="container-tile u-full"><div class="spec-rail mono m6"><span class="family">hermes desktop</span><span>mock — canon .hub-shell parts from the live styles.css · glass is the live glassci · the stage polarity is a proposal</span><span class="open-ruling">stage polarity · needs the bridge patch</span></div></div></div>
 </section>
 
@@ -1053,8 +1064,8 @@ def main() -> int:
 
     m = font_metrics()
     cfg = ghostty_config(m, lock)
-    diff_rows = diff_stock(cfg)
-    if "--diff-stock" in args:
+    diff_rows = diff_v1(cfg)
+    if "--diff-v1" in args:
         print("\n".join(r for r, _ in diff_rows))
         return 0
 
