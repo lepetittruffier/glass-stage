@@ -244,6 +244,20 @@ def run_checks(canon: Canon, lock: dict):
     failed |= not refused
     rows.append(("  ✗ refused  --signal-live on paper · reads on --glass-stage, never on paper"
                  if refused else "  ! self-test failed: live on paper was NOT refused", "err"))
+    for vname in VARIANTS:
+        css = desk_css(canon, vname, lock)
+        bad, size = desk_check(canon, css), len(css.encode())
+        ok = not bad and size <= 32768
+        failed |= not ok
+        rows.append((f"  {'✓' if ok else '✗'} desktop·{vname:<12} 2 grounds · {len(DESK_KEYS)} tokens · "
+                     + (f"every hex a canon ink · {size / 1024:.1f} of 32 KiB" if ok
+                        else (bad[0] if bad else f"{size} B over the 32 KiB cap")), "ok" if ok else "err"))
+    head, sep, tail = desk_css(canon, "literal", lock).partition(":root:not(.dark) {")
+    tampered = head + sep + tail.replace(canon.on("signal-go", "paper"), canon.on("signal-live", "paper"), 1)
+    refused = any("never on paper" in b for b in desk_check(canon, tampered))
+    failed |= not refused
+    rows.append(("  ✗ refused  desktop · --signal-live on paper" if refused
+                 else "  ! self-test failed: desktop live on paper was NOT refused", "err"))
     return rows, failed
 
 
@@ -386,6 +400,94 @@ def skin_colors(canon: Canon, gname: str, vname: str) -> dict:
     return {k: canon.on(g[roles[i]], g["ground"]) for k, roles in SKIN_KEYS.items()}
 
 
+
+# ── the Desktop layer: customCSS over the palette the app paints inline ─────
+# Hermes Desktop writes its palette inline on <html> (apps/desktop/src/themes/context.tsx applyTheme)
+# and sets .dark from the painted ground's luminance. A stylesheet outranks an inline declaration only
+# with !important, so the skin's customCSS restates every token the app paints, from the terminals'
+# roles: :root.dark carries the stage, :root:not(.dark) the paper. Today's Desktop derives one palette
+# for both switch positions (from `colors`, the stage), so it wears the stage either way; with paired
+# palettes (NousResearch/hermes-agent#81941) the same rules give it both grounds.
+DESK_KEYS = {  # token → (LITERAL role, SIGNAL role); "on:<role>" = the canon ink that reads on that fill
+    "--theme-background-seed": ("ground", "ground"), "--theme-sidebar-seed": ("ground", "ground"),
+    "--theme-card-seed": ("ground", "ground"), "--theme-bubble-seed": ("ground", "ground"),
+    "--theme-elevated-seed": ("bar", "bar"),
+    "--dt-popover": ("bar", "bar"),  # opaque: the app frosts menus at 96 %; glass belongs to gates and the door
+    "--theme-foreground": ("ink", "ink"), "--theme-secondary": ("field", "field"),
+    "--theme-primary": ("door", "door"), "--theme-warm": ("door", "door"),
+    "--theme-midground": ("ink", "locator"), "--theme-accent-soft": ("mark", "mark"),
+    "--ui-text-primary": ("ink", "ink"), "--ui-text-secondary": ("field", "field"),
+    "--ui-text-tertiary": ("ghost", "ghost"), "--ui-text-quaternary": ("ghost", "ghost"),
+    "--dt-border": ("rule", "rule"), "--dt-input": ("rule", "rule"),
+    "--dt-sidebar-border": ("rule", "rule"), "--dt-user-bubble-border": ("rule", "rule"),
+    "--dt-ring": ("door", "door"), "--dt-composer-ring": ("door", "door"), "--dt-muted": ("bar", "bar"),
+    "--dt-primary-solid": ("door", "door"), "--dt-primary-foreground": ("on:door", "on:door"),
+    "--dt-primary-solid-foreground": ("on:door", "on:door"),
+    "--dt-secondary-foreground": ("ink", "ink"), "--dt-accent-foreground": ("mark_ink", "mark_ink"),
+    "--dt-midground-foreground": ("on:ink", "on:locator"),
+    "--dt-destructive": ("flag", "flag"), "--dt-destructive-foreground": ("on:flag", "on:flag"),
+    "--ui-success": ("ink", "enters"),
+}
+# flat: no neutral chrome mixed into the ground, no grain; the canon draws depth with hairlines
+DESK_FLAT = {"--theme-mix-chrome": "100%", "--theme-mix-sidebar": "100%", "--theme-mix-card": "100%",
+             "--theme-mix-elevated": "100%", "--theme-mix-bubble": "100%", "--noise-opacity-mul": "0"}
+DESK_GROUNDS = (("stage", ":root.dark"), ("paper", ":root:not(.dark)"))
+DESK_PROBES = {"background": "ground", "foreground": "ink", "card": "ground", "sidebar": "ground",
+               "popover": "bar", "border": "rule", "primary": "door", "primary_fg": "on:door",
+               "muted": "bar", "accent": "mark", "accent_fg": "mark_ink", "ring": "door",
+               "composer_ring": "door", "destructive": "flag", "text_secondary": "field",
+               "muted_fg": "ghost", "caret": "cursor", "selection": "mark", "timeline_popover": "bar"}
+
+
+def desk_value(canon: Canon, gname: str, role: str) -> str:
+    g = GROUNDS[gname]
+    if role.startswith("on:"):
+        fill = canon.on(g[role[3:]], g["ground"])
+        return max((canon.on("ink", g["ground"]), canon.on("paper", g["ground"])),
+                   key=lambda c: contrast(c, fill))
+    return canon.on(g[role], g["ground"])
+
+
+def desk_css(canon: Canon, vname: str, lock: dict) -> str:
+    i = 0 if vname == "literal" else 1
+    out = [f"/* GLASS STAGE v2 · Hermes Desktop · {VARIANTS[vname]['label']} · generated by v2/build.py",
+           f"   from {WEB}system.css · sha256 {lock['system.css']['sha256'][:12]} · do not hand-edit.",
+           "   The dark class is the stage, its absence the paper; !important outranks the palette",
+           "   the app paints inline on <html>. Every colour is a canon ink on its own ground. */"]
+    for gname, sel in DESK_GROUNDS:
+        g = GROUNDS[gname]
+        cursor = canon.on(g["cursor"], g["ground"])
+        out.append(f"{sel} {{")
+        out += [f"  {k}: {desk_value(canon, gname, roles[i])} !important;" for k, roles in DESK_KEYS.items()]
+        out += [f"  {k}: {v} !important;" for k, v in DESK_FLAT.items()]
+        out += ['  --dt-font-mono: "Red Hat Mono", ui-monospace, monospace !important;',
+                f"  caret-color: {cursor};", "}"]
+        out.append(f"{sel} :is(textarea, input, [contenteditable]) {{ caret-color: {cursor}; }}")
+        out.append(f"{sel} [data-slot='thread-timeline-popover'] {{ background: {canon.on(g['bar'], g['ground'])} !important; }}")
+        out.append(f"{sel} ::selection {{ background: {canon.on(g['mark'], g['ground'])}; "
+                   f"color: {canon.on(g['mark_ink'], g['ground'])}; }}")
+    return "\n".join(out) + "\n"
+
+
+def desk_check(canon: Canon, css: str) -> list:
+    bad, bare = [], re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    for gname, sel in DESK_GROUNDS:
+        ground = GROUNDS[gname]["ground"]
+        allowed, live = canon.allowed(ground), canon.on("signal-live", ground)
+        body = " ".join(re.findall(re.escape(sel) + r"(?:\s[^{]*)?\{([^}]*)\}", bare))
+        for hx in re.findall(r"#[0-9A-Fa-f]{6}\b", body):
+            if hx.upper() not in allowed:
+                bad.append(f"{hx} is no canon ink on {gname}")
+            if gname == "paper" and hx.upper() == live:
+                bad.append("--signal-live on paper · reads on --glass-stage, never on paper")
+    return bad
+
+
+def desk_expect(canon: Canon) -> dict:
+    return {v: {g: {p: desk_value(canon, g, r) for p, r in DESK_PROBES.items()} for g, _ in DESK_GROUNDS}
+            for v in VARIANTS}
+
+
 def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
     hum = canon.on("hum", "paper")
     name = "glass-stage" if vname == "literal" else "glass-stage-signal"
@@ -399,6 +501,7 @@ def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
          "# colors = the stage inks · dark_colors = the stage ground · light_colors = the paper terminal, inks + ground.",
          "# No background in colors: the Ink TUI reads the terminal's polarity, so it turns when Ghostty turns.",
          "# The classic CLI (display.interface: cli) reads light_colors once the paired-palette patch lands.",
+         "# customCSS = the Desktop layer: the same roles, restated over the palette the app paints inline.",
          f"name: {name}",
          'description: "THE GLASS STAGE v2 — one object, two grounds · EPOQ III canon"', "", "colors:"]
     L += [f'  {k}: "{v}"' for k, v in stage.items() if k != "background"]
@@ -422,6 +525,8 @@ def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
         text += block("banner_logo", one_ink(logo, hum))
     if hero:
         text += "\n" + block("banner_hero", one_ink(hero, hum))
+    text += ("\n# the Desktop layer: Hermes Desktop injects this while the skin is active (GUI only, 32 KiB cap)\n"
+             + block("customCSS", desk_css(canon, vname, lock).rstrip("\n")))
     return text
 
 
@@ -670,6 +775,8 @@ RULINGS = [
     ("The door's glass", "colour arrives only where something has to happen",
      "the gate emits, the door refracts: on the stage the composer keeps no fringe and no bleed, rim 0.4, frost 10"),
     ("Desktop on the stage", "workhorse rows are paper-native", "PROPOSAL: E13's exception — paper on ink. Needs an epoq3 ruling"),
+    ("The Desktop layer", "the app paints one palette inline; .dark follows the ground's luminance",
+     "customCSS restates every token from the terminal roles: flat ground, no grain, colour at the door, the mark and the flag. Today's Desktop wears the stage in both switch positions; the paper arrives with paired palettes (#81941)"),
     ("Name on the Nous submission", "—", "JACOB / OPERATOR stays local; the submitted skin carries THE GLASS STAGE"),
 ]
 
@@ -1070,7 +1177,7 @@ def main() -> int:
         return 0
 
     themes = {(g, v): theme(canon, g, v) for g in GROUNDS for v in VARIANTS}
-    for d in ("ghostty/themes", "git", "shell", "hermes", "workshop"):
+    for d in ("ghostty/themes", "git", "shell", "hermes", "desktop", "workshop"):
         (OUT / d).mkdir(parents=True, exist_ok=True)
     (OUT / "tokens.lock.json").write_text(json.dumps(lock, indent=2) + "\n")
     (OUT / "ghostty" / "config").write_text(cfg)
@@ -1082,6 +1189,8 @@ def main() -> int:
     for vname in VARIANTS:
         name = "glass-stage" if vname == "literal" else "glass-stage-signal"
         (OUT / "hermes" / f"{name}.yaml").write_text(hermes_skin(canon, vname, lock))
+        (OUT / "desktop" / f"{name}.css").write_text(desk_css(canon, vname, lock))
+        (OUT / "desktop" / "expect.json").write_text(json.dumps(desk_expect(canon), indent=2) + "\n")
 
     status = subprocess.run(["git", "-C", str(REPO), "status", "-sb"], capture_output=True, text=True).stdout
     status_lines = [line for line in status.splitlines() if line.strip()][:4]
