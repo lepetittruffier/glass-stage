@@ -14,6 +14,7 @@ canon's own words: "reads on --glass-stage, never on paper".
 from __future__ import annotations
 
 import datetime as dt
+import functools
 import hashlib
 import html
 import json
@@ -587,6 +588,15 @@ def desk_type(canon: Canon) -> list:
         # 05 · Code — the apparatus in caps, the program in its own case
         f"{apparatus} {{ {code} {caps} }}",
         f"{program}, {side_time}, {RECORD} code {{ {code} }}",
+        # 05 · Code — an empty chat is titled the way every canon page opens: the masthead (.mono.m6.brand),
+        # not a display face; .fit-text's container-query sizing is let go, its measuring twin removed
+        f".wordmark {{ {code} {caps} display: block !important; width: auto !important; container-type: normal !important; "
+        f"margin: 0 auto {raw['s-1']} !important; mix-blend-mode: normal !important; }}",
+        ".wordmark > [aria-hidden] { display: none !important; }",
+        ".wordmark > :not([aria-hidden]), .wordmark > :not([aria-hidden]) > * { display: inline-block !important; "
+        "inline-size: auto !important; flex-grow: 0 !important; container-type: normal !important; font-size: inherit !important; }",
+        # 03 · Body — the line beneath it, balanced like the specimen's sample
+        f'[data-slot="aui_intro"] p:last-child:not(.wordmark) {{ {body} text-wrap: balance; }}',
     ]
 
 
@@ -660,6 +670,68 @@ def desk_editor(canon: Canon, gname: str, sel: str) -> list:
     ]
 
 
+# ── the frame: the empty stage opens and closes the way every canon page does ─
+# Every /epoq page opens on the masthead's cursor (.brand .cursor: `_ Intelligence Matters` in mono m6,
+# blinking) and closes on the braille bar (.f-bar: one stroke dashed 2 3 1 4 3 2 1 3 across a 1200-unit
+# viewBox). An empty chat wears both: the cursor hangs before the name in the live ink, so the name keeps
+# the axis; the bar runs a hairline above the composer at the canon's own scale (one unit = 1px, the
+# bar's width on the page it was drawn for), and the frame holds until the first message lands. Both
+# marks are parsed from the live page at build time. GS_FRAME=0 builds without it.
+FRAME = os.environ.get("GS_FRAME", "1") != "0"
+NAME = ".wordmark > :not([aria-hidden]) > *"
+BAR = 'body:has(.wordmark) [data-slot="composer-dock"]:not([data-popped-out])::before'
+
+
+@functools.lru_cache(maxsize=1)
+def canon_frame() -> dict:
+    styles, site = fetch(WEB + "styles.css"), fetch(WEB)
+    blink = re.search(r"\.brand\s+\.cursor\s*\{[^}]*?animation:\s*([\w-]+)\s+([^;}]+)", styles)
+    keys = blink and re.search(r"@keyframes\s+" + re.escape(blink.group(1)) + r"\s*\{\s*((?:[^{}]*\{[^{}]*\}\s*)+)\}", styles)
+    bar = re.search(r'class="f-bar".*?viewBox="0 0 ([\d.]+) [\d.]+".*?stroke-dasharray="([\d.\s]+)"', site, re.S)
+    if not (blink and keys and bar):
+        raise SystemExit("✗ the canon's masthead cursor or braille bar moved: read /epoq before building the frame")
+    dash = [float(x) for x in bar.group(2).split()]
+    return {"blink": " ".join(blink.group(2).split()), "keyframes": " ".join(keys.group(1).split()),
+            "dash": dash * (2 if len(dash) % 2 else 1), "units": float(bar.group(1))}
+
+
+def composer_inset() -> str:
+    """The composer's inset inside its dock (composer-root padding-inline, beside the dock's 10px grab
+    platform), read from the installed build like the palette: the bar spans the composer you see."""
+    builds = sorted(APP_CSS.glob("index-*.css"), key=lambda p: p.stat().st_mtime) if APP_CSS.is_dir() else []
+    for css in builds[-1:]:
+        m = re.search(r"\[data-slot=['\"]?composer-root['\"]?\]\s*\{[^}]*?padding-inline:\s*([\d.]+px)", css.read_text())
+        if m:
+            return m.group(1)
+    return "5px"  # the app's composer-root padding-inline on 2026-10-14: the floor when no build is found
+
+
+def braille(ink: str, dash: list) -> str:
+    """The f-bar's dasharray as one repeating tile: dash, gap, dash, gap … at one unit = 1px."""
+    stops, x = [], 0.0
+    for k, n in enumerate(dash):
+        stops.append(f"{ink if k % 2 == 0 else 'transparent'} {x:g}px {x + n:g}px")
+        x += n
+    return f"linear-gradient(90deg, {', '.join(stops)}) 0 0 / {x:g}px 100% repeat-x"
+
+
+def desk_frame(canon: Canon) -> list:
+    raw, f = canon.raw, canon_frame()
+    return [
+        "/* the frame — the empty stage opens on the canon's masthead cursor and closes on its braille bar */",
+        f"@keyframes gs-cursor-blink {{ {f['keyframes']} }}",
+        f"{NAME} {{ position: relative !important; margin-right: calc(-1 * {raw['track-code']}) !important; }}",
+        f'{NAME}::before {{ content: "_\\00a0"; position: absolute; right: 100%; top: 0; white-space: pre; '
+        f"animation: gs-cursor-blink {f['blink']}; }}",
+        f"@media (prefers-reduced-motion: reduce) {{ {NAME}::before {{ animation: none; }} }}",
+        # A bare 0.5px box is fragile in Chrome: painted a loose 1px on its own, nothing at all inside the
+        # dock's translate. A 1px box masked down to its last hairline paints one exact device row at 2x.
+        f'{BAR} {{ content: ""; position: absolute; left: {composer_inset()}; right: {composer_inset()}; bottom: calc(100% + {raw["s-2"]}); height: 1px; '
+        f"-webkit-mask: linear-gradient(transparent calc(100% - {raw['hairline']}), black 0); "
+        f"mask: linear-gradient(transparent calc(100% - {raw['hairline']}), black 0); pointer-events: none; }}",
+    ]
+
+
 def desk_css(canon: Canon, vname: str, lock: dict) -> str:
     i = 0 if vname == "literal" else 1
     out = [f"/* GLASS STAGE v2 · Hermes Desktop · {VARIANTS[vname]['label']} · generated by v2/build.py",
@@ -686,7 +758,13 @@ def desk_css(canon: Canon, vname: str, lock: dict) -> str:
             ink = desk_value(canon, gname, "ink")
             out.append(f"{sel} :is([data-slot=\"sidebar\"], [data-slot=\"pane-tab\"]) :is(.uppercase, .uppercase *):not(svg, svg *), "
                        f"{sel} [data-slot=\"sidebar\"] time, {sel} [data-slot=\"timeline-timestamp\"] {{ color: {ink} !important; }}")
+            out.append(f"{sel} .wordmark {{ color: {ink} !important; }}")  # .m6: color var(--ink)
+            if FRAME:  # the cursor is the one live thing; the bar is struck in ink, as the canon strokes it
+                out.append(f"{sel} {NAME}::before {{ color: {desk_value(canon, gname, 'cursor')} !important; }}")
+                out.append(f"{sel} {BAR} {{ background: {braille(ink, canon_frame()['dash'])}; }}")
         out += desk_type(canon)
+        if FRAME:
+            out += desk_frame(canon)
     return "\n".join(out) + "\n"
 
 

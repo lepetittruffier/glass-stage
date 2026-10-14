@@ -187,7 +187,13 @@
 :root:not(.dark) .cm-editor .cm-nonmatchingBracket { background-color: transparent !important; color: #3600DA !important; }
 :root:not(.dark) .cm-editor :is(.cm-searchMatch, .cm-searchMatch-selected) { background-color: #E5E5E5 !important; outline: none !important; }
 :root.dark :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root.dark [data-slot="sidebar"] time, :root.dark [data-slot="timeline-timestamp"] { color: #FFFFFF !important; }
+:root.dark .wordmark { color: #FFFFFF !important; }
+:root.dark .wordmark > :not([aria-hidden]) > *::before { color: #2CFF05 !important; }
+:root.dark body:has(.wordmark) [data-slot="composer-dock"]:not([data-popped-out])::before { background: linear-gradient(90deg, #FFFFFF 0px 2px, transparent 2px 5px, #FFFFFF 5px 6px, transparent 6px 10px, #FFFFFF 10px 13px, transparent 13px 15px, #FFFFFF 15px 16px, transparent 16px 19px) 0 0 / 19px 100% repeat-x; }
 :root:not(.dark) :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root:not(.dark) [data-slot="sidebar"] time, :root:not(.dark) [data-slot="timeline-timestamp"] { color: #000000 !important; }
+:root:not(.dark) .wordmark { color: #000000 !important; }
+:root:not(.dark) .wordmark > :not([aria-hidden]) > *::before { color: #8E00FF !important; }
+:root:not(.dark) body:has(.wordmark) [data-slot="composer-dock"]:not([data-popped-out])::before { background: linear-gradient(90deg, #000000 0px 2px, transparent 2px 5px, #000000 5px 6px, transparent 6px 10px, #000000 10px 13px, transparent 13px 15px, #000000 15px 16px, transparent 16px 19px) 0 0 / 19px 100% repeat-x; }
 /* the type — three voices from the canon's specimen: 03 Body · 04 Pills · 05 Code */
 :root { --dt-font-sans: "Scheherazade New", Georgia, serif !important; --dt-font-kbd: "Red Hat Mono", ui-monospace, monospace !important; }
 *, *::before, *::after { font-weight: 400 !important; }  /* E1: bold is not a voice */
@@ -203,3 +209,13 @@
 [data-slot="aui_assistant-message-content"] :is(h1, h2, h3, h4, h5, h6):not(:is([data-slot="tool-block"], [data-slot^="code-card"], pre) *) { margin: 24px 0 8px !important; }
 [data-slot="sidebar"] .uppercase, [data-slot="sidebar"] .uppercase :not(svg, svg *), [data-slot="statusbar"], [data-slot="statusbar"] :not(svg, svg *), kbd, kbd :not(svg, svg *), [data-slot="aui_assistant-message-content"] th, [data-slot="aui_assistant-message-content"] th :not(svg, svg *) { font-family: "Red Hat Mono", ui-monospace, monospace !important; font-size: 7px !important; line-height: 2 !important; letter-spacing: 0.3em !important; text-transform: uppercase !important; }
 [data-slot="tool-block"], [data-slot="tool-block"] :not(svg, svg *), [data-slot^="code-card"], [data-slot^="code-card"] :not(svg, svg *), [data-slot="aui_assistant-message-content"] pre, [data-slot="aui_assistant-message-content"] pre :not(svg, svg *), [data-slot="timeline-timestamp"], [data-slot="timeline-timestamp"] :not(svg, svg *), [data-slot="sidebar"] time, [data-slot="aui_assistant-message-content"] code { font-family: "Red Hat Mono", ui-monospace, monospace !important; font-size: 7px !important; line-height: 2 !important; letter-spacing: 0.3em !important; }
+.wordmark { font-family: "Red Hat Mono", ui-monospace, monospace !important; font-size: 7px !important; line-height: 2 !important; letter-spacing: 0.3em !important; text-transform: uppercase !important; display: block !important; width: auto !important; container-type: normal !important; margin: 0 auto 8px !important; mix-blend-mode: normal !important; }
+.wordmark > [aria-hidden] { display: none !important; }
+.wordmark > :not([aria-hidden]), .wordmark > :not([aria-hidden]) > * { display: inline-block !important; inline-size: auto !important; flex-grow: 0 !important; container-type: normal !important; font-size: inherit !important; }
+[data-slot="aui_intro"] p:last-child:not(.wordmark) { font-family: "Scheherazade New", Georgia, serif !important; font-size: 14px !important; line-height: 1.6 !important; letter-spacing: 0.05em !important; text-wrap: balance; }
+/* the frame — the empty stage opens on the canon's masthead cursor and closes on its braille bar */
+@keyframes gs-cursor-blink { to { visibility: hidden; } }
+.wordmark > :not([aria-hidden]) > * { position: relative !important; margin-right: calc(-1 * 0.3em) !important; }
+.wordmark > :not([aria-hidden]) > *::before { content: "_\00a0"; position: absolute; right: 100%; top: 0; white-space: pre; animation: gs-cursor-blink 1.1s steps(2, start) infinite; }
+@media (prefers-reduced-motion: reduce) { .wordmark > :not([aria-hidden]) > *::before { animation: none; } }
+body:has(.wordmark) [data-slot="composer-dock"]:not([data-popped-out])::before { content: ""; position: absolute; left: 5px; right: 5px; bottom: calc(100% + 16px); height: 1px; -webkit-mask: linear-gradient(transparent calc(100% - 0.5px), black 0); mask: linear-gradient(transparent calc(100% - 0.5px), black 0); pointer-events: none; }
