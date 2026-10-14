@@ -70,6 +70,18 @@ wire_once() {  # <file> <block>  — appended once, after a dated backup
   say "  wired once     $1"
 }
 
+fonts() {  # the record wears the canon's two faces; without them Hermes Desktop falls back to Georgia
+  missing=""
+  for face in ScheherazadeNew:font-scheherazade-new RedHatMono:font-red-hat-mono; do
+    ls "$HOME/Library/Fonts" /Library/Fonts 2>/dev/null | grep -qi "${face%%:*}" || missing="$missing ${face#*:}"
+  done
+  if [ -n "$missing" ]; then
+    say "  fonts          missing:$missing  →  brew install --cask$missing  (then quit and reopen Hermes)"
+  else
+    say "  fonts          Scheherazade New · Red Hat Mono"
+  fi
+}
+
 install_v2() {
   OUT="$HERE/out"
   [ -d "$OUT/ghostty/themes" ] && [ -d "$OUT/hermes" ] || die "run install from the glass-stage repo (v2/install.sh); no built outputs next to $0"
@@ -88,6 +100,7 @@ install_v2() {
   say "  ghostty        4 themes → $GH/themes/"
   install_skin "$OUT/hermes/glass-stage.yaml"        glass-stage-v2        literal
   install_skin "$OUT/hermes/glass-stage-signal.yaml" glass-stage-v2-signal signal
+  fonts
   say "  hermes         glass-stage-v2 · glass-stage-v2-signal → $HH/skins/  (v1 glass-stage untouched)"
   {
     printf 'repo    %s\n' "$(cd "$HERE/.." && pwd)"
