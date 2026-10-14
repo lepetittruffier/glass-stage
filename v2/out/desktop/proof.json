@@ -4,7 +4,7 @@
     "dark": 22
   },
   "literal": {
-    "tokens_restated": 39,
+    "tokens_restated": 61,
     "probes": {
       "background": {
         "stage": {
@@ -218,14 +218,14 @@
       },
       "muted_fg": {
         "stage": {
-          "got": "#515151",
-          "want": "#515151",
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
           "ok": true,
           "control": "#FF00FF"
         },
         "paper": {
-          "got": "#999999",
-          "want": "#999999",
+          "got": "#666666",
+          "want": "#666666",
           "ok": true,
           "control": "#FF00FF"
         }
@@ -275,7 +275,7 @@
     }
   },
   "signal": {
-    "tokens_restated": 39,
+    "tokens_restated": 61,
     "probes": {
       "background": {
         "stage": {
@@ -489,14 +489,14 @@
       },
       "muted_fg": {
         "stage": {
-          "got": "#515151",
-          "want": "#515151",
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
           "ok": true,
           "control": "#FF00FF"
         },
         "paper": {
-          "got": "#999999",
-          "want": "#999999",
+          "got": "#666666",
+          "want": "#666666",
           "ok": true,
           "control": "#FF00FF"
         }

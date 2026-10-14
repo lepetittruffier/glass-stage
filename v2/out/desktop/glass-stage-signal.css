@@ -17,7 +17,7 @@
   --theme-accent-soft: #6F75D7 !important;
   --ui-text-primary: #FFFFFF !important;
   --ui-text-secondary: #9E9E9E !important;
-  --ui-text-tertiary: #515151 !important;
+  --ui-text-tertiary: #9E9E9E !important;
   --ui-text-quaternary: #515151 !important;
   --dt-border: #515151 !important;
   --dt-input: #515151 !important;
@@ -35,18 +35,50 @@
   --dt-destructive: #8E00FF !important;
   --dt-destructive-foreground: #FFFFFF !important;
   --ui-success: #2CFF05 !important;
+  --ui-red: #8E00FF !important;
+  --ui-orange: #6F75D7 !important;
+  --ui-yellow: #6F75D7 !important;
+  --ui-green: #2CFF05 !important;
+  --ui-cyan: #9E9E9E !important;
+  --ui-blue: #6F75D7 !important;
+  --ui-purple: #5F5295 !important;
+  --ui-diff-add-border: #2CFF05 !important;
+  --ui-diff-remove-border: #8E00FF !important;
+  --ui-diff-add-foreground: #2CFF05 !important;
+  --ui-diff-remove-foreground: #8E00FF !important;
+  --tool-memory-legendary-from: #6F75D7 !important;
+  --tool-memory-legendary-mid: #6F75D7 !important;
+  --tool-memory-legendary-to: #6F75D7 !important;
+  --tool-memory-legendary-icon: #6F75D7 !important;
+  --tool-memory-legendary-meta: #9E9E9E !important;
   --theme-mix-chrome: 100% !important;
   --theme-mix-sidebar: 100% !important;
   --theme-mix-card: 100% !important;
   --theme-mix-elevated: 100% !important;
   --theme-mix-bubble: 100% !important;
   --noise-opacity-mul: 0 !important;
+  --ui-diff-add-background: transparent !important;
+  --ui-diff-remove-background: transparent !important;
+  --tool-memory-legendary-glow: transparent !important;
   --dt-font-mono: "Red Hat Mono", ui-monospace, monospace !important;
   caret-color: #2CFF05;
 }
 :root.dark :is(textarea, input, [contenteditable]) { caret-color: #2CFF05; }
 :root.dark [data-slot='thread-timeline-popover'] { background: #272727 !important; }
 :root.dark ::selection { background: #6F75D7; color: #000000; }
+:root.dark :is([style*="--shiki-dark:#ADBAC7" i], [style*="--shiki-dark: #ADBAC7" i], [style*="--shiki-dark:#E6EDF3" i], [style*="--shiki-dark: #E6EDF3" i], [style*="--shiki-dark:#E1E4E8" i], [style*="--shiki-dark: #E1E4E8" i], [style*="color: rgb(173, 186, 199)"], [style*="color: rgb(230, 237, 243)"], [style*="color: rgb(225, 228, 232)"]) { color: #FFFFFF !important; }
+:root.dark :is([style*="--shiki-dark:#768390" i], [style*="--shiki-dark: #768390" i], [style*="--shiki-dark:#8B949E" i], [style*="--shiki-dark: #8B949E" i], [style*="--shiki-dark:#6A737D" i], [style*="--shiki-dark: #6A737D" i], [style*="color: rgb(118, 131, 144)"], [style*="color: rgb(139, 148, 158)"], [style*="color: rgb(106, 115, 125)"]) { color: #515151 !important; }
+:root.dark :is([style*="--shiki-dark:#F47067" i], [style*="--shiki-dark: #F47067" i], [style*="--shiki-dark:#FF7B72" i], [style*="--shiki-dark: #FF7B72" i], [style*="--shiki-dark:#F97583" i], [style*="--shiki-dark: #F97583" i], [style*="color: rgb(244, 112, 103)"], [style*="color: rgb(255, 123, 114)"], [style*="color: rgb(249, 117, 131)"]) { color: #6F75D7 !important; }
+:root.dark :is([style*="--shiki-dark:#6CB6FF" i], [style*="--shiki-dark: #6CB6FF" i], [style*="--shiki-dark:#79C0FF" i], [style*="--shiki-dark: #79C0FF" i], [style*="--shiki-dark:#79B8FF" i], [style*="--shiki-dark: #79B8FF" i], [style*="color: rgb(108, 182, 255)"], [style*="color: rgb(121, 192, 255)"], [style*="color: rgb(121, 184, 255)"]) { color: #5F5295 !important; }
+:root.dark :is([style*="--shiki-dark:#F69D50" i], [style*="--shiki-dark: #F69D50" i], [style*="--shiki-dark:#FFA657" i], [style*="--shiki-dark: #FFA657" i], [style*="--shiki-dark:#FFAB70" i], [style*="--shiki-dark: #FFAB70" i], [style*="color: rgb(246, 157, 80)"], [style*="color: rgb(255, 166, 87)"], [style*="color: rgb(255, 171, 112)"]) { color: #FFFFFF !important; }
+:root.dark :is([style*="--shiki-dark:#DCBDFB" i], [style*="--shiki-dark: #DCBDFB" i], [style*="--shiki-dark:#D2A8FF" i], [style*="--shiki-dark: #D2A8FF" i], [style*="--shiki-dark:#B392F0" i], [style*="--shiki-dark: #B392F0" i], [style*="color: rgb(220, 189, 251)"], [style*="color: rgb(210, 168, 255)"], [style*="color: rgb(179, 146, 240)"]) { color: #FFFFFF !important; }
+:root.dark :is([style*="--shiki-dark:#8DDB8C" i], [style*="--shiki-dark: #8DDB8C" i], [style*="--shiki-dark:#7EE787" i], [style*="--shiki-dark: #7EE787" i], [style*="--shiki-dark:#85E89D" i], [style*="--shiki-dark: #85E89D" i], [style*="color: rgb(141, 219, 140)"], [style*="color: rgb(126, 231, 135)"], [style*="color: rgb(133, 232, 157)"]) { color: #2CFF05 !important; }
+:root.dark :is([style*="--shiki-dark:#96D0FF" i], [style*="--shiki-dark: #96D0FF" i], [style*="--shiki-dark:#A5D6FF" i], [style*="--shiki-dark: #A5D6FF" i], [style*="--shiki-dark:#9ECBFF" i], [style*="--shiki-dark: #9ECBFF" i], [style*="--shiki-dark:#DBEDFF" i], [style*="--shiki-dark: #DBEDFF" i], [style*="color: rgb(150, 208, 255)"], [style*="color: rgb(165, 214, 255)"], [style*="color: rgb(158, 203, 255)"], [style*="color: rgb(219, 237, 255)"]) { color: #2CFF05 !important; }
+:root.dark :is([style*="--shiki-dark:#FF938A" i], [style*="--shiki-dark: #FF938A" i], [style*="--shiki-dark:#FFA198" i], [style*="--shiki-dark: #FFA198" i], [style*="--shiki-dark:#FDAEB7" i], [style*="--shiki-dark: #FDAEB7" i], [style*="color: rgb(255, 147, 138)"], [style*="color: rgb(255, 161, 152)"], [style*="color: rgb(253, 174, 183)"]) { color: #8E00FF !important; }
+:root.dark :is([style*="--shiki-dark:#CDD9E5" i], [style*="--shiki-dark: #CDD9E5" i], [style*="--shiki-dark:#2D333B" i], [style*="--shiki-dark: #2D333B" i], [style*="--shiki-dark:#F0F6FC" i], [style*="--shiki-dark: #F0F6FC" i], [style*="--shiki-dark:#161B22" i], [style*="--shiki-dark: #161B22" i], [style*="--shiki-dark:#24292E" i], [style*="--shiki-dark: #24292E" i], [style*="--shiki-dark:#2F363D" i], [style*="--shiki-dark: #2F363D" i], [style*="--shiki-dark:#D1D5DA" i], [style*="--shiki-dark: #D1D5DA" i], [style*="color: rgb(205, 217, 229)"], [style*="color: rgb(45, 51, 59)"], [style*="color: rgb(240, 246, 252)"], [style*="color: rgb(22, 27, 34)"], [style*="color: rgb(36, 41, 46)"], [style*="color: rgb(47, 54, 61)"], [style*="color: rgb(209, 213, 218)"]) { color: #515151 !important; }
+:root.dark :is([style*="--shiki-dark-bg"]) { background-color: transparent !important; }
+:root.dark .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #2CFF05 !important; }
+:root.dark .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #8E00FF !important; }
 :root:not(.dark) {
   --theme-background-seed: #FFFFFF !important;
   --theme-sidebar-seed: #FFFFFF !important;
@@ -62,7 +94,7 @@
   --theme-accent-soft: #6F75D7 !important;
   --ui-text-primary: #000000 !important;
   --ui-text-secondary: #666666 !important;
-  --ui-text-tertiary: #999999 !important;
+  --ui-text-tertiary: #666666 !important;
   --ui-text-quaternary: #999999 !important;
   --dt-border: #616161 !important;
   --dt-input: #616161 !important;
@@ -80,15 +112,47 @@
   --dt-destructive: #3600DA !important;
   --dt-destructive-foreground: #FFFFFF !important;
   --ui-success: #332078 !important;
+  --ui-red: #3600DA !important;
+  --ui-orange: #5F5295 !important;
+  --ui-yellow: #5F5295 !important;
+  --ui-green: #332078 !important;
+  --ui-cyan: #666666 !important;
+  --ui-blue: #5F5295 !important;
+  --ui-purple: #8E00FF !important;
+  --ui-diff-add-border: #332078 !important;
+  --ui-diff-remove-border: #3600DA !important;
+  --ui-diff-add-foreground: #332078 !important;
+  --ui-diff-remove-foreground: #3600DA !important;
+  --tool-memory-legendary-from: #5F5295 !important;
+  --tool-memory-legendary-mid: #5F5295 !important;
+  --tool-memory-legendary-to: #5F5295 !important;
+  --tool-memory-legendary-icon: #5F5295 !important;
+  --tool-memory-legendary-meta: #666666 !important;
   --theme-mix-chrome: 100% !important;
   --theme-mix-sidebar: 100% !important;
   --theme-mix-card: 100% !important;
   --theme-mix-elevated: 100% !important;
   --theme-mix-bubble: 100% !important;
   --noise-opacity-mul: 0 !important;
+  --ui-diff-add-background: transparent !important;
+  --ui-diff-remove-background: transparent !important;
+  --tool-memory-legendary-glow: transparent !important;
   --dt-font-mono: "Red Hat Mono", ui-monospace, monospace !important;
   caret-color: #8E00FF;
 }
 :root:not(.dark) :is(textarea, input, [contenteditable]) { caret-color: #8E00FF; }
 :root:not(.dark) [data-slot='thread-timeline-popover'] { background: #E5E5E5 !important; }
 :root:not(.dark) ::selection { background: #6F75D7; color: #000000; }
+:root:not(.dark) :is([style*="--shiki-light:#1F2328" i], [style*="--sdm-c: #1F2328" i], [style*="--shiki-light:#24292E" i], [style*="--sdm-c: #24292E" i], [style*="color: rgb(31, 35, 40)"], [style*="color: rgb(36, 41, 46)"]) { color: #000000 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#6E7781" i], [style*="--sdm-c: #6E7781" i], [style*="--shiki-light:#57606A" i], [style*="--sdm-c: #57606A" i], [style*="--shiki-light:#6A737D" i], [style*="--sdm-c: #6A737D" i], [style*="color: rgb(110, 119, 129)"], [style*="color: rgb(87, 96, 106)"], [style*="color: rgb(106, 115, 125)"]) { color: #999999 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#CF222E" i], [style*="--sdm-c: #CF222E" i], [style*="--shiki-light:#D73A49" i], [style*="--sdm-c: #D73A49" i], [style*="color: rgb(207, 34, 46)"], [style*="color: rgb(215, 58, 73)"]) { color: #5F5295 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#0550AE" i], [style*="--sdm-c: #0550AE" i], [style*="--shiki-light:#005CC5" i], [style*="--sdm-c: #005CC5" i], [style*="color: rgb(5, 80, 174)"], [style*="color: rgb(0, 92, 197)"]) { color: #8E00FF !important; }
+:root:not(.dark) :is([style*="--shiki-light:#953800" i], [style*="--sdm-c: #953800" i], [style*="--shiki-light:#E36209" i], [style*="--sdm-c: #E36209" i], [style*="color: rgb(149, 56, 0)"], [style*="color: rgb(227, 98, 9)"]) { color: #000000 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#8250DF" i], [style*="--sdm-c: #8250DF" i], [style*="--shiki-light:#6F42C1" i], [style*="--sdm-c: #6F42C1" i], [style*="color: rgb(130, 80, 223)"], [style*="color: rgb(111, 66, 193)"]) { color: #000000 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#116329" i], [style*="--sdm-c: #116329" i], [style*="--shiki-light:#22863A" i], [style*="--sdm-c: #22863A" i], [style*="color: rgb(17, 99, 41)"], [style*="color: rgb(34, 134, 58)"]) { color: #332078 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#0A3069" i], [style*="--sdm-c: #0A3069" i], [style*="--shiki-light:#032F62" i], [style*="--sdm-c: #032F62" i], [style*="color: rgb(10, 48, 105)"], [style*="color: rgb(3, 47, 98)"]) { color: #332078 !important; }
+:root:not(.dark) :is([style*="--shiki-light:#82071E" i], [style*="--sdm-c: #82071E" i], [style*="--shiki-light:#B31D28" i], [style*="--sdm-c: #B31D28" i], [style*="color: rgb(130, 7, 30)"], [style*="color: rgb(179, 29, 40)"]) { color: #3600DA !important; }
+:root:not(.dark) :is([style*="--shiki-light:#F6F8FA" i], [style*="--sdm-c: #F6F8FA" i], [style*="--shiki-light:#EAEEF2" i], [style*="--sdm-c: #EAEEF2" i], [style*="--shiki-light:#FAFBFC" i], [style*="--sdm-c: #FAFBFC" i], [style*="--shiki-light:#586069" i], [style*="--sdm-c: #586069" i], [style*="color: rgb(246, 248, 250)"], [style*="color: rgb(234, 238, 242)"], [style*="color: rgb(250, 251, 252)"], [style*="color: rgb(88, 96, 105)"]) { color: #999999 !important; }
+:root:not(.dark) :is([style*="--shiki-light-bg"], [style*="--sdm-bg"]) { background-color: transparent !important; }
+:root:not(.dark) .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #332078 !important; }
+:root:not(.dark) .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #3600DA !important; }

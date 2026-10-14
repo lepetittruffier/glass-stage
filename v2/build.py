@@ -417,7 +417,9 @@ DESK_KEYS = {  # token → (LITERAL role, SIGNAL role); "on:<role>" = the canon 
     "--theme-primary": ("door", "door"), "--theme-warm": ("door", "door"),
     "--theme-midground": ("ink", "locator"), "--theme-accent-soft": ("mark", "mark"),
     "--ui-text-primary": ("ink", "ink"), "--ui-text-secondary": ("field", "field"),
-    "--ui-text-tertiary": ("ghost", "ghost"), "--ui-text-quaternary": ("ghost", "ghost"),
+    # the app's tertiary is 54 % of its ink (muted-foreground, labels, tool summaries): it reads at the field;
+    # its quaternary (36 %) stays the ghost
+    "--ui-text-tertiary": ("field", "field"), "--ui-text-quaternary": ("ghost", "ghost"),
     "--dt-border": ("rule", "rule"), "--dt-input": ("rule", "rule"),
     "--dt-sidebar-border": ("rule", "rule"), "--dt-user-bubble-border": ("rule", "rule"),
     "--dt-ring": ("door", "door"), "--dt-composer-ring": ("door", "door"), "--dt-muted": ("bar", "bar"),
@@ -427,16 +429,31 @@ DESK_KEYS = {  # token → (LITERAL role, SIGNAL role); "on:<role>" = the canon 
     "--dt-midground-foreground": ("on:ink", "on:locator"),
     "--dt-destructive": ("flag", "flag"), "--dt-destructive-foreground": ("on:flag", "on:flag"),
     "--ui-success": ("ink", "enters"),
+    # the app's named hues (styles.css --ui-<hue>), read by meaning like the Ghostty slots: red is the flag;
+    # LITERAL promotes every other hue to full ink, SIGNAL keeps the v1 slots
+    "--ui-red": ("flag", "flag"), "--ui-orange": ("ink", "locator"), "--ui-yellow": ("ink", "locator"),
+    "--ui-green": ("ink", "enters"), "--ui-cyan": ("ink", "field"), "--ui-blue": ("ink", "locator"),
+    "--ui-purple": ("ink", "seen"),
+    # .hub-diff: diffs carry no colour on either ground (LITERAL); SIGNAL keeps enters / flag
+    # (LITERAL's lines carry no gutter; the border token still paints the overview strip, at the field)
+    "--ui-diff-add-border": ("field", "enters"), "--ui-diff-remove-border": ("field", "flag"),
+    "--ui-diff-add-foreground": ("ink", "enters"), "--ui-diff-remove-foreground": ("ink", "flag"),
+    # the self-improvement review: one ink, no gold-to-purple gradient, no glow
+    "--tool-memory-legendary-from": ("ink", "locator"), "--tool-memory-legendary-mid": ("ink", "locator"),
+    "--tool-memory-legendary-to": ("ink", "locator"), "--tool-memory-legendary-icon": ("field", "locator"),
+    "--tool-memory-legendary-meta": ("field", "field"),
 }
 # flat: no neutral chrome mixed into the ground, no grain; the canon draws depth with hairlines
 DESK_FLAT = {"--theme-mix-chrome": "100%", "--theme-mix-sidebar": "100%", "--theme-mix-card": "100%",
-             "--theme-mix-elevated": "100%", "--theme-mix-bubble": "100%", "--noise-opacity-mul": "0"}
+             "--theme-mix-elevated": "100%", "--theme-mix-bubble": "100%", "--noise-opacity-mul": "0",
+             "--ui-diff-add-background": "transparent", "--ui-diff-remove-background": "transparent",
+             "--tool-memory-legendary-glow": "transparent"}
 DESK_GROUNDS = (("stage", ":root.dark"), ("paper", ":root:not(.dark)"))
 DESK_PROBES = {"background": "ground", "foreground": "ink", "card": "ground", "sidebar": "ground",
                "popover": "bar", "border": "rule", "primary": "door", "primary_fg": "on:door",
                "muted": "bar", "accent": "mark", "accent_fg": "mark_ink", "ring": "door",
                "composer_ring": "door", "destructive": "flag", "text_secondary": "field",
-               "muted_fg": "ghost", "caret": "cursor", "selection": "mark", "timeline_popover": "bar"}
+               "muted_fg": "field", "caret": "cursor", "selection": "mark", "timeline_popover": "bar"}
 
 
 def desk_value(canon: Canon, gname: str, role: str) -> str:
@@ -446,6 +463,74 @@ def desk_value(canon: Canon, gname: str, role: str) -> str:
         return max((canon.on("ink", g["ground"]), canon.on("paper", g["ground"])),
                    key=lambda c: contrast(c, fill))
     return canon.on(g[role], g["ground"])
+
+
+# ── the record layer: code, diffs and counts ─────────────────────────────────
+# Shiki paints every token inline: chat fences and inline diffs in github-dark-dimmed /
+# github-light-default (shiki-config.ts), the file preview in github-*-default (preview-file.tsx),
+# Streamdown fences in github-dark / github-light (@streamdown/code's default). The five GitHub
+# palettes share one structure, so each token is read by the theme colour it carries and restated
+# from the terminal roles — the Desktop's own slot map. Re-derive with v2/tools/record_proof.py.
+SHIKI_GROUPS = {  # category → (stage colours: dimmed, dark-default, dark · paper colours: light-default, light)
+    "default": (("#ADBAC7", "#E6EDF3", "#E1E4E8"), ("#1F2328", "#24292E")),
+    "comment": (("#768390", "#8B949E", "#6A737D"), ("#6E7781", "#57606A", "#6A737D")),  # #57606A: the app's light comment
+    "keyword": (("#F47067", "#FF7B72", "#F97583"), ("#CF222E", "#D73A49")),
+    "constant": (("#6CB6FF", "#79C0FF", "#79B8FF"), ("#0550AE", "#005CC5")),
+    "name": (("#F69D50", "#FFA657", "#FFAB70"), ("#953800", "#E36209")),
+    "function": (("#DCBDFB", "#D2A8FF", "#B392F0"), ("#8250DF", "#6F42C1")),
+    "tag": (("#8DDB8C", "#7EE787", "#85E89D"), ("#116329", "#22863A")),
+    "string": (("#96D0FF", "#A5D6FF", "#9ECBFF", "#DBEDFF"), ("#0A3069", "#032F62")),
+    "invalid": (("#FF938A", "#FFA198", "#FDAEB7"), ("#82071E", "#B31D28")),
+    "quiet": (("#CDD9E5", "#2D333B", "#F0F6FC", "#161B22", "#24292E", "#2F363D", "#D1D5DA"),
+              ("#F6F8FA", "#EAEEF2", "#FAFBFC", "#586069")),
+}
+SYNTAX = {  # category → (LITERAL role, SIGNAL role): SKIN_KEYS syntax_* where the skin names one, else the slot map
+    "default": ("field", "ink"), "comment": ("ghost", "ghost"), "keyword": ("ink", "locator"),
+    "constant": ("ink", "seen"), "name": ("ink", "ink"), "function": ("ink", "ink"), "tag": ("ink", "enters"),
+    "string": ("field", "enters"), "invalid": ("flag", "flag"), "quiet": ("ghost", "ghost"),
+}
+DIFF_ADD, DIFF_REMOVE = '[class~="border-(--ui-diff-add-border)"]', '[class~="border-(--ui-diff-remove-border)"]'
+COUNTS = {  # the +N / −N beside a file (DiffCount) and in a tool header (Tailwind emerald / rose)
+    "--ui-diff-add-foreground": ('[class~="text-(--ui-green)"]', '[class~="dark:text-emerald-400"]',
+                                 '[class~="text-emerald-600"]'),
+    "--ui-diff-remove-foreground": ('[class~="text-(--ui-red)"]', '[class~="dark:text-rose-400"]',
+                                    '[class~="text-rose-600"]'),
+}
+
+
+def rgb_of(hx: str) -> str:
+    return "rgb(%d, %d, %d)" % (int(hx[1:3], 16), int(hx[3:5], 16), int(hx[5:7], 16))
+
+
+def token_selectors(gname: str, hexes) -> str:
+    # each render path writes the theme colour its own way: Shiki's HTML (--shiki-dark:#F47067),
+    # Streamdown's React props (--shiki-dark: #F47067; --sdm-c on paper), the diff renderer (color: rgb(…))
+    keys = ("--shiki-dark:", "--shiki-dark: ") if gname == "stage" else ("--shiki-light:", "--sdm-c: ")
+    return ", ".join([f'[style*="{k}{hx}" i]' for hx in hexes for k in keys]
+                     + [f'[style*="color: {rgb_of(hx)}"]' for hx in hexes])
+
+
+def desk_record(canon: Canon, gname: str, sel: str, i: int) -> list:
+    hair = canon.raw.get("hairline", "0.5px").strip()
+    out = []
+    for cat, (stage_hexes, paper_hexes) in SHIKI_GROUPS.items():
+        sels = token_selectors(gname, stage_hexes if gname == "stage" else paper_hexes)
+        out.append(f"{sel} :is({sels}) {{ color: {desk_value(canon, gname, SYNTAX[cat][i])} !important; }}")
+    grounds = '[style*="--shiki-dark-bg"]' if gname == "stage" else '[style*="--shiki-light-bg"], [style*="--sdm-bg"]'
+    out.append(f"{sel} :is({grounds}) {{ background-color: transparent !important; }}")  # code sits on the ground
+    if i == 0:  # LITERAL · .hub-diff: del struck · ins hairline underline · all ink · nothing else
+        ink = desk_value(canon, gname, "ink")
+        # ins is a border-bottom in the canon: it sits under the descenders, so the line goes `under`
+        out.append(f"{sel} {DIFF_ADD} {{ text-decoration: underline solid {ink} {hair}; "
+                   "text-underline-position: under; text-underline-offset: 0.08em; text-decoration-skip-ink: none; }")
+        out.append(f"{sel} {DIFF_REMOVE} {{ text-decoration: line-through solid {ink} {hair}; }}")
+        # no gutter: the canon diff has none, and against the card's own border it doubles the line;
+        # the 2px border stays, transparent, so changed lines keep the context lines' column
+        out.append(f'{sel} [class~="border-l-2"]:is({DIFF_ADD}, {DIFF_REMOVE}) {{ border-left-color: transparent !important; }}')
+    for token, sels in COUNTS.items():
+        out.append(f"{sel} .tabular-nums > :is({', '.join(sels)}) "
+                   f"{{ color: {desk_value(canon, gname, DESK_KEYS[token][i])} !important; }}")
+    return out
 
 
 def desk_css(canon: Canon, vname: str, lock: dict) -> str:
@@ -466,6 +551,7 @@ def desk_css(canon: Canon, vname: str, lock: dict) -> str:
         out.append(f"{sel} [data-slot='thread-timeline-popover'] {{ background: {canon.on(g['bar'], g['ground'])} !important; }}")
         out.append(f"{sel} ::selection {{ background: {canon.on(g['mark'], g['ground'])}; "
                    f"color: {canon.on(g['mark_ink'], g['ground'])}; }}")
+        out += desk_record(canon, gname, sel, i)
     return "\n".join(out) + "\n"
 
 
@@ -777,6 +863,10 @@ RULINGS = [
     ("Desktop on the stage", "workhorse rows are paper-native", "PROPOSAL: E13's exception — paper on ink. Needs an epoq3 ruling"),
     ("The Desktop layer", "the app paints one palette inline; .dark follows the ground's luminance",
      "customCSS restates every token from the terminal roles: flat ground, no grain, colour at the door, the mark and the flag. Today's Desktop wears the stage in both switch positions; the paper arrives with paired palettes (#81941)"),
+    ("The record on the Desktop", ".hub-diff · the terminal roles",
+     "code: LITERAL promotes a program's colour to full ink, strings in the field, comments in the ghost · diffs carry no colour: del struck, ins hairline-underlined under the descenders, no gutter · counts in ink · the review loses its gradient"),
+    ("Meta on the Desktop", "the app's tertiary is 54 % of its ink",
+     "it reads at the field (--paper-62); the 36 % quaternary stays the ghost"),
     ("Name on the Nous submission", "—", "JACOB / OPERATOR stays local; the submitted skin carries THE GLASS STAGE"),
 ]
 

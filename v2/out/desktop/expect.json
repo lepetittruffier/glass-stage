@@ -16,7 +16,7 @@
       "composer_ring": "#8E00FF",
       "destructive": "#8E00FF",
       "text_secondary": "#9E9E9E",
-      "muted_fg": "#515151",
+      "muted_fg": "#9E9E9E",
       "caret": "#2CFF05",
       "selection": "#6F75D7",
       "timeline_popover": "#272727"
@@ -37,7 +37,7 @@
       "composer_ring": "#8E00FF",
       "destructive": "#3600DA",
       "text_secondary": "#666666",
-      "muted_fg": "#999999",
+      "muted_fg": "#666666",
       "caret": "#8E00FF",
       "selection": "#6F75D7",
       "timeline_popover": "#E5E5E5"
@@ -60,7 +60,7 @@
       "composer_ring": "#8E00FF",
       "destructive": "#8E00FF",
       "text_secondary": "#9E9E9E",
-      "muted_fg": "#515151",
+      "muted_fg": "#9E9E9E",
       "caret": "#2CFF05",
       "selection": "#6F75D7",
       "timeline_popover": "#272727"
@@ -81,7 +81,7 @@
       "composer_ring": "#8E00FF",
       "destructive": "#3600DA",
       "text_secondary": "#666666",
-      "muted_fg": "#999999",
+      "muted_fg": "#666666",
       "caret": "#8E00FF",
       "selection": "#6F75D7",
       "timeline_popover": "#E5E5E5"
