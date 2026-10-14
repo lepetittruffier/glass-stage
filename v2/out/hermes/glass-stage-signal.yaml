@@ -191,6 +191,7 @@ customCSS: |-
     --dt-destructive: #8E00FF !important;
     --dt-destructive-foreground: #FFFFFF !important;
     --ui-success: #2CFF05 !important;
+    --ui-danger: #8E00FF !important;
     --ui-red: #8E00FF !important;
     --ui-orange: #6F75D7 !important;
     --ui-yellow: #6F75D7 !important;
@@ -235,6 +236,17 @@ customCSS: |-
   :root.dark :is([style*="--shiki-dark-bg"]) { background-color: transparent !important; }
   :root.dark .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #2CFF05 !important; }
   :root.dark .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #8E00FF !important; }
+  :root.dark { --color-amber-50: #6F75D7 !important; --color-amber-100: #6F75D7 !important; --color-amber-200: #6F75D7 !important; --color-amber-300: #6F75D7 !important; --color-amber-400: #6F75D7 !important; --color-amber-500: #6F75D7 !important; --color-amber-600: #6F75D7 !important; --color-amber-700: #6F75D7 !important; --color-amber-900: #000000 !important; --color-amber-950: #000000 !important; --color-blue-300: #6F75D7 !important; --color-blue-400: #6F75D7 !important; --color-blue-600: #6F75D7 !important; --color-blue-700: #6F75D7 !important; --color-cyan-300: #9E9E9E !important; --color-cyan-700: #9E9E9E !important; --color-emerald-200: #2CFF05 !important; --color-emerald-300: #2CFF05 !important; --color-emerald-400: #2CFF05 !important; --color-emerald-500: #2CFF05 !important; --color-emerald-600: #2CFF05 !important; --color-emerald-700: #2CFF05 !important; --color-fuchsia-300: #5F5295 !important; --color-fuchsia-700: #5F5295 !important; --color-orange-500: #6F75D7 !important; --color-pink-300: #5F5295 !important; --color-pink-500: #5F5295 !important; --color-pink-600: #5F5295 !important; --color-pink-700: #5F5295 !important; --color-red-200: #8E00FF !important; --color-red-300: #8E00FF !important; --color-red-400: #8E00FF !important; --color-red-500: #8E00FF !important; --color-red-600: #8E00FF !important; --color-red-700: #8E00FF !important; --color-red-950: #000000 !important; --color-rose-300: #8E00FF !important; --color-rose-400: #8E00FF !important; --color-rose-600: #8E00FF !important; --color-sky-300: #6F75D7 !important; --color-sky-500: #6F75D7 !important; --color-sky-600: #6F75D7 !important; --color-sky-700: #6F75D7 !important; --color-teal-200: #2CFF05 !important; --color-teal-600: #2CFF05 !important; --color-violet-400: #5F5295 !important; --color-violet-500: #5F5295 !important; --color-violet-600: #5F5295 !important; --color-zinc-100: #FFFFFF !important; --color-zinc-200: #FFFFFF !important; --color-zinc-300: #FFFFFF !important; --color-zinc-400: #9E9E9E !important; --color-zinc-500: #9E9E9E !important; --color-zinc-600: #515151 !important; --color-zinc-700: #515151 !important; }
+  :root.dark .cm-editor { color: #FFFFFF !important; }
+  :root.dark .cm-editor .cm-content :is([class^="ͼ"], [class*=" ͼ"]) { color: inherit !important; }
+  :root.dark .cm-editor .cm-content { caret-color: #2CFF05 !important; }
+  :root.dark .cm-editor :is(.cm-cursor, .cm-dropCursor) { border-left-color: #2CFF05 !important; }
+  :root.dark .cm-editor .cm-selectionBackground, :root.dark .cm-editor .cm-content ::selection { background-color: #272727 !important; }
+  :root.dark .cm-editor :is(.cm-activeLine, .cm-activeLineGutter) { background-color: transparent !important; }
+  :root.dark .cm-editor .cm-gutters { color: #515151 !important; }
+  :root.dark .cm-editor .cm-matchingBracket { background-color: #272727 !important; color: #FFFFFF !important; }
+  :root.dark .cm-editor .cm-nonmatchingBracket { background-color: transparent !important; color: #8E00FF !important; }
+  :root.dark .cm-editor :is(.cm-searchMatch, .cm-searchMatch-selected) { background-color: #272727 !important; outline: none !important; }
   :root:not(.dark) {
     --theme-background-seed: #FFFFFF !important;
     --theme-sidebar-seed: #FFFFFF !important;
@@ -268,6 +280,7 @@ customCSS: |-
     --dt-destructive: #3600DA !important;
     --dt-destructive-foreground: #FFFFFF !important;
     --ui-success: #332078 !important;
+    --ui-danger: #3600DA !important;
     --ui-red: #3600DA !important;
     --ui-orange: #5F5295 !important;
     --ui-yellow: #5F5295 !important;
@@ -312,6 +325,17 @@ customCSS: |-
   :root:not(.dark) :is([style*="--shiki-light-bg"], [style*="--sdm-bg"]) { background-color: transparent !important; }
   :root:not(.dark) .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #332078 !important; }
   :root:not(.dark) .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #3600DA !important; }
+  :root:not(.dark) { --color-amber-50: #FFFFFF !important; --color-amber-100: #FFFFFF !important; --color-amber-200: #FFFFFF !important; --color-amber-300: #5F5295 !important; --color-amber-400: #5F5295 !important; --color-amber-500: #5F5295 !important; --color-amber-600: #5F5295 !important; --color-amber-700: #5F5295 !important; --color-amber-900: #5F5295 !important; --color-amber-950: #5F5295 !important; --color-blue-300: #5F5295 !important; --color-blue-400: #5F5295 !important; --color-blue-600: #5F5295 !important; --color-blue-700: #5F5295 !important; --color-cyan-300: #666666 !important; --color-cyan-700: #666666 !important; --color-emerald-200: #FFFFFF !important; --color-emerald-300: #332078 !important; --color-emerald-400: #332078 !important; --color-emerald-500: #332078 !important; --color-emerald-600: #332078 !important; --color-emerald-700: #332078 !important; --color-fuchsia-300: #8E00FF !important; --color-fuchsia-700: #8E00FF !important; --color-orange-500: #5F5295 !important; --color-pink-300: #8E00FF !important; --color-pink-500: #8E00FF !important; --color-pink-600: #8E00FF !important; --color-pink-700: #8E00FF !important; --color-red-200: #FFFFFF !important; --color-red-300: #3600DA !important; --color-red-400: #3600DA !important; --color-red-500: #3600DA !important; --color-red-600: #3600DA !important; --color-red-700: #3600DA !important; --color-red-950: #3600DA !important; --color-rose-300: #3600DA !important; --color-rose-400: #3600DA !important; --color-rose-600: #3600DA !important; --color-sky-300: #5F5295 !important; --color-sky-500: #5F5295 !important; --color-sky-600: #5F5295 !important; --color-sky-700: #5F5295 !important; --color-teal-200: #FFFFFF !important; --color-teal-600: #332078 !important; --color-violet-400: #8E00FF !important; --color-violet-500: #8E00FF !important; --color-violet-600: #8E00FF !important; --color-zinc-100: #FFFFFF !important; --color-zinc-200: #FFFFFF !important; --color-zinc-300: #999999 !important; --color-zinc-400: #999999 !important; --color-zinc-500: #666666 !important; --color-zinc-600: #666666 !important; --color-zinc-700: #000000 !important; }
+  :root:not(.dark) .cm-editor { color: #000000 !important; }
+  :root:not(.dark) .cm-editor .cm-content :is([class^="ͼ"], [class*=" ͼ"]) { color: inherit !important; }
+  :root:not(.dark) .cm-editor .cm-content { caret-color: #8E00FF !important; }
+  :root:not(.dark) .cm-editor :is(.cm-cursor, .cm-dropCursor) { border-left-color: #8E00FF !important; }
+  :root:not(.dark) .cm-editor .cm-selectionBackground, :root:not(.dark) .cm-editor .cm-content ::selection { background-color: #E5E5E5 !important; }
+  :root:not(.dark) .cm-editor :is(.cm-activeLine, .cm-activeLineGutter) { background-color: transparent !important; }
+  :root:not(.dark) .cm-editor .cm-gutters { color: #999999 !important; }
+  :root:not(.dark) .cm-editor .cm-matchingBracket { background-color: #E5E5E5 !important; color: #000000 !important; }
+  :root:not(.dark) .cm-editor .cm-nonmatchingBracket { background-color: transparent !important; color: #3600DA !important; }
+  :root:not(.dark) .cm-editor :is(.cm-searchMatch, .cm-searchMatch-selected) { background-color: #E5E5E5 !important; outline: none !important; }
   :root.dark :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root.dark [data-slot="sidebar"] time, :root.dark [data-slot="timeline-timestamp"] { color: #FFFFFF !important; }
   :root:not(.dark) :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root:not(.dark) [data-slot="sidebar"] time, :root:not(.dark) [data-slot="timeline-timestamp"] { color: #000000 !important; }
   /* the type — three voices from the canon's specimen: 03 Body · 04 Pills · 05 Code */

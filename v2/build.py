@@ -432,6 +432,7 @@ DESK_KEYS = {  # token → (LITERAL role, SIGNAL role); "on:<role>" = the canon 
     "--ui-success": ("ink", "enters"),
     # the app's named hues (styles.css --ui-<hue>), read by meaning like the Ghostty slots: red is the flag;
     # LITERAL promotes every other hue to full ink, SIGNAL keeps the v1 slots
+    "--ui-danger": ("flag", "flag"),  # read with a coral fallback (#f87171) where the app leaves it unset
     "--ui-red": ("flag", "flag"), "--ui-orange": ("ink", "locator"), "--ui-yellow": ("ink", "locator"),
     "--ui-green": ("ink", "enters"), "--ui-cyan": ("ink", "field"), "--ui-blue": ("ink", "locator"),
     "--ui-purple": ("ink", "seen"),
@@ -589,6 +590,76 @@ def desk_type(canon: Canon) -> list:
     ]
 
 
+
+# ── the palette: Tailwind's raw hues on the canon roles ──────────────────────
+# The app's utilities (text-amber-600, bg-emerald-500/10, ring-red-500/30 …) all read a
+# --color-<hue>-<shade> variable, so restating those recolours every use, alpha tints included.
+# The families read like the app's named hues (DESK_KEYS --ui-*): red and rose are the flag; LITERAL
+# promotes every other hue to full ink, SIGNAL keeps the v1 slots. The palest shades on paper and the
+# deepest on the stage are the tints a callout lays on its ground, so they fall to the ground itself.
+APP_CSS = HOME / ".hermes" / "hermes-agent" / "apps" / "desktop" / "dist" / "assets"
+TW_ROLES = {
+    "red": ("flag", "flag"), "rose": ("flag", "flag"),
+    "orange": ("ink", "locator"), "amber": ("ink", "locator"), "yellow": ("ink", "locator"),
+    "lime": ("ink", "enters"), "green": ("ink", "enters"), "emerald": ("ink", "enters"), "teal": ("ink", "enters"),
+    "cyan": ("ink", "field"), "sky": ("ink", "locator"), "blue": ("ink", "locator"), "indigo": ("ink", "locator"),
+    "violet": ("ink", "seen"), "purple": ("ink", "seen"), "fuchsia": ("ink", "seen"), "pink": ("ink", "seen"),
+}
+TW_GREYS = {  # the raw greys by lightness onto the canon's own steps
+    "paper": {50: "ground", 100: "ground", 200: "ground", 300: "ghost", 400: "ghost", 500: "field", 600: "field",
+              700: "ink", 800: "ink", 900: "ink", 950: "ink"},
+    "stage": {50: "ink", 100: "ink", 200: "ink", 300: "ink", 400: "field", 500: "field", 600: "ghost", 700: "ghost",
+              800: "ground", 900: "ground", 950: "ground"},
+}
+TW_SEEN = ("red:200,300,400,500,600,700,950 orange:500 amber:50,100,200,300,400,500,600,700,900,950 "
+           "emerald:200,300,400,500,600,700 teal:200,600 cyan:300,700 sky:300,500,600,700 blue:300,400,600,700 "
+           "violet:400,500,600 fuchsia:300,700 pink:300,500,600,700 rose:300,400,600 "
+           "zinc:100,200,300,400,500,600,700")  # the census of 2026-10-14: the floor when no app build is found
+
+
+def tw_vars() -> list:
+    """Every --color-<hue>-<shade> the installed Desktop paints with, plus the census floor."""
+    seen = {(f, int(n)) for part in TW_SEEN.split() for f, ns in [part.split(":")] for n in ns.split(",")}
+    builds = sorted(APP_CSS.glob("index-*.css"), key=lambda p: p.stat().st_mtime) if APP_CSS.is_dir() else []
+    if builds:
+        seen |= {(f, int(n)) for f, n in re.findall(r"--color-([a-z]+)-(\d+)\s*:", builds[-1].read_text())}
+    return sorted(p for p in seen if p[0] in TW_ROLES or p[0] in ("slate", "gray", "zinc", "neutral", "stone"))
+
+
+def tw_role(gname: str, family: str, shade: int, i: int) -> str:
+    if family not in TW_ROLES:
+        return TW_GREYS[gname][shade]
+    if (gname == "paper" and shade <= 200) or (gname == "stage" and shade >= 800):
+        return "ground"
+    return TW_ROLES[family][i]
+
+
+def desk_palette(canon: Canon, gname: str, sel: str, i: int) -> list:
+    decl = " ".join(f"--color-{f}-{n}: {desk_value(canon, gname, tw_role(gname, f, n, i))} !important;" for f, n in tw_vars())
+    return [f"{sel} {{ {decl} }}"]
+
+
+# ── the spot editor: CodeMirror's own chrome on the canon ────────────────────
+# Its highlight classes are minted at runtime (ͼ1x), so no selector can tell a keyword from a string:
+# every token reads at full ink and a comment keeps the italic its theme gives it. The chrome is
+# canon: the cursor is the one live thing, selection and match sit on the bar, no active-line tint.
+def desk_editor(canon: Canon, gname: str, sel: str) -> list:
+    v = lambda role: desk_value(canon, gname, role)  # noqa: E731
+    cm = f"{sel} .cm-editor"
+    return [
+        f"{cm} {{ color: {v('ink')} !important; }}",
+        f'{cm} .cm-content :is([class^="\u037c"], [class*=" \u037c"]) {{ color: inherit !important; }}',
+        f"{cm} .cm-content {{ caret-color: {v('cursor')} !important; }}",
+        f"{cm} :is(.cm-cursor, .cm-dropCursor) {{ border-left-color: {v('cursor')} !important; }}",
+        f"{cm} .cm-selectionBackground, {cm} .cm-content ::selection {{ background-color: {v('bar')} !important; }}",
+        f"{cm} :is(.cm-activeLine, .cm-activeLineGutter) {{ background-color: transparent !important; }}",
+        f"{cm} .cm-gutters {{ color: {v('ghost')} !important; }}",
+        f"{cm} .cm-matchingBracket {{ background-color: {v('bar')} !important; color: {v('ink')} !important; }}",
+        f"{cm} .cm-nonmatchingBracket {{ background-color: transparent !important; color: {v('flag')} !important; }}",
+        f"{cm} :is(.cm-searchMatch, .cm-searchMatch-selected) {{ background-color: {v('bar')} !important; outline: none !important; }}",
+    ]
+
+
 def desk_css(canon: Canon, vname: str, lock: dict) -> str:
     i = 0 if vname == "literal" else 1
     out = [f"/* GLASS STAGE v2 · Hermes Desktop · {VARIANTS[vname]['label']} · generated by v2/build.py",
@@ -608,6 +679,8 @@ def desk_css(canon: Canon, vname: str, lock: dict) -> str:
         out.append(f"{sel} ::selection {{ background: {canon.on(g['mark'], g['ground'])}; "
                    f"color: {canon.on(g['mark_ink'], g['ground'])}; }}")
         out += desk_record(canon, gname, sel, i)
+        out += desk_palette(canon, gname, sel, i)
+        out += desk_editor(canon, gname, sel)
     if TYPE:
         for gname, sel in DESK_GROUNDS:  # .hub-label · .hub-nav-group-label · .hub-action-time · .tabs button: color var(--ink)
             ink = desk_value(canon, gname, "ink")
@@ -931,6 +1004,12 @@ RULINGS = [
      "the record in Scheherazade New at the canon body over the app's text scale; apparatus in Red Hat Mono mono-6; "
      "Jacob's three voices from the specimen: Body (serif-body-1) for all reading and writing, Pills (serif-8-caps) for controls, "
      "bold and the record's headings, Code (mono m6) for the apparatus and the program; weight 400 everywhere (E1); 7px apparatus at full ink"),
+    ("Raw hues on the Desktop", "the app's named hues · the Ghostty slots",
+     "every Tailwind --color-<hue>-<shade> the app paints with: red and rose are the flag, LITERAL promotes the rest to ink "
+     "(SIGNAL keeps the v1 slots); the palest shades on paper and the deepest on the stage fall to the ground"),
+    ("The spot editor", "colour arrives only where something has to happen",
+     "CodeMirror mints its token classes at runtime: every token at full ink, comments keep their italic; "
+     "the cursor is the live one, selection on the bar, no active-line tint"),
     ("Meta on the Desktop", "the app's tertiary is 54 % of its ink",
      "it reads at the field (--paper-62); the 36 % quaternary stays the ghost"),
     ("Name on the Nous submission", "—", "JACOB / OPERATOR stays local; the submitted skin carries THE GLASS STAGE"),

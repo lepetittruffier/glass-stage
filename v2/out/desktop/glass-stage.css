@@ -35,6 +35,7 @@
   --dt-destructive: #8E00FF !important;
   --dt-destructive-foreground: #FFFFFF !important;
   --ui-success: #FFFFFF !important;
+  --ui-danger: #8E00FF !important;
   --ui-red: #8E00FF !important;
   --ui-orange: #FFFFFF !important;
   --ui-yellow: #FFFFFF !important;
@@ -82,6 +83,17 @@
 :root.dark [class~="border-l-2"]:is([class~="border-(--ui-diff-add-border)"], [class~="border-(--ui-diff-remove-border)"]) { border-left-color: transparent !important; }
 :root.dark .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #FFFFFF !important; }
 :root.dark .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #FFFFFF !important; }
+:root.dark { --color-amber-50: #FFFFFF !important; --color-amber-100: #FFFFFF !important; --color-amber-200: #FFFFFF !important; --color-amber-300: #FFFFFF !important; --color-amber-400: #FFFFFF !important; --color-amber-500: #FFFFFF !important; --color-amber-600: #FFFFFF !important; --color-amber-700: #FFFFFF !important; --color-amber-900: #000000 !important; --color-amber-950: #000000 !important; --color-blue-300: #FFFFFF !important; --color-blue-400: #FFFFFF !important; --color-blue-600: #FFFFFF !important; --color-blue-700: #FFFFFF !important; --color-cyan-300: #FFFFFF !important; --color-cyan-700: #FFFFFF !important; --color-emerald-200: #FFFFFF !important; --color-emerald-300: #FFFFFF !important; --color-emerald-400: #FFFFFF !important; --color-emerald-500: #FFFFFF !important; --color-emerald-600: #FFFFFF !important; --color-emerald-700: #FFFFFF !important; --color-fuchsia-300: #FFFFFF !important; --color-fuchsia-700: #FFFFFF !important; --color-orange-500: #FFFFFF !important; --color-pink-300: #FFFFFF !important; --color-pink-500: #FFFFFF !important; --color-pink-600: #FFFFFF !important; --color-pink-700: #FFFFFF !important; --color-red-200: #8E00FF !important; --color-red-300: #8E00FF !important; --color-red-400: #8E00FF !important; --color-red-500: #8E00FF !important; --color-red-600: #8E00FF !important; --color-red-700: #8E00FF !important; --color-red-950: #000000 !important; --color-rose-300: #8E00FF !important; --color-rose-400: #8E00FF !important; --color-rose-600: #8E00FF !important; --color-sky-300: #FFFFFF !important; --color-sky-500: #FFFFFF !important; --color-sky-600: #FFFFFF !important; --color-sky-700: #FFFFFF !important; --color-teal-200: #FFFFFF !important; --color-teal-600: #FFFFFF !important; --color-violet-400: #FFFFFF !important; --color-violet-500: #FFFFFF !important; --color-violet-600: #FFFFFF !important; --color-zinc-100: #FFFFFF !important; --color-zinc-200: #FFFFFF !important; --color-zinc-300: #FFFFFF !important; --color-zinc-400: #9E9E9E !important; --color-zinc-500: #9E9E9E !important; --color-zinc-600: #515151 !important; --color-zinc-700: #515151 !important; }
+:root.dark .cm-editor { color: #FFFFFF !important; }
+:root.dark .cm-editor .cm-content :is([class^="ͼ"], [class*=" ͼ"]) { color: inherit !important; }
+:root.dark .cm-editor .cm-content { caret-color: #2CFF05 !important; }
+:root.dark .cm-editor :is(.cm-cursor, .cm-dropCursor) { border-left-color: #2CFF05 !important; }
+:root.dark .cm-editor .cm-selectionBackground, :root.dark .cm-editor .cm-content ::selection { background-color: #272727 !important; }
+:root.dark .cm-editor :is(.cm-activeLine, .cm-activeLineGutter) { background-color: transparent !important; }
+:root.dark .cm-editor .cm-gutters { color: #515151 !important; }
+:root.dark .cm-editor .cm-matchingBracket { background-color: #272727 !important; color: #FFFFFF !important; }
+:root.dark .cm-editor .cm-nonmatchingBracket { background-color: transparent !important; color: #8E00FF !important; }
+:root.dark .cm-editor :is(.cm-searchMatch, .cm-searchMatch-selected) { background-color: #272727 !important; outline: none !important; }
 :root:not(.dark) {
   --theme-background-seed: #FFFFFF !important;
   --theme-sidebar-seed: #FFFFFF !important;
@@ -115,6 +127,7 @@
   --dt-destructive: #3600DA !important;
   --dt-destructive-foreground: #FFFFFF !important;
   --ui-success: #000000 !important;
+  --ui-danger: #3600DA !important;
   --ui-red: #3600DA !important;
   --ui-orange: #000000 !important;
   --ui-yellow: #000000 !important;
@@ -162,6 +175,17 @@
 :root:not(.dark) [class~="border-l-2"]:is([class~="border-(--ui-diff-add-border)"], [class~="border-(--ui-diff-remove-border)"]) { border-left-color: transparent !important; }
 :root:not(.dark) .tabular-nums > :is([class~="text-(--ui-green)"], [class~="dark:text-emerald-400"], [class~="text-emerald-600"]) { color: #000000 !important; }
 :root:not(.dark) .tabular-nums > :is([class~="text-(--ui-red)"], [class~="dark:text-rose-400"], [class~="text-rose-600"]) { color: #000000 !important; }
+:root:not(.dark) { --color-amber-50: #FFFFFF !important; --color-amber-100: #FFFFFF !important; --color-amber-200: #FFFFFF !important; --color-amber-300: #000000 !important; --color-amber-400: #000000 !important; --color-amber-500: #000000 !important; --color-amber-600: #000000 !important; --color-amber-700: #000000 !important; --color-amber-900: #000000 !important; --color-amber-950: #000000 !important; --color-blue-300: #000000 !important; --color-blue-400: #000000 !important; --color-blue-600: #000000 !important; --color-blue-700: #000000 !important; --color-cyan-300: #000000 !important; --color-cyan-700: #000000 !important; --color-emerald-200: #FFFFFF !important; --color-emerald-300: #000000 !important; --color-emerald-400: #000000 !important; --color-emerald-500: #000000 !important; --color-emerald-600: #000000 !important; --color-emerald-700: #000000 !important; --color-fuchsia-300: #000000 !important; --color-fuchsia-700: #000000 !important; --color-orange-500: #000000 !important; --color-pink-300: #000000 !important; --color-pink-500: #000000 !important; --color-pink-600: #000000 !important; --color-pink-700: #000000 !important; --color-red-200: #FFFFFF !important; --color-red-300: #3600DA !important; --color-red-400: #3600DA !important; --color-red-500: #3600DA !important; --color-red-600: #3600DA !important; --color-red-700: #3600DA !important; --color-red-950: #3600DA !important; --color-rose-300: #3600DA !important; --color-rose-400: #3600DA !important; --color-rose-600: #3600DA !important; --color-sky-300: #000000 !important; --color-sky-500: #000000 !important; --color-sky-600: #000000 !important; --color-sky-700: #000000 !important; --color-teal-200: #FFFFFF !important; --color-teal-600: #000000 !important; --color-violet-400: #000000 !important; --color-violet-500: #000000 !important; --color-violet-600: #000000 !important; --color-zinc-100: #FFFFFF !important; --color-zinc-200: #FFFFFF !important; --color-zinc-300: #999999 !important; --color-zinc-400: #999999 !important; --color-zinc-500: #666666 !important; --color-zinc-600: #666666 !important; --color-zinc-700: #000000 !important; }
+:root:not(.dark) .cm-editor { color: #000000 !important; }
+:root:not(.dark) .cm-editor .cm-content :is([class^="ͼ"], [class*=" ͼ"]) { color: inherit !important; }
+:root:not(.dark) .cm-editor .cm-content { caret-color: #8E00FF !important; }
+:root:not(.dark) .cm-editor :is(.cm-cursor, .cm-dropCursor) { border-left-color: #8E00FF !important; }
+:root:not(.dark) .cm-editor .cm-selectionBackground, :root:not(.dark) .cm-editor .cm-content ::selection { background-color: #E5E5E5 !important; }
+:root:not(.dark) .cm-editor :is(.cm-activeLine, .cm-activeLineGutter) { background-color: transparent !important; }
+:root:not(.dark) .cm-editor .cm-gutters { color: #999999 !important; }
+:root:not(.dark) .cm-editor .cm-matchingBracket { background-color: #E5E5E5 !important; color: #000000 !important; }
+:root:not(.dark) .cm-editor .cm-nonmatchingBracket { background-color: transparent !important; color: #3600DA !important; }
+:root:not(.dark) .cm-editor :is(.cm-searchMatch, .cm-searchMatch-selected) { background-color: #E5E5E5 !important; outline: none !important; }
 :root.dark :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root.dark [data-slot="sidebar"] time, :root.dark [data-slot="timeline-timestamp"] { color: #FFFFFF !important; }
 :root:not(.dark) :is([data-slot="sidebar"], [data-slot="pane-tab"]) :is(.uppercase, .uppercase *):not(svg, svg *), :root:not(.dark) [data-slot="sidebar"] time, :root:not(.dark) [data-slot="timeline-timestamp"] { color: #000000 !important; }
 /* the type — three voices from the canon's specimen: 03 Body · 04 Pills · 05 Code */
