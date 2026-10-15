@@ -22,6 +22,55 @@ alarm. Every ink is a live EPOQ III token. Free. Take it.
 
 ---
 
+## v2: paper and stage
+
+v2 reads every value off the live EPOQ III canon and writes one system to
+Ghostty, git, the zsh prompt and the Hermes Agent skin (classic CLI, TUI and the
+Desktop). Two grounds, the stage (dark) and paper (light), with Ghostty following
+your system appearance; two readings, literal and signal.
+
+```sh
+brew install --cask font-scheherazade-new font-red-hat-mono
+git clone https://github.com/lepetittruffier/glass-stage && cd glass-stage
+sh v2/install.sh            # or: sh v2/install.sh signal
+```
+
+It installs beside v1, wears v2 straight away, and does not ask. What it touches:
+
+- **Ghostty**, if installed. Ghostty reads up to four config files, and an explicit
+  colour in any of them beats a theme. v2 is written to the one it reads last
+  (`~/Library/Application Support/com.mitchellh.ghostty/config[.ghostty]` when one
+  exists there, otherwise `~/.config/ghostty/config[.ghostty]`), with four theme
+  files in `~/.config/ghostty/themes/`. The file it replaces is kept byte for byte
+  as v1 in `~/.config/glass-stage/v1/`, or as the symlink it was. While v2 is worn,
+  colour and theme lines in the other config files are held as `#glass-stage-v2: `
+  comments, written through any symlink, and `glass-stage v1` lets them go. Every
+  Ghostty file it rewrites is copied to `~/.config/glass-stage/backups/` first, and
+  `glass-stage status` names anything another config still decides.
+- **git**: one guarded include in `~/.gitconfig`, backed up first. The colours live
+  in a file that exists only while v2 is worn.
+- **zsh**, if it is your shell: one guarded block in `~/.zshrc`, backed up first,
+  for the v2 prompt on Ghostty shells.
+- **Hermes Agent**, if `hermes skin` is available: two skins, `glass-stage-v2` and
+  `glass-stage-v2-signal`, in the active profile's `skins/` folder (`~/.hermes/skins/`
+  unless you use profiles). The Desktop repaints within a
+  second; quit and reopen it once if the text shows in Georgia. The agent is named
+  THE GLASS STAGE; to name it yourself, put one line in
+  `~/.config/glass-stage/agent-name` and run the install again.
+
+Switch any time with `glass-stage v2`, `glass-stage signal`, `glass-stage v1` or
+`glass-stage status` (linked into `~/.local/bin`). `glass-stage v1` puts every
+surface back as it was when it first met v2, and `sh ~/.config/glass-stage/switch.sh v1`
+works even when `~/.local/bin` is not on your PATH. Install Ghostty or Hermes later
+and run `sh v2/install.sh` again: each joins with its own v1.
+
+Rebuilding `v2/out` (`python3 v2/build.py`) reads the live canon and a few local
+inputs, among them the Red Hat Mono font file and a Hermes Desktop build. The
+committed outputs install without any of them. `bash v2/tools/install_proof.sh`
+runs the installer in sandboxed homes, never your own, against your Ghostty.
+
+---
+
 ## The palette
 
 | ink | hex | epoq3 token · role |
@@ -41,7 +90,7 @@ stage, never an image.
 
 ---
 
-## Install
+## Install v1 (the July stage)
 
 **Everything, guided (macOS):**
 ```sh

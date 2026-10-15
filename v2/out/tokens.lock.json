@@ -1,0 +1,42 @@
+{
+  "weblink": "https://www.intelligencematters.se/epoq/",
+  "fetched": "2026-10-15 09:22 CEST",
+  "system.css": {
+    "sha256": "99dbb5e53cb3b04621790ae848f5634552da28c6ca0541899c95a9a51ce5256c",
+    "bytes": 3561
+  },
+  "styles.css": {
+    "sha256": "46191b093b9989bf8b1916da222315a02550c2083ae4ec67c95de8e43d5bb6cf",
+    "bytes": 158575
+  },
+  "glassci.css": {
+    "sha256": "f890af6bed3955a58cc131bc5144d0d39cf87f23cadc0316dd6a5910f0b2e2fc",
+    "bytes": 3863
+  },
+  "inks": {
+    "ink": "#000000",
+    "ink-60": "rgba(0, 0, 0, 0.6)",
+    "ink-50": "rgba(0, 0, 0, 0.5)",
+    "ink-40": "rgba(0, 0, 0, 0.4)",
+    "ink-20": "rgba(0, 0, 0, 0.2)",
+    "ink-12": "rgba(0, 0, 0, 0.12)",
+    "ink-03": "rgba(0, 0, 0, 0.03)",
+    "paper": "#FFFFFF",
+    "paper-90": "rgba(255, 255, 255, 0.9)",
+    "paper-82": "rgba(255, 255, 255, 0.82)",
+    "paper-70": "rgba(255, 255, 255, 0.7)",
+    "paper-62": "rgba(255, 255, 255, 0.62)",
+    "line-structural": "#000000",
+    "line-box": "rgba(0, 0, 0, 0.62)",
+    "line-quiet": "#E5E5E5",
+    "grey-51": "#515151",
+    "graphite": "#272727",
+    "dusk": "#5F5295",
+    "hum": "#6F75D7",
+    "novel": "#332078",
+    "glass-stage": "#000000",
+    "signal-go": "#8E00FF",
+    "signal-attn": "#3600DA",
+    "signal-live": "#2CFF05"
+  }
+}

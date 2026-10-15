@@ -1,3 +1,6 @@
 .DS_Store
 *.bak.*
 .vercel
+
+# private review drafts for upstream pull requests: kept beside the work, never published from here
+v2/nous/

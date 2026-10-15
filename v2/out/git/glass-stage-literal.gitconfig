@@ -1,0 +1,21 @@
+# GLASS STAGE v2 · git · LITERAL — .hub-diff: del struck · ins hairline-underlined · all ink
+[color "diff"]
+	meta = 8
+	frag = 15 italic
+	func = 8
+	commit = 15
+	old = 15 strike
+	new = 15 ul
+	whitespace = reverse 9
+[color "status"]
+	header = 8
+	branch = 15 italic
+	added = 15 ul
+	changed = 15
+	untracked = 8
+	deleted = 15 strike
+[color "decorate"]
+	branch = 15 italic
+	remoteBranch = 15
+	HEAD = 9
+	tag = 15

@@ -1,0 +1,548 @@
+{
+  "app_tokens": {
+    "root": 266,
+    "dark": 22
+  },
+  "literal": {
+    "tokens_restated": 120,
+    "probes": {
+      "background": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#0D0D0E"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#F3F3F3"
+        }
+      },
+      "foreground": {
+        "stage": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "card": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#161618"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FCFCFC"
+        }
+      },
+      "sidebar": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#0A0A0B"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#F3F3F3"
+        }
+      },
+      "popover": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "border": {
+        "stage": {
+          "got": "#515151",
+          "want": "#515151",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#616161",
+          "want": "#616161",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "primary": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "primary_fg": {
+        "stage": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "muted": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "accent": {
+        "stage": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "accent_fg": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "ring": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "composer_ring": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "destructive": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#3600DA",
+          "want": "#3600DA",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "text_secondary": {
+        "stage": {
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#666666",
+          "want": "#666666",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "muted_fg": {
+        "stage": {
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#666666",
+          "want": "#666666",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "caret": {
+        "stage": {
+          "got": "#2CFF05",
+          "want": "#2CFF05",
+          "ok": true,
+          "control": "#000000"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#000000"
+        }
+      },
+      "selection": {
+        "stage": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#000000 @0.00"
+        },
+        "paper": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#000000 @0.00"
+        }
+      },
+      "timeline_popover": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#161618 @0.96"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FCFCFC @0.96"
+        }
+      }
+    }
+  },
+  "signal": {
+    "tokens_restated": 120,
+    "probes": {
+      "background": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#0D0D0E"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#F3F3F3"
+        }
+      },
+      "foreground": {
+        "stage": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "card": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#161618"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FCFCFC"
+        }
+      },
+      "sidebar": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#0A0A0B"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#F3F3F3"
+        }
+      },
+      "popover": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "border": {
+        "stage": {
+          "got": "#515151",
+          "want": "#515151",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#616161",
+          "want": "#616161",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "primary": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "primary_fg": {
+        "stage": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#FFFFFF",
+          "want": "#FFFFFF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "muted": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "accent": {
+        "stage": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "accent_fg": {
+        "stage": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#000000",
+          "want": "#000000",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "ring": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "composer_ring": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "destructive": {
+        "stage": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#3600DA",
+          "want": "#3600DA",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "text_secondary": {
+        "stage": {
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#666666",
+          "want": "#666666",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "muted_fg": {
+        "stage": {
+          "got": "#9E9E9E",
+          "want": "#9E9E9E",
+          "ok": true,
+          "control": "#FF00FF"
+        },
+        "paper": {
+          "got": "#666666",
+          "want": "#666666",
+          "ok": true,
+          "control": "#FF00FF"
+        }
+      },
+      "caret": {
+        "stage": {
+          "got": "#2CFF05",
+          "want": "#2CFF05",
+          "ok": true,
+          "control": "#000000"
+        },
+        "paper": {
+          "got": "#8E00FF",
+          "want": "#8E00FF",
+          "ok": true,
+          "control": "#000000"
+        }
+      },
+      "selection": {
+        "stage": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#000000 @0.00"
+        },
+        "paper": {
+          "got": "#6F75D7",
+          "want": "#6F75D7",
+          "ok": true,
+          "control": "#000000 @0.00"
+        }
+      },
+      "timeline_popover": {
+        "stage": {
+          "got": "#272727",
+          "want": "#272727",
+          "ok": true,
+          "control": "#161618 @0.96"
+        },
+        "paper": {
+          "got": "#E5E5E5",
+          "want": "#E5E5E5",
+          "ok": true,
+          "control": "#FCFCFC @0.96"
+        }
+      }
+    }
+  }
+}
