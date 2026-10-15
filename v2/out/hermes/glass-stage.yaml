@@ -117,7 +117,7 @@ spinner:
     - "driving it live"
 
 branding:
-  agent_name: "JACOB / OPERATOR"
+  agent_name: "THE GLASS STAGE"
   welcome: "THE GLASS STAGE · LIVE"
   goodbye: "STAGE CLOSED"
   response_label: " OPERATOR "

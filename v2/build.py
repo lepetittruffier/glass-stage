@@ -188,6 +188,8 @@ def contrast(a: str, b: str) -> float:
 
 
 def font_metrics(path: pathlib.Path = FONT) -> dict:
+    if not path.exists():  # a rebuild reads the face's own metrics; installing needs none of this
+        raise SystemExit(f"build: Red Hat Mono not found at {path} (brew install --cask font-red-hat-mono)")
     d = path.read_bytes()
     t = {}
     for i in range(struct.unpack(">H", d[4:6])[0]):
@@ -813,7 +815,7 @@ def hermes_skin(canon: Canon, vname: str, lock: dict) -> str:
     L += ["", "spinner:", "  waiting_faces:", '    - "[·]"', '    - "[∙]"', '    - "[•]"',
           "  thinking_faces:", '    - "[·]"', '    - "[∙]"', '    - "[•]"',
           "  thinking_verbs:", '    - "building"', '    - "cutting"', '    - "setting the stage"',
-          '    - "driving it live"', "", "branding:", '  agent_name: "JACOB / OPERATOR"',
+          '    - "driving it live"', "", "branding:", '  agent_name: "THE GLASS STAGE"',
           '  welcome: "THE GLASS STAGE · LIVE"', '  goodbye: "STAGE CLOSED"',
           '  response_label: " OPERATOR "', '  prompt_symbol: "▮"',
           '  help_header: "THE CONTROL SURFACE"', "", 'tool_prefix: "│"', "",
@@ -1090,7 +1092,8 @@ RULINGS = [
      "the cursor is the live one, selection on the bar, no active-line tint"),
     ("Meta on the Desktop", "the app's tertiary is 54 % of its ink",
      "it reads at the field (--paper-62); the 36 % quaternary stays the ghost"),
-    ("Name on the Nous submission", "—", "JACOB / OPERATOR stays local; the submitted skin carries THE GLASS STAGE"),
+    ("Name on the agent", "—", "the shipped skins carry THE GLASS STAGE; one line in "
+     "~/.config/glass-stage/agent-name names it locally at install"),
 ]
 
 
@@ -1456,7 +1459,7 @@ def class_census(doc: str, styles: str, extra: str, reference: str) -> list:
 
 
 def facts() -> dict:
-    f = {"version": "Hermes Agent", "model": "claude-opus-5-5", "cwd": "~/hhg_cortex_v1", "session": "20261012"}
+    f = {"version": "Hermes Agent", "model": "claude-opus-5-5", "cwd": "~/glass-stage", "session": "20261012"}
     try:
         out = subprocess.run(["hermes", "--version"], capture_output=True, text=True, timeout=20).stdout.strip()
         if out:

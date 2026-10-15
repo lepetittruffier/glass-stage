@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The Desktop thread the type proof renders: this workshop's own transcript, as backend rows.
 
-Jacob's words, a real git log, a real build.py diff, and the replies the record layer shipped with,
+An operator's words, a real git log, a real build.py diff, and the replies the record layer shipped with,
 in the wire shape the backend serves (SessionMessage). type_proof.py folds them through the app's
 own toChatMessages, the function that hydrates every stored session, and sets them on the live
 store, the way the app's perf harness drives its transcript. Nothing is written to any session store.
@@ -72,7 +72,7 @@ def call(cid: str, name: str, args: dict) -> list:
 def rows(now: float | None = None) -> list[dict]:
     t = (now or time.time()) - 3600
     out = [
-        dict(role="user", content="sorry i last my thread about the glassci ghostty and hermes desktop skins. we came quite far can u find it."),
+        dict(role="user", content="find the glass stage thread: the ghostty and hermes desktop skins. where did we stop?"),
         dict(role="assistant", content="", reasoning=THINK,
              tool_calls=call("c1", "terminal", {"command": "git -C ~/Hermes-Worktrees/glass-stage-v2-20261012 log --oneline -3"})),
         dict(role="tool", name="terminal", tool_call_id="c1", content=json.dumps({"output": LOG, "exit_code": 0})),
@@ -80,7 +80,7 @@ def rows(now: float | None = None) -> list[dict]:
         dict(role="tool", name="patch", tool_call_id="c2", content=json.dumps({"success": True, "path": "v2/build.py"}),
              display_metadata={"tool_result_metadata": {"inline_diff": DIFF}}),
         dict(role="assistant", content=REPLY, finish_reason="stop"),
-        dict(role="user", content="continue bro, u got this, looks great. curious about the font tho?"),
+        dict(role="user", content="looks right. and the type?"),
         dict(role="assistant", content=FONT, finish_reason="stop"),
     ]
     for k, row in enumerate(out):
