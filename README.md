@@ -22,6 +22,48 @@ alarm. Every ink is a live EPOQ III token. Free. Take it.
 
 ---
 
+## v2: paper and stage
+
+v2 reads every value off the live EPOQ III canon and writes one system to
+Ghostty, git, the zsh prompt and the Hermes Agent skin (classic CLI, TUI and the
+Desktop). Two grounds, the stage (dark) and paper (light), with Ghostty following
+your system appearance; two readings, literal and signal.
+
+```sh
+brew install --cask font-scheherazade-new font-red-hat-mono
+git clone https://github.com/lepetittruffier/glass-stage && cd glass-stage
+sh v2/install.sh            # or: sh v2/install.sh signal
+```
+
+It installs beside v1, wears v2 straight away, and does not ask. What it touches:
+
+- **Ghostty**, if installed: your current config is kept byte for byte as v1 in
+  `~/.config/glass-stage/v1/`, then v2 is written to the config file Ghostty gives
+  the last word (`~/Library/Application Support/com.mitchellh.ghostty/config[.ghostty]`
+  when one exists there, otherwise `~/.config/ghostty/config[.ghostty]`), plus four
+  theme files in `~/.config/ghostty/themes/`. Every switch keeps a dated copy of the
+  config it replaces in `~/.config/glass-stage/backups/`.
+- **git**: one guarded include in `~/.gitconfig`, backed up first. The colours live
+  in a file that exists only while v2 is worn.
+- **zsh**, if it is your shell: one guarded block in `~/.zshrc`, backed up first,
+  for the v2 prompt on Ghostty shells.
+- **Hermes Agent**, if `hermes skin` is available: two skins, `glass-stage-v2` and
+  `glass-stage-v2-signal`, in `~/.hermes/skins/`. The Desktop repaints within a
+  second; quit and reopen it once if the text shows in Georgia. The agent is named
+  THE GLASS STAGE; to name it yourself, put one line in
+  `~/.config/glass-stage/agent-name` and run the install again.
+
+Switch any time with `glass-stage v2`, `glass-stage signal`, `glass-stage v1` or
+`glass-stage status` (linked into `~/.local/bin`). `glass-stage v1` puts every
+surface back as it was, and `sh ~/.config/glass-stage/switch.sh v1` works even when
+`~/.local/bin` is not on your PATH.
+
+Rebuilding `v2/out` (`python3 v2/build.py`) reads the live canon and a few local
+inputs, among them the Red Hat Mono font file and a Hermes Desktop build. The
+committed outputs install without any of them.
+
+---
+
 ## The palette
 
 | ink | hex | epoq3 token · role |
@@ -41,7 +83,7 @@ stage, never an image.
 
 ---
 
-## Install
+## Install v1 (the July stage)
 
 **Everything, guided (macOS):**
 ```sh
