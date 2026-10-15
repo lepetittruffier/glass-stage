@@ -258,6 +258,21 @@ chk "install exits 0" "[ $rc = 0 ]"
 chk "skins land in the active profile's home" "[ -f '$M/.hermes/profiles/work/skins/glass-stage-v2.yaml' ] && [ ! -e '$M/.hermes/skins/glass-stage-v2.yaml' ]"
 chk "and Hermes wears them" "grep -qx 'use glass-stage-v2' '$M/.stub-log'"
 
+if [ -n "$GBIN" ]; then
+  echo "O · Ghostty's +show-config gives nothing: the installer says it could not check"
+  O="$T/o"; RO="$T/repo-o/v2"; mkdir -p "$O/Applications/Ghostty.app/Contents/MacOS" "$RO"
+  cp -R "$REPO/v2/out" "$RO/out"
+  sed 's|/Applications/Ghostty.app|/nonexistent/Ghostty.app|' "$REPO/v2/install.sh" > "$RO/install.sh"
+  printf '#!/bin/sh\ncase "$1" in +show-config) exit 0 ;; esac\nexec "%s" "$@"\n' "$GBIN" > "$O/Applications/Ghostty.app/Contents/MacOS/ghostty"
+  chmod 755 "$O/Applications/Ghostty.app/Contents/MacOS/ghostty"
+  go "$O" /bin/zsh yes "$RO/install.sh"; rc=$?
+  chk "install exits 0 and says it could not check" "[ $rc = 0 ] && grep -q 'could not check what Ghostty finally wears' '$O.out'"
+  sw "$O" /bin/zsh yes status
+  chk "status says so too" "grep -q 'could not check what Ghostty finally wears' '$O.out'"
+else
+  echo "O · skipped: no Ghostty here"
+fi
+
 echo "N · the held keys cover every key the v2 themes set"
 sed -n 's/^\([a-z-]*\) *=.*/\1/p' "$REPO"/v2/out/ghostty/themes/* | sort -u > "$T/theme-keys"
 sed -n "s/^HOLDKEYS='\(.*\)'\$/\1/p" "$REPO/v2/install.sh" | tr '|' '\n' | sort -u > "$T/hold-keys"
