@@ -38,7 +38,8 @@ sh v2/install.sh            # or: sh v2/install.sh signal
 It installs beside v1, wears v2 straight away, and does not ask. What it touches:
 
 - **Ghostty**, if installed. Ghostty reads up to four config files, and an explicit
-  colour in any of them beats a theme. v2 is written to the one it reads last
+  colour in any of them beats a theme. v2 is written to the one it reads last when
+  v2 is first installed
   (`~/Library/Application Support/com.mitchellh.ghostty/config[.ghostty]` when one
   exists there, otherwise `~/.config/ghostty/config[.ghostty]`), with four theme
   files in `~/.config/ghostty/themes/`. The file it replaces is kept byte for byte

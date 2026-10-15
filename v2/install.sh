@@ -17,9 +17,11 @@
 #  Install Ghostty or Hermes later and run this again: they join with their v1.
 #
 #  Ghostty reads up to four config files, and an explicit colour in any of them
-#  beats a theme. v2 goes into the one it reads last; while v2 is worn, the
-#  colour and theme lines in the others are held as `#glass-stage-v2: ` comments
-#  (written through a symlink, never replacing it), and v1 lets them go.
+#  beats a theme. v2 goes into the one Ghostty read last when v2 was first
+#  installed; while v2 is worn, the colour and theme lines in the others are held
+#  as `#glass-stage-v2: ` comments (written through a symlink, never replacing
+#  it), and v1 lets them go. `glass-stage status` names any key a config file
+#  read later still decides.
 #
 #  v1 is whatever each surface wore when it first met v2: the Ghostty config is
 #  kept byte for byte in ~/.config/glass-stage/v1/ (or noted as absent, or as
@@ -44,6 +46,7 @@ GCONF=""
 HERMES_OK=""
 HH=""
 OVR=""
+OVR_NOTE=""
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'glass-stage: %s\n' "$*" >&2; exit 1; }
@@ -133,10 +136,14 @@ held_one() {  # <file>: say so if it holds lines
 
 ghostty_overrides() {  # OVR: the keys whose final value is not v2's, so another config still decides them
   OVR=""
+  OVR_NOTE=""
   if [ -z "$GHOSTTY" ] || [ ! -f "$GCONF" ]; then return 0; fi
   keys="$HOLDKEYS|$(sed -n 's/^\([a-z-]*\) *=.*/\1/p' "$GCONF" | sort -u | tr '\n' '|')"
   keys="${keys%|}"
-  t="$(mktemp -d "${TMPDIR:-/tmp}/glass-stage.XXXXXX")" || return 0
+  t="$(mktemp -d "${TMPDIR:-/tmp}/glass-stage.XXXXXX")" || {
+    OVR_NOTE="could not check what Ghostty finally wears: no temporary folder"
+    return 0
+  }
   mkdir -p "$t/.config/ghostty/themes"
   cp "$GHX"/themes/glass-* "$t/.config/ghostty/themes/" 2>/dev/null || true
   cp "$GCONF" "$t/.config/ghostty/config"
@@ -146,6 +153,8 @@ ghostty_overrides() {  # OVR: the keys whose final value is not v2's, so another
   if [ -s "$t/want" ] && [ -s "$t/have" ]; then
     OVR="$(comm -3 "$t/want" "$t/have" | sed -E 's/^[[:space:]]+//; s/ = .*//' | sort -u | tr '\n' ' ')"
     OVR="${OVR% }"
+  else
+    OVR_NOTE="could not check what Ghostty finally wears: +show-config gave no output"
   fi
   rm -rf "$t"
 }
@@ -358,7 +367,11 @@ wear() {  # v1 | literal | signal
       mv -f "$next" "$GCONF"                  # a symlinked config becomes this file; v1 puts the link back
       each_ghostty_file hold_one
       ghostty_overrides
-      if [ -n "$OVR" ]; then say "  ghostty        still decided by another config: $OVR  (see glass-stage status)"; fi
+      if [ -n "$OVR" ]; then
+        say "  ghostty        still decided by another config: $OVR  (see glass-stage status)"
+      elif [ -n "$OVR_NOTE" ]; then
+        say "  ghostty        $OVR_NOTE"
+      fi
     fi
     gnote="Ghostty: ⌘⇧, or a new window"
   fi
@@ -398,7 +411,11 @@ status() {
     case "$worn" in
       literal|signal)
         ghostty_overrides
-        if [ -n "$OVR" ]; then say "             still decided by another config: $OVR"; fi ;;
+        if [ -n "$OVR" ]; then
+          say "             still decided by another config: $OVR"
+        elif [ -n "$OVR_NOTE" ]; then
+          say "             $OVR_NOTE"
+        fi ;;
     esac
   else
     say "ghostty      not managed"
