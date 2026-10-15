@@ -300,7 +300,13 @@ theme = light:glass-paper,dark:glass-stage
 window-theme = auto
 
 # the type — --font-mono at --fz-mono-cli 14 / --lh-mono-cli 1.5
+# Ghostty stacks font-family across every config file it reads; "" clears what came
+# before, so Red Hat Mono leads (and bold and italic draw from it) wherever this sits.
+font-family = ""
 font-family = "Red Hat Mono"
+font-family-bold = ""
+font-family-italic = ""
+font-family-bold-italic = ""
 font-size = 14
 # Red Hat Mono leads at {natural:.3f} on its own (hhea {round(m['asc'] * m['upm'])} + {round(m['desc'] * m['upm'])} / {m['upm']}): 1.5 / {natural:.3f} = +{cell_h}%
 adjust-cell-height = {cell_h}%
