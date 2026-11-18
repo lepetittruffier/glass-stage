@@ -262,6 +262,22 @@ def run_checks(canon: Canon, lock: dict):
     failed |= not refused
     rows.append(("  ✗ refused  desktop · --signal-live on paper" if refused
                  else "  ! self-test failed: desktop live on paper was NOT refused", "err"))
+    for vname in VARIANTS:
+        bad = t3_check(canon, vname)
+        failed |= bool(bad)
+        rows.append((f"  {'✓' if not bad else '✗'} t3code·{vname:<13} 2 grounds · {len(T3_KEYS)} roles · "
+                     + ("every hex a canon ink" if not bad else bad[0]), "ok" if not bad else "err"))
+    for vname in VARIANTS:
+        bad, size = t3_css_check(canon, vname), len(t3_css(canon, vname))
+        failed |= bool(bad)
+        rows.append((f"  {'✓' if not bad else '✗'} t3css·{vname:<14} 2 grounds · "
+                     + (f"every hex a canon ink · {size:,} of {T3_CSS_MAX:,} chars · fetches nothing" if not bad
+                        else bad[0]), "ok" if not bad else "err"))
+    probe = {"paper": dict(GROUNDS["paper"], cursor="signal-live")}
+    refused = any("never on paper" in b for b in t3_check(canon, "literal", probe))
+    failed |= not refused
+    rows.append(("  ✗ refused  t3code · --signal-live on paper" if refused
+                 else "  ! self-test failed: t3code live on paper was NOT refused", "err"))
     return rows, failed
 
 
@@ -474,6 +490,148 @@ def desk_value(canon: Canon, gname: str, role: str) -> str:
         return max((canon.on("ink", g["ground"]), canon.on("paper", g["ground"])),
                    key=lambda c: contrast(c, fill))
     return canon.on(g[role], g["ground"])
+
+
+# ── T3 Code: a published environment theme ──────────────────────────────────
+# T3 Code (pingdotgg/t3code, desktop 0.1.6) reads a theme file from ~/.t3/userdata/themes/<id>.json
+# and repaints live (apps/server/src/environmentTheme.ts). `appearance` names the ground `colors`
+# carries and `variants` the other one, so one file wears the stage on dark and the paper on light.
+# No canvas/accent seed: with one, T3's generator derives tinted surfaces (createVividThemeColors);
+# without it every role below is the palette. Flat like the Desktop: surfaces are the ground, the
+# term bar carries menus, bubbles and hovers, hairlines draw the depth. Every role is a canon ink.
+# Not in the file (T3 has no role for them): the terminal's 16 ANSI slots and the diff renderer's
+# own add/delete hues. Type is a client setting (Settings → Appearance), not part of a theme.
+T3_KEYS = {  # T3 role → (LITERAL role, SIGNAL role); "on:<role>" = the canon ink that reads on that fill
+    "canvas": ("ground", "ground"), "chrome": ("ground", "ground"), "toolbar": ("ground", "ground"),
+    "toolbarForeground": ("ink", "ink"), "toolbarBorder": ("rule", "rule"),
+    "toolbarControl": ("ground", "ground"), "toolbarControlForeground": ("ink", "ink"),
+    "toolbarControlHover": ("bar", "bar"),
+    "surface": ("ground", "ground"), "surfaceRaised": ("ground", "ground"), "surfaceOverlay": ("bar", "bar"),
+    "text": ("ink", "ink"), "textMuted": ("field", "field"),
+    "border": ("rule", "rule"), "input": ("rule", "rule"), "focus": ("door", "door"),
+    "accent": ("mark", "mark"), "accentForeground": ("mark_ink", "mark_ink"),
+    "secondary": ("bar", "bar"), "secondaryForeground": ("ink", "ink"),
+    "muted": ("bar", "bar"), "mutedForeground": ("field", "field"),
+    "placeholder": ("ghost", "ghost"), "secondaryLabel": ("field", "field"), "iconMuted": ("field", "field"),
+    # no red: errors carry the flag; LITERAL promotes the warning hue to full ink, SIGNAL keeps the locator
+    "error": ("flag", "flag"), "errorForeground": ("flag", "flag"), "errorSurface": ("ground", "ground"),
+    "warning": ("ink", "locator"), "warningForeground": ("ink", "locator"), "warningSurface": ("ground", "ground"),
+    "update": ("mark", "mark"), "updateForeground": ("mark", "mark"), "updateSurface": ("ground", "ground"),
+    "accentSurface": ("bar", "bar"), "accentSurfaceForeground": ("ink", "ink"),
+    "messageSurface": ("bar", "bar"), "messageForeground": ("ink", "ink"),
+    "messageAction": ("mark", "mark"), "messageActionForeground": ("mark_ink", "mark_ink"),
+    "messageActionHover": ("mark", "mark"),
+    # what the machine answers reads at the field in LITERAL, as the Ghostty foreground does
+    "codeBackground": ("ground", "ground"), "codeForeground": ("field", "ink"),
+    "searchMatchBackground": ("mark", "mark"), "searchMatchForeground": ("mark_ink", "mark_ink"),
+    "searchMatchActiveBackground": ("door", "door"), "searchMatchActiveForeground": ("on:door", "on:door"),
+    "sidebar": ("ground", "ground"), "sidebarForeground": ("ink", "ink"),
+    "sidebarMutedForeground": ("field", "field"), "sidebarControlSurface": ("ground", "ground"),
+    "sidebarRowHover": ("bar", "bar"), "sidebarRowActive": ("bar", "bar"), "sidebarRowSelected": ("bar", "bar"),
+    "sidebarBorder": ("rule", "rule"),
+    # one glow: --signal-live only on the stage's cursor
+    "terminalBackground": ("ground", "ground"), "terminalForeground": ("field", "ink"),
+    "terminalCursor": ("cursor", "cursor"), "terminalSelection": ("mark", "mark"),
+    "terminalScrollbar": ("ghost", "ghost"), "terminalScrollbarHover": ("field", "field"),
+}
+T3_GROUNDS = {"stage": "dark", "paper": "light"}
+T3_NAMES = {"literal": ("glass-stage", "Glass Stage"), "signal": ("glass-stage-signal", "Glass Stage Signal")}
+
+
+def t3_colors(canon: Canon, gname: str, vname: str) -> dict:
+    i = 0 if vname == "literal" else 1
+    return {k: desk_value(canon, gname, roles[i]) for k, roles in T3_KEYS.items()}
+
+
+def t3_theme(canon: Canon, vname: str) -> str:
+    return json.dumps({"version": 1, "name": T3_NAMES[vname][1], "appearance": "dark",
+                       "colors": t3_colors(canon, "stage", vname),
+                       "variants": {"light": t3_colors(canon, "paper", vname)},
+                       "css": t3_css(canon, vname)}, indent=2) + "\n"
+
+
+# ── T3 Code 0.1.10: the theme file's own sheet ───────────────────────────────
+# 0.1.10 (17 Nov 2026) lets a theme file carry `css`: at most 50,000 characters, adopted after the
+# app's own styles, no @import, url() only data: or #id (packages/shared/src/themeCss.ts). A
+# background image may sit beside the file; the stage is opaque, so none is published. The sheet says
+# what the 61 roles can't: the glass slider pinned opaque, the Desktop's three voices (Body, Pills,
+# Code) in the families installed on this Mac, no red in Tailwind's raw hues, the one glow on the
+# caret, the mark on selection, every code token on the code ink. Selectors are T3's stable hooks
+# (THEME_CSS_HOOKS) and Tailwind's colour variables only. Out of reach: the terminal's text, the file
+# tree, the diff renderer's internals (T3's own guide says so) — their colours stay on the roles.
+T3_CSS_MAX = 50_000
+T3_TW_SHADES = (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950)
+T3_RECORD = ".chat-markdown"
+T3_CODE = ":is(.chat-markdown-codeblock, .chat-markdown pre, .chat-markdown code)"
+
+
+def t3_css(canon: Canon, vname: str) -> str:
+    i, raw = (0 if vname == "literal" else 1), canon.raw
+    serif, mono = raw["font-serif"], raw["font-mono"]
+    pills = (f"font-family: {serif} !important; font-size: {raw['fz-serif-8']} !important; "
+             f"line-height: {raw['lh-serif-8']} !important; letter-spacing: {raw['track-caps']} !important; "
+             "text-transform: uppercase !important;")
+    out = [f"/* GLASS STAGE v2 · T3 Code · {VARIANTS[vname]['label']} · generated by v2/build.py · do not hand-edit. */",
+           "/* the ground is opaque: the glass slider's variables pinned */",
+           ":root { --glass-opacity: 100% !important; --glass-blur: 0px !important; --glass-saturation: 1 !important; }",
+           "/* the type: 03 Body for everything read and written, 05 Code for the program; bold is not a voice (E1) */",
+           f":root {{ --font-sans: {serif} !important; --font-composer: {serif} !important; --font-mono: {mono} !important; }}",
+           "*, *::before, *::after { font-weight: 400 !important; }",
+           f"{T3_RECORD}, [data-user-message-bubble], .composer-tiptap {{ line-height: {raw['lh-body-1']} !important; "
+           f"letter-spacing: {raw['track-body-1']} !important; }}",
+           f"{T3_RECORD} :is(h1, h2, h3, h4, h5, h6, strong, b):not({T3_CODE} *) {{ {pills} }}",
+           f"{T3_RECORD} {T3_CODE}, {T3_CODE} * {{ font-family: {mono} !important; letter-spacing: 0 !important; }}"]
+    for gname, sel in DESK_GROUNDS:
+        v = lambda role: desk_value(canon, gname, role)  # noqa: E731
+        tw = " ".join(f"--color-{f}-{n}: {v(tw_role(gname, f, n, i))} !important;" for f in TW_ROLES for n in T3_TW_SHADES)
+        out += [f"/* {gname}: Tailwind's raw hues on the canon roles · red and rose are the flag */",
+                f"{sel} {{ {tw} }}",
+                f"{sel} :is(textarea, input, [contenteditable], .composer-tiptap) {{ caret-color: {v('cursor')} !important; }}",
+                f"{sel} ::selection {{ background-color: {v('mark')} !important; color: {v('mark_ink')} !important; }}",
+                # every code token on the code ink (T3's own pre paints #FAFAFA / #0A0A0A, off the canon)
+                f"{sel} {T3_CODE}, {sel} {T3_CODE} * {{ color: {v(T3_KEYS['codeForeground'][i])} !important; }}",
+                # file-type icons (pierre's sprite: pdf and scala red, diff and spreadsheet green, TS blue) in the icon ink
+                f"{sel} svg[data-pierre-icon] {{ color: {v(T3_KEYS['iconMuted'][i])} !important; }}",
+                f'{sel} [data-slot="scroll-area-thumb"] {{ background-color: {v("ghost")} !important; }}',
+                f"{sel} ::-webkit-scrollbar-thumb {{ background-color: {v('ghost')} !important; }}"]
+    # the sprite's own hues sit inline on each path (stroke: light-dark(#199f43, #5ecc71)); a <use> clones
+    # the symbol into its shadow tree as an <svg>, where no ancestor selector reaches, so these go bare
+    out += [':is(path, g, rect, circle, line, polyline, polygon, ellipse)[style*="stroke: light-dark("], '
+            ':is(path, g, rect, circle, line, polyline, polygon, ellipse)[style*="stroke: var(--document-icon-stroke"] '
+            '{ stroke: currentColor !important; }',
+            ':is(path, g, rect, circle, line, polyline, polygon, ellipse)[style*="fill: light-dark("], '
+            ':is(path, g, rect, circle, line, polyline, polygon, ellipse)[style*="fill: var(--document-icon-fill"] '
+            '{ fill: currentColor !important; }']
+    # the sidebar's grain (an SVG noise data: URI) off: the ground is one flat ink
+    out.append('[data-slot="sidebar-inner"] { background-image: none !important; }')
+    return "\n".join(out) + "\n"
+
+
+def t3_css_check(canon: Canon, vname: str) -> list:
+    css = t3_css(canon, vname)
+    bad = desk_check(canon, css)
+    if len(css) > T3_CSS_MAX:
+        bad.append(f"css is {len(css)} characters, over T3's {T3_CSS_MAX}")
+    if re.search(r"@import|url\(|image-set\(|\bsrc\(", css, re.I):
+        bad.append("css fetches a file, which T3 drops")
+    return bad
+
+
+def t3_check(canon: Canon, vname: str, grounds: dict | None = None) -> list:
+    problems, i = [], 0 if vname == "literal" else 1
+    for gname in T3_GROUNDS:
+        g = (grounds or {}).get(gname, GROUNDS[gname])
+        ok = canon.allowed(g["ground"])
+        for k, roles in T3_KEYS.items():
+            role = roles[i][3:] if roles[i].startswith("on:") else roles[i]
+            if g["ground"] == "paper" and g[role] == "signal-live":
+                problems.append(f"{k}: --signal-live on paper · reads on --glass-stage, never on paper")
+            fill = canon.on(g[role], g["ground"])
+            hx = fill if not roles[i].startswith("on:") else max(
+                (canon.on("ink", g["ground"]), canon.on("paper", g["ground"])), key=lambda c: contrast(c, fill))
+            if hx not in ok:
+                problems.append(f"{k}: {hx} is no canon ink on --{g['ground']}")
+    return problems
 
 
 # ── the record layer: code, diffs and counts ─────────────────────────────────
@@ -1499,7 +1657,7 @@ def main() -> int:
         return 0
 
     themes = {(g, v): theme(canon, g, v) for g in GROUNDS for v in VARIANTS}
-    for d in ("ghostty/themes", "git", "shell", "hermes", "desktop", "workshop"):
+    for d in ("ghostty/themes", "git", "shell", "hermes", "desktop", "t3code", "workshop"):
         (OUT / d).mkdir(parents=True, exist_ok=True)
     (OUT / "tokens.lock.json").write_text(json.dumps(lock, indent=2) + "\n")
     (OUT / "ghostty" / "config").write_text(cfg)
@@ -1513,6 +1671,7 @@ def main() -> int:
         (OUT / "hermes" / f"{name}.yaml").write_text(hermes_skin(canon, vname, lock))
         (OUT / "desktop" / f"{name}.css").write_text(desk_css(canon, vname, lock))
         (OUT / "desktop" / "expect.json").write_text(json.dumps(desk_expect(canon), indent=2) + "\n")
+        (OUT / "t3code" / f"{T3_NAMES[vname][0]}.json").write_text(t3_theme(canon, vname))
 
     status = subprocess.run(["git", "-C", str(REPO), "status", "-sb"], capture_output=True, text=True).stdout
     status_lines = [line for line in status.splitlines() if line.strip()][:4]
